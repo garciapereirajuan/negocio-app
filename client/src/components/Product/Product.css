@@ -1,0 +1,66 @@
+.product .css-1qvr50w-MuiTypography-root {
+    font-size: 1rem !important;
+    color: #fff;
+}
+
+.css-bhp9pd-MuiPaper-root-MuiCard-root {
+    background-color: var(--primary-color) !important;
+}
+
+.product .css-nrdprl-MuiTypography-root {
+    /* color: #fff !important; */
+}
+
+.product .css-r40f8v-MuiTypography-root {
+    color: #fff !important;
+}
+
+.product .css-ahj2mt-MuiTypography-root {
+    color: #373737;
+}
+
+.product .css-i4bv87-MuiSvgIcon-root {
+    fill: rgba(255, 255, 255, .6) !important;
+}
+
+.product .shopping-cart:hover {
+    box-shadow: 0 0px 10px rgba(255, 255, 255, .6);
+    transition: all ease .1s;
+}
+
+.product .shopping-cart:active {
+    box-shadow: 0 0px 2px rgba(255, 255, 255, .6);
+    transition: all ease .1s;
+}
+
+.product .shopping-cart .css-i4bv87-MuiSvgIcon-root {
+    fill: #fff !important;
+}
+
+.product .css-46bh2p-MuiCardContent-root:last-child {
+    /* background-color: var(--secondary-color); */
+    background-color: var(--secondary-color);
+}
+
+.product .text-stock,
+.product .text-no-stock,
+.product .text-price {
+    padding: 2px 6px;
+    color: #fff;
+    border-radius: 8px;
+}
+
+.product .text-stock {
+    background-color: rgba(36, 226, 36, .4);
+}
+
+.product .text-no-stock {
+    background-color: rgba(247, 0, 0, 0.552);
+}
+
+.product .text-price {
+    background-color: var(--secondary-color-opacity);
+    color: #fff;
+    font-size: 18px;
+    /* font-weight: bold; */
+}

@@ -1,0 +1,39 @@
+.draggable {
+    position: relative;
+    width: 100%;
+    background-color: rgba(255, 255, 255, .6);
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.dragg {
+    width: 90%;
+}
+
+.List {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.edit-icon svg,
+.delete-icon svg {
+    fill: grey !important;
+}
+
+.title-div {
+    font-weight: bold;
+}
+
+.css-1rki8sg-MuiListItem-root {
+    height: 100px;
+}
+
+.css-83ijpv-MuiTypography-root {
+    width: 360px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

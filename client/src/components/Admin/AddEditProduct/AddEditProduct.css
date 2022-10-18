@@ -1,0 +1,51 @@
+.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+    background: #fff;
+    padding: 2px 8px;
+}
+
+.upload-image {
+    width: max-content;
+    margin: 0 auto;
+    margin-top: 20px;
+    border-radius: 50%;
+    border: 2px dotted grey;
+    transition: all ease .2s;
+}
+
+.upload-image:hover {
+    transition: all ease .2s;
+    border-color: rgb(176, 176, 176);
+    rotate: 30deg;
+}
+
+.upload-image .MuiAvatar-root {
+    width: 130px;
+    height: 130px;
+    margin: 8px;
+}
+
+
+/* 
+
+.add-edit-form .MuiInputBase-root {
+    width: 50% !important;
+} */
+
+.add-edit-form .MuiFormControl-root {
+    width: 100% !important;
+    margin-top: 6px;
+}
+
+.add-edit-form__form__box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+@media (max-width: 1000px) {
+
+    .add-edit-form {
+        width: 90vw;
+    }
+}

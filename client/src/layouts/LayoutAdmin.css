@@ -1,0 +1,8 @@
+.layout-admin {
+    margin: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+    min-height: calc(100vh - 85.13px);
+    background: gainsboro;
+}

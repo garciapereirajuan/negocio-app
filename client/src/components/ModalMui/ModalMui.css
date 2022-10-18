@@ -1,0 +1,10 @@
+.modal-mui {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    background-color: #fff;
+    box-shadow: 0 20px 30px rgba(0, 0, 0, .6);
+    padding: 20px;
+    border-radius: 6px;
+}

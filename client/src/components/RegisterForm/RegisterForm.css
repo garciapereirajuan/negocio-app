@@ -1,0 +1,23 @@
+.register-form .css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+    width: 440px !important;
+    margin-top: 20px !important;
+}
+
+.register-form__parraf {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.register-form__form {
+    margin: 0 auto;
+    width: max-content;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-form__form .btn-submit {
+    margin-top: 20px;
+}
