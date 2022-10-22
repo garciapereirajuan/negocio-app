@@ -16,6 +16,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddShoppingCart from '@mui/icons-material/AddShoppingCart'
 import Grid from '@mui/material/Grid'
 import imgExample from '../../assets/img/jpg/papas-ketchup.jpg'
+import { TextField, FormControl } from '@mui/material'
 import accounting from 'accounting'
 import NoImage from '../../assets/img/png/NoImage.png'
 import { showMainProductImageApi } from '../../api/mainProduct'
@@ -105,15 +106,18 @@ export default function Product({ product }) {
                     .fill()
                     .map(() => (<p>&#11088;</p>))
                 } */}
-                    <IconButton aria-label="add to favorites">
+                    {/* <IconButton aria-label="add to favorites">
                         <FavoriteIcon />
                     </IconButton>
                     <IconButton aria-label="share">
                         <ShareIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton arial-label="add to cart" className='shopping-cart'>
                         <AddShoppingCart />
                     </IconButton>
+                    <FormControl>
+                        <TextField type='number' defaultValue={0} />
+                    </FormControl>
                     <ExpandMore
                         expand={expanded}
                         onClick={handleExpandClick}

@@ -34,7 +34,7 @@ const add = (req, res) => {
         })
         .catch(err => {
             if (err?.code === 11000) {
-              message(res, 500, 'Ya existe un producto con este título, intenta otro.', { err })
+              message(res, 404, 'Ya existe un producto con este nombre, intenta otro.', { err })
                 return
             }
 
@@ -115,18 +115,74 @@ const show = (req, res) => {
 }
 
 const update = (req, res) => {
+    const { id } = req.params
     const data = req.body
 
     if (!data.title || !data.description) {
         message(res, 404, 'El título y la descripción del producto son obligatorios.')
         return
     }
+
+    MainProduct.findByIdAndUpdate(id, data, (err, mainProduct) => {
+        if (err?.code === 11000) {
+            message(res, 404, 'El nombre del producto ya existe. Intenta otro.')
+            return
+        }
+        if (err?.path === '_id') {
+            message(res, 404, 'El producto que intentas actualizar no existe.')
+            return
+        }
+        if (err || !mainProduct) {
+            message(res, 500, 'Ocurrió un error en el servidor, intenta más tarde.')
+            return
+        }
+        if (mainProduct) {
+            message(res, 200, 'Producto actualizado correctamente.')
+        }
+    })
 }
 
-const remove = () => {
-    res.send('Funciona remove')
+const updateForCheckboxAndOrder = (req, res) => {
+    const { id } = req.params
+    const data = req.body
+
+    MainProduct.findByIdAndUpdate(id, data, (err, mainProduct) => {
+        if (err?.code === 11000) {
+            message(res, 404, 'El nombre del producto ya existe. Intenta otro.')
+            return
+        }
+        if (err?.path === '_id') {
+            message(res, 404, 'El producto que intentas actualizar no existe.')
+            return
+        }
+        if (err || !mainProduct) {
+            message(res, 500, 'Ocurrió un error en el servidor, intenta más tarde.')
+            return
+        }
+        if (mainProduct) {
+            message(res, 200, 'Producto actualizado correctamente.')
+        }
+    })
+}
+
+const remove = (req, res) => {
+    const { id } = req.params
+
+    MainProduct.findByIdAndDelete(id, (err, mainProduct) => {
+        if (err?.path === '_id') {
+            message(res, 404, 'El producto que intentas eliminar no existe.')
+            return
+        }
+        if (err || !mainProduct) {
+            message(res, 500, 'Ocurrió un error en el servidor, intenta más tarde.')
+            return
+        }
+        if (mainProduct) {
+            message(res, 200, 'Producto eliminado correctamente.')
+        }
+    })
 }
 
 module.exports = {
-    add, addImage, showImage, show, update, remove
+    add, addImage, showImage, show, update, updateForCheckboxAndOrder, remove
 }

@@ -6,12 +6,13 @@ import LayoutBasic from '../layouts/LayoutBasic'
 
 //Import pages
 import BasicHome from '../pages/Home'
-import AdminHome from '../pages/Admin/Products'
+import AdminHome from '../pages/Admin'
 import AdminLogin from '../pages/Admin/Login'
 
 //Import components
 import Products from '../components/Products'
 import AdminAddEditProduct from '../components/Admin/AddEditProduct'
+import AdminAddEditCategory from '../components/Admin/AddEditCategory'
 
 export const routes = [
     {
@@ -29,6 +30,10 @@ export const routes = [
             {
                 path: '/product',
                 element: AdminAddEditProduct
+            },
+            {
+                path: '/category',
+                element: AdminAddEditCategory
             },
             {
                 path: '/*',

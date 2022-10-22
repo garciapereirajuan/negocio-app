@@ -1,10 +1,19 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { Grid } from '@mui/material'
+import useAuth from '../hooks/useAuth'
 
 import './LayoutAdmin.css'
 
 const LoadRoutes = ({ routes }) => {
+    const { user, isLoading } = useAuth() 
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!user && !isLoading) {
+            navigate('/admin/login')
+        }
+    }, [user, isLoading])
 
     return (
         <Grid container justifyContent='center' className='layout-admin'>
@@ -27,7 +36,6 @@ const LoadRoutes = ({ routes }) => {
 }
 
 const LayoutAdmin = ({ routes }) => {
-    console.log(routes)
     return (
         <LoadRoutes routes={routes} />
     )

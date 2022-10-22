@@ -4,5 +4,5 @@
     padding-bottom: 20px;
     width: 100%;
     min-height: calc(100vh - 85.13px);
-    background: gainsboro;
+    background: var(--background-layout);
 }

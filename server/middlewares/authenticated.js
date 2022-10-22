@@ -19,7 +19,7 @@ exports.ensureAuth = (req, res, next) => {
             return
         }
     } catch (ex) {
-        message(res, 500, 'Lo siento, antes de continuar debes recargar la página. Esto sucede como método de seguridad.')
+        message(res, 500, 'Lo siento, antes de continuar debes recargar la página. Esto sucede como método de seguridad. Si aún así seguís viendo esta alerta, avisame por favor.')
         return
     }
 

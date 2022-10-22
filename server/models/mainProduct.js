@@ -13,7 +13,7 @@ const MainProductSchema = Schema({
     visible: Boolean,
     stock: Boolean,
     bonusProducts: [{ type: Schema.Types.ObjectId, ref: 'BonusProduct' }],
-    category: { type: Schema.Types.ObjectId, red: 'Category' }
+    // category: { type: Schema.Types.ObjectId, red: 'Category' }
 })
 
 module.exports = mongoose.model('MainProduct', MainProductSchema)

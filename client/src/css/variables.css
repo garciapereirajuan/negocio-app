@@ -6,4 +6,8 @@
     /* --secondary-color: #d87093; */
     --secondary-color: rgb(163, 200, 237);
     --secondary-color-opacity: rgba(163, 200, 237, 0.6);
+
+    --green-color: rgb(55, 172, 42);
+
+    --background-layout: gainsboro;
 }

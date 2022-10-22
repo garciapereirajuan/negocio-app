@@ -38,7 +38,7 @@
 
 .add-edit-form__form__box {
     display: flex;
-    flex-direction: column;
+    flex-direction: row !important;
     justify-content: space-between;
     align-items: flex-end;
 }

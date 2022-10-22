@@ -12,6 +12,9 @@ router.route('/main-product/:id')
     .put([md_auth.ensureAuth], MainProductController.update)
     .delete([md_auth.ensureAuth], MainProductController.remove)
 
+router.route('/main-product-checkbox-and-order/:id')
+    .put([md_auth.ensureAuth], MainProductController.updateForCheckboxAndOrder)
+
 router.route('/main-products')
     .get(MainProductController.show)
 

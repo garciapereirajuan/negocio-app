@@ -2,9 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import useAuth from './hooks/useAuth'
 import { routes } from './routes/routes'
+import { logout } from './api/auth'
 
 import './App.css';
-import './variables.css'
+import './css/variables.css'
 
 const RouteWithSubRoutes = route => {
   return (

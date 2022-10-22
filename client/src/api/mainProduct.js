@@ -50,3 +50,53 @@ export const showMainProductApi = async() => {
         .then(result => result)
         .catch(err => err)
 }
+
+export const updateMainProductApi = async (token, mainProductId, mainProductData) => {
+    const url = `${basePath}/${apiVersion}/main-product/${mainProductId}`
+    const params = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: token
+        },
+        body: JSON.stringify(mainProductData)
+    }
+
+    return fetch(url, params)
+        .then(response => response.json())
+        .then(result => result)
+        .catch(err => err)
+}
+
+export const updateMainProductCheckboxApi = async (token, mainProductId, mainProductCheckbox) => {
+    const url = `${basePath}/${apiVersion}/main-product-checkbox/${mainProductId}`
+    const params = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: token
+        },
+        body: JSON.stringify(mainProductCheckbox)
+    }
+
+    return fetch(url, params)
+        .then(response => response.json())
+        .then(result => result)
+        .catch(err => err)
+}
+
+export const removeMainProductApi = async (token, mainProductId) => {
+    const url = `${basePath}/${apiVersion}/main-product/${mainProductId}`
+    const params = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: token
+        }
+    }
+
+    return fetch(url, params)
+        .then(response => response.json())
+        .then(result => result)
+        .catch(err => err)
+}

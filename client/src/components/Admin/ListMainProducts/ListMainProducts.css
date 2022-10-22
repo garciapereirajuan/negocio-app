@@ -18,12 +18,12 @@
     cursor: pointer;
 }
 
-.edit-icon svg,
-.delete-icon svg {
+.list-products .edit-icon svg,
+.list-products .delete-icon svg {
     fill: grey !important;
 }
 
-.title-div {
+.list-products .title-div {
     font-weight: bold;
 }
 
@@ -36,4 +36,16 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+.list-products .form-checkbox {
+    margin-left: 20px;
+    background-color: var(--background-layout);
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.list-products .form-group-checkbox {
+    display: flex;
+    margin-right: 40px;
 }

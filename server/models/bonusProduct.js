@@ -2,7 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const BonusProductSchema = Schema({
-    title: String,
+    title: {
+        type: String,
+        unique: true
+    },
     description: String,
     image: String,
     price: Number,

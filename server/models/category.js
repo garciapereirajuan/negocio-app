@@ -2,10 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const CategorySchema = Schema({
-    title: String,
+    title: {
+        type: String,
+        unique: true
+    },
     description: String,
-    image: String,
-    visible: Boolean,
     order: Number,
     mainProducts: [{ type: Schema.Types.ObjectId, ref: 'MainProduct' }]
 })
