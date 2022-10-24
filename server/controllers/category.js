@@ -32,7 +32,7 @@ const add = (req, res) => {
 
 const show = (req, res) => {
 
-    Category.find((err, categories) => {
+    Category.find({}).sort('order').exec((err, categories) => {
         if (err) {
             message(res, 500, 'Ocurrió un error en el servidor, intent más tarde.')
             return

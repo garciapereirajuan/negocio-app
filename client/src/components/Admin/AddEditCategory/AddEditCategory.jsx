@@ -15,6 +15,17 @@ const AddEditCategory = () => {
     const [alert, setAlert] = useState([])
     const navigate = useNavigate()
 
+
+    // useEffect(() => {
+    //     if (location.search) {
+    //         const query = queryString.parse(location.search)
+    //         const data = JSON.parse(query.data)
+    //         const objData = JSON.parse(data) //tengo que parsearlo otra vez
+
+    //         setMainProductData(objData)
+    //     }
+    // }, [location])
+
     useEffect(() => {
         showMainProductApi()
             .then(response => setAllMainProducts(response.mainProducts))
@@ -37,7 +48,7 @@ const AddEditCategory = () => {
         const token = getAccessTokenApi()
         const { title, description } = categoryData
 
-        if (!title || !description) {
+        if (!title) {
             setAlert(['error', 'El título y la descripción de la categoría son obligatorios.'])
             return
         }

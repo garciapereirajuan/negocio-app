@@ -42,10 +42,17 @@ export const showMainProductImageApi = (imageId) => {
         .catch(err => err)
 }
 
-export const showMainProductApi = async() => {
+export const showMainProductApi = async (mainProductsId) => {
     const url = `${basePath}/${apiVersion}/main-products`
+    const params = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ mainProductsId: mainProductsId })
+    }
 
-    return fetch(url)
+    return fetch(url, params)
         .then(response => response.json())
         .then(result => result)
         .catch(err => err)
@@ -68,8 +75,8 @@ export const updateMainProductApi = async (token, mainProductId, mainProductData
         .catch(err => err)
 }
 
-export const updateMainProductCheckboxApi = async (token, mainProductId, mainProductCheckbox) => {
-    const url = `${basePath}/${apiVersion}/main-product-checkbox/${mainProductId}`
+export const updateMainProductSpecialApi = async (token, mainProductId, mainProductCheckbox) => {
+    const url = `${basePath}/${apiVersion}/main-product-checkbox-and-order/${mainProductId}`
     const params = {
         method: 'PUT',
         headers: {

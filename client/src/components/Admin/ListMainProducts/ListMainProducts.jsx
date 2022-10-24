@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Grid, List, ListItem, IconButton, Button, Avatar, ListItemText, ListItemAvatar, Alert, FormControl, FormGroup, FormControlLabel, Checkbox } from '@mui/material'
 import DragSortableList from 'react-drag-sortable'
-import { showMainProductImageApi, removeMainProductApi, updateMainProductCheckboxApi } from '../../../api/mainProduct'
+import { showMainProductImageApi, removeMainProductApi, updateMainProductSpecialApi } from '../../../api/mainProduct'
 import { getAccessTokenApi } from '../../../api/auth'
 import ModalMui from '../../ModalMui'
 import DialogMui from '../../DialogMui'
@@ -135,7 +135,7 @@ const ListMainProducts = ({ allMainProducts, setReloadAllMainProducts }) => {
     const updateForCheckbox = (product, element) => {
         const token = getAccessTokenApi()
 
-        updateMainProductCheckboxApi(token, product._id, element)
+        updateMainProductSpecialApi(token, product._id, element)
             .then(response => {
                 if (response?.code !== 200) {
                     setAlert(['error', response.message])
@@ -154,7 +154,23 @@ const ListMainProducts = ({ allMainProducts, setReloadAllMainProducts }) => {
     }
 
     const onSort = (sortedList, dropEvent) => {
-        console.log(sortedList)
+        const token = getAccessTokenApi()
+
+        sortedList.forEach(item => {
+            const order = item.rank
+            const mainProductId = item.content.props.product._id
+
+            updateMainProductSpecialApi(token, mainProductId, { order })
+                .then(response => {
+                    if (response?.code === 200) {
+                        setReloadAllMainProducts(true)
+                    } else {
+                        console.log('Ocurrió un error', response)
+                    }
+                })
+                .catch(err => console.log('Ocurrió un error', err))
+            // console.log(item, mainProductId)
+        })
     }
 
     return (

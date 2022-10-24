@@ -1,0 +1,12 @@
+.home .category-title {
+	margin: 20px 0;
+	background-color: var(--secondary-color);
+	color:  var(--background-layout);
+	font-weight: bold;
+	border-radius: 8px;
+	box-shadow:  0 0 8px rgba(0,0,0,.6);
+}
+
+.home .category-title:first-child {
+	margin-top: 0;
+}

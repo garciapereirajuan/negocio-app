@@ -1,13 +1,17 @@
+.css-hyum1k-MuiToolbar-root {
+    background-color: var(--primary-color) !important;
+}
+
 .btn-in-and-out {
     width: 168px;
 }
 
 .btn-product-and-bonus {
-    background: var(--primary-color-dark) !important;
+    background: var(--btns-navbar) !important;
     margin: 6px !important;
 }
 
 .btn-product-and-bonus:hover {
-    background: var(--primary-color-light) !important;
+    background: var(--btns-navbar-hover) !important;
     /* color: #373737 !important */
 }

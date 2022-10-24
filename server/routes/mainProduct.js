@@ -16,7 +16,7 @@ router.route('/main-product-checkbox-and-order/:id')
     .put([md_auth.ensureAuth], MainProductController.updateForCheckboxAndOrder)
 
 router.route('/main-products')
-    .get(MainProductController.show)
+    .post(MainProductController.show)
 
 
 router.route('/main-product-image/:id')

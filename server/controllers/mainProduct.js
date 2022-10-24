@@ -97,8 +97,15 @@ const showImage = (req, res) => {
 }
 
 const show = (req, res) => {
+    let data = req.body
+
+    if (data.mainProductsId) {
+        data.forId = { _id: data.mainProductsId }  
+    } else {
+        data.forId = {}
+    }
     
-    MainProduct.find((err, mainProducts) => {
+    MainProduct.find(data.forId).sort('order').exec((err, mainProducts) => {
         if (err) {
             message(res, 500, 'Ocurrió un error en el servidor, intenta más tarde.')
             return

@@ -1,13 +1,18 @@
 :root {
-    --primary-color: #1976d2;
-    --primary-color-dark: #0e549b;
-    --primary-color-light: #5ea7f0;
+    /*--primary-color: #1976d2;*/
+    --primary-color:  #4a4e69;
+    --primary-color-dark: #4a4e69;
+    --primary-color-light: #4a4e69;
 
-    /* --secondary-color: #d87093; */
-    --secondary-color: rgb(163, 200, 237);
+     --secondary-color: #6a994e; 
+    /*--secondary-color: #4a4e69;*/
     --secondary-color-opacity: rgba(163, 200, 237, 0.6);
 
     --green-color: rgb(55, 172, 42);
 
     --background-layout: gainsboro;
+    --background-categories: #264653;
+
+    --btns-navbar: #6a994e;
+    --btns-navbar-hover: #90a955;
 }

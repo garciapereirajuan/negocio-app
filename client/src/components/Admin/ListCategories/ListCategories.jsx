@@ -17,15 +17,14 @@ const ListCategories = ({ allCategories }) => {
         setItemsCategories(itemsArray)
     }, [allCategories])
 
-    const onSort = () => {}
-    console.log(allCategories)
+    const onSort = (sortedList) => {
+        console.log(sortedList)
+    }
 
     return (
-        
-            <List>
-                <DragSortableList items={itemsCategories} onSort={onSort} dropBackTransitionDuration={0.3} type="vertical" />
-            </List> 
-        
+        <List>
+            <DragSortableList items={itemsCategories} onSort={onSort} dropBackTransitionDuration={0.3} type="vertical" />
+        </List> 
     )
 }
 
