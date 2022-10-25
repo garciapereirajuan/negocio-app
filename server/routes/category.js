@@ -7,6 +7,9 @@ router.route('/category/:id')
     .put([md_auth.ensureAuth], CategoryController.update)
     .delete([md_auth.ensureAuth], CategoryController.remove)
 
+router.route('/category-order/:id')
+    .put([md_auth.ensureAuth], CategoryController.updateOrder)
+
 router.route('/category')
     .post([md_auth.ensureAuth], CategoryController.add)
 

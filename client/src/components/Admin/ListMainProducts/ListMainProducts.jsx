@@ -29,7 +29,7 @@ const ListMainProducts = ({ allMainProducts, setReloadAllMainProducts }) => {
         const messageAboutSymbol = localStorage.getItem('messageAboutSymbol')
 
         if (!messageAboutSymbol) {
-            setAlert(['warning', 'Antes de continuar quiero pedirte un favor. No uses aún el símbolo "&" en nada de lo que escribas porque puede ocurrir un error inesperado y todavía no está solucionado. No vas a volver a ver este mensaje, por lo que quiero que lo recuerdes. :)'])
+            setAlert(['warning', 'Antes de continuar quiero pedirte un favor. No uses aún el símbolo "&" en nada de lo que escribas porque puede ocurrir un error inesperado y todavía no está solucionado.'])
         }
 
         return () => localStorage.setItem('messageAboutSymbol', true)

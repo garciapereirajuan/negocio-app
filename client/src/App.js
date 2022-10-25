@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import useAuth from './hooks/useAuth'
@@ -20,6 +21,12 @@ const RouteWithSubRoutes = route => {
 
 function App() {
   const { user, isLoading } = useAuth()
+
+  useEffect(() => {
+    if (!user && !isLoading) {
+      localStorage.removeItem('messageAboutSymbol')
+    }
+  }, [user, isLoading])
 
   return (
       <Router>
