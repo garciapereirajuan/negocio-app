@@ -7,11 +7,10 @@ const BonusProductSchema = Schema({
         unique: true
     },
     description: String,
-    image: String,
-    price: Number,
-    order: Number,
+    checked: Boolean,
     visible: Boolean,
-    stock: Boolean,
+    disponibility: Boolean,
+    order: Number
 })
 
 module.exports = mongoose.model('BonusProduct', BonusProductSchema)

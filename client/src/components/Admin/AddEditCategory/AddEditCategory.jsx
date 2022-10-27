@@ -277,16 +277,19 @@ const FormCategory = ({ setOpenModal, allMainProducts, categoryData, setCategory
                 }}
             >
             {
-                checkObjectCategoryData &&
-                (
-                    <span
-                        className='format-icon'
-                        style={{background: '#f00'}}
-                        onClick={() => deleteCategory(categoryData)}
-                    >
-                        <DeleteIcon />
-                    </span>
-                )
+                checkObjectCategoryData
+                    ? (
+                        <span
+                            className='format-icon'
+                            style={{background: '#f00'}}
+                            onClick={() => deleteCategory(categoryData)}
+                        >
+                            <DeleteIcon />
+                        </span>
+                    ) : (
+                        <span>
+                        </span>
+                    )
 
             }
                 

@@ -12,6 +12,7 @@ const userRoutes = require('./routes/user')
 const authRoutes = require('./routes/auth')
 const mainProductRoutes = require('./routes/mainProduct')
 const categoryRoutes = require('./routes/category')
+const bonusProductRoutes = require('./routes/bonusProduct')
 
 //Configure Header HTTP
 app.use((req, res, next) => {
@@ -30,5 +31,6 @@ app.use(`/api/${API_VERSION}`, userRoutes)
 app.use(`/api/${API_VERSION}`, authRoutes)
 app.use(`/api/${API_VERSION}`, mainProductRoutes)
 app.use(`/api/${API_VERSION}`, categoryRoutes)
+app.use(`/api/${API_VERSION}`, bonusProductRoutes)
 
 module.exports = app

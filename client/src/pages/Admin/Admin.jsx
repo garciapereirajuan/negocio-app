@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Switch, Grid, Typography } from '@mui/material'
 import ListMainProducts from '../../components/Admin/ListMainProducts'
 import ListCategories from '../../components/Admin/ListCategories'
+import ListBonusProducts from '../../components/Admin/ListBonusProducts'
 import { showMainProductApi } from '../../api/mainProduct'
 import { showCategoriesApi } from '../../api/categories'
 import { showBonusProductApi } from '../../api/bonusProduct'
@@ -54,7 +55,7 @@ const Products = () => {
             })
             .catch(err => console.log('Error', err))
 
-        setReloadAllMainProducts(false)
+        setReloadAllBonusProducts(false)
     }, [reloadAllBonusProducts, selectedMainProducts])
 
     useEffect(() => {
@@ -86,8 +87,14 @@ const Products = () => {
                     </Typography>
                     {
                         selectedMainProducts
-                            ? <ListMainProducts allMainProducts={allMainProducts} setReloadAllMainProducts={setReloadAllMainProducts} />
-                            : <div>Bonus products...</div>
+                            ? <ListMainProducts 
+                                allMainProducts={allMainProducts} 
+                                setReloadAllMainProducts={setReloadAllMainProducts} 
+                            />
+                            : <ListBonusProducts 
+                                allBonusProducts={allBonusProducts} 
+                                setReloadAllBonusProducts={setReloadAllBonusProducts} 
+                            />
                     }
                 </Grid>
             </Grid>

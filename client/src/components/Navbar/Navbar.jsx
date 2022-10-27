@@ -34,7 +34,7 @@ const btnOut = (
 )
 
 const btnNewBonus = (
-    <Link to='/admin/bonus'>
+    <Link to='/admin/bonus-product'>
         <Button
             color='inherit'
             className='btn-product-and-bonus'

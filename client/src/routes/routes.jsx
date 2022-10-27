@@ -13,6 +13,7 @@ import AdminLogin from '../pages/Admin/Login'
 import Products from '../components/Products'
 import AdminAddEditProduct from '../components/Admin/AddEditProduct'
 import AdminAddEditCategory from '../components/Admin/AddEditCategory'
+import AdminAddEditBonusProduct from '../components/Admin/AddEditBonusProduct'
 
 export const routes = [
     {
@@ -34,6 +35,10 @@ export const routes = [
             {
                 path: '/category',
                 element: AdminAddEditCategory
+            },
+            {
+                path: '/bonus-product',
+                element: AdminAddEditBonusProduct
             },
             {
                 path: '/*',
