@@ -20,7 +20,7 @@ const Home = () => {
     return (
         <div className='home'>
             {
-                pureCategories.map(item => (
+                pureCategories && pureCategories.map(item => (
                     <ItemCategory category={item} />
                 ))
             }

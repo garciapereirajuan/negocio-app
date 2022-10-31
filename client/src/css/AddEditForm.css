@@ -33,7 +33,16 @@
 
 .add-edit-form .MuiFormControl-root {
     width: 100% !important;
+    margin-top: 6px !important;
+}
+
+.add-edit-form .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content:  center !important;
+    align-items: center;
     margin-top: 6px;
+    /*height:  2px !important;*/
 }
 
 .add-edit-form__form__box {

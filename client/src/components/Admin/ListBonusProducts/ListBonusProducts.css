@@ -1,0 +1,8 @@
+
+.list-bonus-products .bg-color-with {
+    background: var(--background-green);
+}
+
+.list-bonus-products .bg-color-without {
+    background:  var(--background-orange);
+}

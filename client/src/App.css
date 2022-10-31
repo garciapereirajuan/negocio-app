@@ -27,3 +27,7 @@ a {
   font-weight: lighter;
   cursor: pointer;
 }
+
+.title-capitalize:first-letter {
+  text-transform: Uppercase;
+}

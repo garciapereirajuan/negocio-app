@@ -7,9 +7,10 @@ const BonusProductSchema = Schema({
         unique: true
     },
     description: String,
+    option: String,
     checked: Boolean,
     visible: Boolean,
-    disponibility: Boolean,
+    stock: Boolean,
     order: Number
 })
 

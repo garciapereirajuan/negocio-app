@@ -15,10 +15,9 @@ import '../../../css/AddEditForm.css'
 const AddEditCategory = () => {
     const [openModal, setOpenModal] = useState(null)
     const [allMainProducts, setAllMainProducts] = useState([])
-    const [categoryData, setCategoryData] = useState({})
+    const [categoryData, setCategoryData] = useState([])
     const [preloadMainProductsSelect, setPreloadMainProductsSelect] = useState([])
     const [alert, setAlert] = useState([])
-
     const [openDialog, setOpenDialog] = useState(false)
     const [titleDialog, setTitleDialog] = useState('')
     const [contentDialog, setContentDialog] = useState(null)
@@ -183,6 +182,8 @@ const AddEditCategory = () => {
             </>
         )
     }
+
+    // console.log(categoryData)
 
     return (
         <>

@@ -37,42 +37,37 @@ const allBonusProducts = [
 
 const AddEditProduct = () => {
     const [openModal, setOpenModal] = useState(true)
-    const [productData, setProductData] = useState({})
-    const [mainProductData, setMainProductData] = useState(null)
+    const [mainProductData, setMainProductData] = useState({})
     const [alert, setAlert] = useState([])
     const [image, setImage] = useState(null)
     const navigate = useNavigate()
     const location = useLocation()
 
     useEffect(() => {
+        setMainProductData({
+            visible: true,
+            stock: true,
+            price: 0
+        })
+
         if (location.search) {
             const query = queryString.parse(location.search)
             const data = JSON.parse(query.data)
             const objData = JSON.parse(data) //tengo que parsearlo otra vez
 
+            if (!objData) {
+                return
+            }
+
             setMainProductData(objData)
+
+            if (objData.imageUrl) {
+                if (/data:image/.test(objData.imageUrl))
+                    setImage(null)
+                else setImage(objData.imageUrl)
+            }
         }
     }, [location])
-
-    useEffect(() => {
-        if (!mainProductData) {
-            setProductData({
-                visible: true,
-                stock: true,
-                price: 0
-            })
-            return
-        }
-
-        setProductData(mainProductData)
-
-        if (mainProductData.imageUrl) {
-            if (/data:image/.test(mainProductData.imageUrl))
-                setImage(null)
-            else setImage(mainProductData.imageUrl)
-        }
-
-    }, [location, mainProductData])
 
     useEffect(() => {
         if (openModal === null) {
@@ -90,7 +85,7 @@ const AddEditProduct = () => {
         e.preventDefault()
         const token = getAccessTokenApi()
 
-        const { title, description } = productData
+        const { title, description } = mainProductData
 
         if (!title || !description) {
             setAlert(['error', 'El nombre y la descripción del producto son obligatorios.'])
@@ -98,8 +93,8 @@ const AddEditProduct = () => {
         }
 
         const data = {
-            ...productData,
-            price: parseInt(productData.price),
+            ...mainProductData,
+            price: parseInt(mainProductData.price),
             order: 1000,
         }
 
@@ -155,7 +150,7 @@ const AddEditProduct = () => {
         e.preventDefault()
         const token = getAccessTokenApi()
 
-        const { title, description } = productData
+        const { title, description } = mainProductData
         const mainProductId = mainProductData._id
 
         if (!title || !description) {
@@ -164,8 +159,8 @@ const AddEditProduct = () => {
         }
 
         const data = {
-            ...productData,
-            price: parseInt(productData.price)
+            ...mainProductData,
+            price: parseInt(mainProductData.price)
         }
 
         if (!image || typeof (image) === 'string') {
@@ -216,6 +211,10 @@ const AddEditProduct = () => {
             })
     }
 
+    if (Object.keys(mainProductData).length === 0) {
+        return
+    }
+
     return (
         <ModalMui
             openModal={openModal}
@@ -223,23 +222,32 @@ const AddEditProduct = () => {
             contentModal={
                 <FormProduct
                     setOpenModal={setOpenModal}
-                    setProductData={setProductData}
-                    productData={productData}
+                    mainProductData={mainProductData}
+                    setMainProductData={setMainProductData}
                     addProduct={addProduct}
                     editProduct={editProduct}
                     alert={alert}
                     setAlert={setAlert}
                     image={image}
                     setImage={setImage}
-                    mainProductData={mainProductData}
                 />
             }
         />
     )
 }
 
-const FormProduct = ({ setOpenModal, setProductData, productData, addProduct, editProduct, alert, setAlert, image, setImage, mainProductData }) => {
+const FormProduct = ({ setOpenModal, setMainProductData, addProduct, editProduct, alert, setAlert, image, setImage, mainProductData}) => {
     const [bonusProductsSelect, setBonusProductsSelect] = useState([])
+    const [checkObjectCategoryData, setCheckObjectCategoryData] = useState(false)
+
+    useEffect(() => {
+        if (!mainProductData.title) {
+            setCheckObjectCategoryData(false)
+            return
+        } 
+
+        setCheckObjectCategoryData(true)
+    }, [mainProductData])
 
     const handleChange = (event) => {
         const {
@@ -264,14 +272,14 @@ const FormProduct = ({ setOpenModal, setProductData, productData, addProduct, ed
                 </span>
             </Typography>
             <Typography variant='h5' color='#373737' textAlign='center'>
-                {!mainProductData ? 'Nuevo ' : 'Editar '}producto
+                {!checkObjectCategoryData ? 'Nuevo ' : 'Editar '}producto
             </Typography>
 
             <UploadImage image={image} setImage={setImage} />
             {alert.length !== 0 && <Alert severity={alert[0]}>{alert[1]}</Alert>}
             <form
                 className='add-edit-form__form'
-                onSubmit={!mainProductData ? addProduct : editProduct}
+                onSubmit={!checkObjectCategoryData ? addProduct : editProduct}
                 onChange={() => setAlert([])}
             >
                 <Grid container className='add-edit-form__form__box'>
@@ -279,9 +287,9 @@ const FormProduct = ({ setOpenModal, setProductData, productData, addProduct, ed
                         <FormControl>
                             <TextField
                                 label='Nombre'
-                                placeholder={!productData.title && 'Milanesa a la napolitana'}
-                                value={productData.title}
-                                onChange={e => setProductData({ ...productData, title: verifText(e.target.value) })}
+                                placeholder='Milanesa a la napolitana'
+                                value={mainProductData.title}
+                                onChange={e => setMainProductData({ ...mainProductData, title: verifText(e.target.value) })}
                             />
                         </FormControl>
                     </Grid>
@@ -289,9 +297,9 @@ const FormProduct = ({ setOpenModal, setProductData, productData, addProduct, ed
                         <FormControl>
                             <TextField
                                 label='Descripción'
-                                placeholder={!productData.description && 'Milanesa con jamón, queso y salsa de tomate.'}
-                                value={productData.description}
-                                onChange={e => setProductData({ ...productData, description: verifText(e.target.value) })}
+                                placeholder='Milanesa con jamón, queso y salsa de tomate'
+                                value={mainProductData.description}
+                                onChange={e => setMainProductData({ ...mainProductData, description: verifText(e.target.value) })}
                             />
                         </FormControl>
                     </Grid>
@@ -330,9 +338,9 @@ const FormProduct = ({ setOpenModal, setProductData, productData, addProduct, ed
                             <TextField
                                 label='Precio (opcional)'
                                 placeholder='400'
-                                value={productData.price > 0 ? productData.price : undefined}
+                                value={mainProductData.price > 0 ? mainProductData.price : undefined}
                                 type='number'
-                                onChange={e => setProductData({ ...productData, price: e.target.value })}
+                                onChange={e => setMainProductData({ ...mainProductData, price: e.target.value })}
                             />
                         </FormControl>
                     </Grid>
@@ -343,14 +351,14 @@ const FormProduct = ({ setOpenModal, setProductData, productData, addProduct, ed
                                 <FormControlLabel
                                     control={<Checkbox defaultChecked />}
                                     label="Visible"
-                                    checked={productData.visible}
-                                    onChange={(e) => setProductData({ ...productData, visible: e.target.checked })}
+                                    checked={mainProductData.visible}
+                                    onChange={(e) => setMainProductData({ ...mainProductData, visible: e.target.checked })}
                                 />
                                 <FormControlLabel
                                     control={<Checkbox defaultChecked />}
                                     label="Hay stock"
-                                    checked={productData.stock}
-                                    onChange={(e) => setProductData({ ...productData, stock: e.target.checked })}
+                                    checked={mainProductData.stock}
+                                    onChange={(e) => setMainProductData({ ...mainProductData, stock: e.target.checked })}
                                 />
                             </FormGroup>
                         </FormControl>
@@ -361,7 +369,7 @@ const FormProduct = ({ setOpenModal, setProductData, productData, addProduct, ed
                             variant='contained'
                             className='btn-submit'
                         >
-                            {mainProductData ? 'Guardar' : 'Crear'}
+                            {checkObjectCategoryData ? 'Guardar' : 'Crear'}
                         </Button>
                     </FormControl>
                 </Grid>

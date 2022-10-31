@@ -25,6 +25,7 @@ function App() {
   useEffect(() => {
     if (!user && !isLoading) {
       localStorage.removeItem('messageAboutSymbol')
+      localStorage.removeItem('messageAboutBonusColor')
     }
   }, [user, isLoading])
 

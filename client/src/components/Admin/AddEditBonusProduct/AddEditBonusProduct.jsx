@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Box, Typography, Grid, FormControl, FormGroup, FormControlLabel, TextField, Button, Checkbox, Alert } from '@mui/material'
+import { useNavigate, useLocation } from 'react-router-dom'
+import queryString from 'query-string'
+import { Box, Typography, Grid, FormControl, FormGroup, FormControlLabel, TextField, InputLabel, Select, MenuItem, Button, Checkbox, Alert } from '@mui/material'
 import ModalMui from '../../ModalMui'
 import { getAccessTokenApi } from '../../../api/auth'
-import { addBonusProductApi } from '../../../api/bonusProduct'
+import { addBonusProductApi, updateBonusProductApi } from '../../../api/bonusProduct'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 
@@ -13,13 +14,28 @@ const AddEditBonusProduct = () => {
 	const [alert, setAlert] = useState([])
 	const navigate = useNavigate()
 
+	const location = useLocation()
+
 	useEffect(() => {
 		setBonusProductData({ 
 			visible: true,
-			disponibility: true,
-			checked: false
+			stock: true,
+			checked: false,
+			option: 'sin'
 		})
-	}, [])
+
+		const query = queryString.parse(location.search)
+
+		if (Object.keys(query).length === 0) {
+			return
+		}
+
+		const objData = JSON.parse(query.data)
+		setBonusProductData({
+			...objData
+		})
+
+	}, [location])
 
   useEffect(() => {
     if (openModal === null) {
@@ -28,7 +44,7 @@ const AddEditBonusProduct = () => {
     }
 
 		if (openModal === false) {
-	        navigate('/admin/products')
+	        navigate('/admin/products?bonuspage=true')
 	        return
 		}
 	}, [openModal, navigate])
@@ -36,11 +52,15 @@ const AddEditBonusProduct = () => {
 	const addBonusProduct = (e) => {
 		e.preventDefault()
 		const token = getAccessTokenApi()
-		const { title } = bonusProductData
+		const { title, option } = bonusProductData
 
 		if (!title) {
 			setAlert(['error', 'El título del complemento es obligatorio.'])
 			return
+		}
+
+		if (!option) {
+			setAlert(['error', 'Ocurrió un error, si el problema persiste avisame, por favor.'])
 		}
 
 		addBonusProductApi(token, bonusProductData)
@@ -55,7 +75,7 @@ const AddEditBonusProduct = () => {
 				}
 
 				setAlert(['success', response.message])
-				navigate('/admin/products')
+				setOpenModal(false)
 			})
 			.catch(err => {
 				setAlert(['error', 'Ocurrió un error en el servidor, intenta más tarde.'])
@@ -65,7 +85,28 @@ const AddEditBonusProduct = () => {
 	const editBonusProduct = (e) => {
 		e.preventDefault()
 		const token = getAccessTokenApi()
-		const { title } = bonusProductData
+
+		updateBonusProductApi(token, bonusProductData._id, bonusProductData)
+			.then(response => {
+				if (!response) {
+					setAlert(['error', 'Ocurrió un error en el servidor, intenta más tarde.'])
+					return
+				}
+				if (response?.code !== 200) {
+					setAlert(['error', response.message])
+					return
+				}
+
+				setAlert(['success', response.message])
+				setOpenModal(false)
+			})
+			.catch(err => {
+				setAlert(['error', 'Ocurrió un error en el servidor, intent más tarde.'])
+			})
+	}
+
+	if (Object.keys(bonusProductData).length === 0) {
+		return
 	}
 
 	return(
@@ -92,7 +133,18 @@ const FormBonusProduct = ({
 		alert, setAlert, addBonusProduct, editBonusProduct 
 	}) => {
 
-	const checkObjectBonusProductData = false
+	const [checkObjectBonusProductData, setCheckObjectBonusProductData] = useState(false)
+
+	useEffect(() => {
+		const bonusProductDataIsEmpty = Object.keys(bonusProductData)
+
+		if (!bonusProductData.title) {
+			setCheckObjectBonusProductData(false)
+			return
+		}
+
+		setCheckObjectBonusProductData(true)
+	}, [])
 
 	return(
 		<Box className='add-edit-form'>
@@ -117,15 +169,30 @@ const FormBonusProduct = ({
 	            onChange={() => setAlert([])}
 	        >
 	            <Grid container className='add-edit-form__form__box'>
-	                <Grid item xs={12} sm={12} md={5.8} lg={5.8} >
-	                    <FormControl>
-	                        <TextField
-	                            label='Nombre'
-	                            placeholder='Pizzas'
-	                            value={bonusProductData.title}
-	                            onChange={e => setBonusProductData({ ...bonusProductData, title: e.target.value })}
-	                        />
-	                    </FormControl>
+	                <Grid container item xs={12} sm={12} md={5.8} lg={5.8} >
+              			<Grid item xs={3} sm={2} md={4} lg={4}>
+	              			<FormControl>
+	              				<InputLabel>Opción</InputLabel>
+	              				<Select
+	                          label='Opción'
+	                          value={bonusProductData.option || 'sin'}
+	                          onChange={(e) => setBonusProductData({ ...bonusProductData, option: e.target.value })}
+	                      >
+	                      	<MenuItem value='sin'>Sin</MenuItem>
+	                      	<MenuItem value='con'>Con</MenuItem>
+	                      </Select>
+	          					</FormControl>
+              			</Grid>
+              			<Grid item xs={9} sm={10} md={8} lg={8}>
+	              			<FormControl>
+	                      <TextField
+	                          label='Nombre'
+	                          placeholder='ketchup'
+	                          value={bonusProductData.title}
+	                          onChange={e => setBonusProductData({ ...bonusProductData, title: e.target.value })}
+	                      />
+	            				</FormControl>
+                  	</Grid>
 	                </Grid>
 	                <Grid item xs={12} sm={12} md={5.8} lg={5.8} >
 	                    <FormControl>
@@ -152,16 +219,17 @@ const FormBonusProduct = ({
                         />
                         <FormControlLabel
                           control={<Checkbox defaultChecked />}
-                          label="Está disponible"
-                          checked={bonusProductData.disponibility}
-                          onChange={(e) => setBonusProductData({ ...bonusProductData, disponibility: e.target.checked })}
+                          label="Hay stock"
+                          disabled={bonusProductData.option === 'sin'}
+                          checked={bonusProductData.stock}
+                          onChange={(e) => setBonusProductData({ ...bonusProductData, stock: e.target.checked })}
                         />
-                        <FormControlLabel
+                        {/*<FormControlLabel
                           control={<Checkbox />}
                           label="Seleccionado por defecto"
                           checked={bonusProductData.checked}
                           onChange={(e) => setBonusProductData({ ...bonusProductData, checked: e.target.checked })}
-                        />
+                        />*/}
                       </FormGroup>
                     </FormControl>
                   </Grid>	
@@ -172,7 +240,7 @@ const FormBonusProduct = ({
 	                        variant='contained'
 	                        className='btn-submit'
 	                    >
-	                        {/*{checkObjectBonusProductData ? "Guardar" : "Crear"}*/}
+	                        {checkObjectBonusProductData ? "Guardar" : "Crear"}
 	                    </Button>
 	                </FormControl>
 	            </Grid>

@@ -175,9 +175,6 @@ const ListMainProducts = ({ allMainProducts, setReloadAllMainProducts }) => {
 
     return (
         <>
-
-
-
             {alert.length !== 0 && <Alert severity={alert[0]}>{alert[1]}</Alert>}
             <List>
                 <DragSortableList items={itemsMainProducts} onSort={onSort} dropBackTransitionDuration={0.3} type="vertical" />

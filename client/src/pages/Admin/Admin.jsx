@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import queryString from 'query-string'
 import { Switch, Grid, Typography } from '@mui/material'
 import ListMainProducts from '../../components/Admin/ListMainProducts'
 import ListCategories from '../../components/Admin/ListCategories'
@@ -18,6 +20,22 @@ const Products = () => {
 
     const spanProducts = useRef()
     const spanBonus = useRef()
+    const location = useLocation()
+    const navigate = useNavigate()
+    const query = queryString.parse(location.search)
+
+    useEffect(() => {
+        if (!query || query?.bonuspage === 'false') {
+            setSelectedMainProducts(true)
+            return
+        }
+
+        if (query?.bonuspage) {
+            setSelectedMainProducts(false)
+            return
+        }
+
+    }, [location, query])
 
     useEffect(() => {
         showMainProductApi()
@@ -81,7 +99,8 @@ const Products = () => {
                         <span ref={spanProducts} >Productos</span>
                         <Switch
                             color='default'
-                            onChange={(e) => setSelectedMainProducts(!e.target.checked)}
+                            checked={!selectedMainProducts}
+                            onChange={(e) => navigate(`/admin/products?bonuspage=${e.target.checked}`)}
                         />
                         <span ref={spanBonus} >Complementos</span>
                     </Typography>
