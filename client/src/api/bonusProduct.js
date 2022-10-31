@@ -67,8 +67,7 @@ export const removeBonusProductApi = (token, bonusProductId) => {
         headers: {
             'Content-Type': 'application/json',
             Authorization: token
-        },
-        body: JSON.stringify(bonusProductId)
+        }
     }
 
     return fetch(url, params)

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { List, ListItem, IconButton, ListItemText, FormControlLabel, Checkbox, Alert } from '@mui/material'
+import { List, ListItem, IconButton, ListItemText, FormControlLabel, Checkbox, Button, Alert } from '@mui/material'
 import DragSortableList from 'react-drag-sortable'
 import { getAccessTokenApi } from '../../../api/auth'
 import { updateBonusProductSpecialApi, removeBonusProductApi } from '../../../api/bonusProduct'
+import DialogMui from '../../DialogMui'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -12,7 +13,11 @@ import './ListBonusProducts.css'
 
 const ListBonusProducts = ({ allBonusProducts, setReloadAllBonusProducts }) => {
 	const [itemsBonusProducts, setItemsBonusProducts] = useState([])
-    const [alert, setAlert] = useState([])
+    const [openDialog, setOpenDialog] = useState(false)
+    const [titleDialog, setTitleDialog] = useState('')
+    const [contentDialog, setContentDialog] = useState(null)
+    const [actionsDialog, setActionsDialog] = useState(null)
+    const [alert, setAlert] = useState([]) 
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -24,6 +29,16 @@ const ListBonusProducts = ({ allBonusProducts, setReloadAllBonusProducts }) => {
 
         return () => localStorage.setItem('messageAboutBonusColor', true)
     }, [])
+
+    useEffect(() => {
+        const messageAboutBonusColor = localStorage.getItem('messageAboutBonusColor')
+
+        if (!messageAboutBonusColor) {
+            return
+        }
+
+        setTimeout(() => setAlert([]), 10000)
+    }, [alert])
 
     useEffect(() => {
         const itemsArray = []
@@ -69,11 +84,61 @@ const ListBonusProducts = ({ allBonusProducts, setReloadAllBonusProducts }) => {
             .catch(err => {
                 setAlert(['error', 'Ocurrió un error en el servidor, intenta más tarde.'])
             })
-        
     }
 
-    const deleteBonusProduct = () => {
-        console.log('Eliminar bonusProduct')
+    const deleteBonusProduct = (product) => {
+
+        const cancelDelete = () => {
+            setOpenDialog(false)
+        }
+        const confirmDelete = () => {
+            const token = getAccessTokenApi()
+
+            removeBonusProductApi(token, product._id)
+                .then(response => {
+                    if (!response) {
+                        setAlert(['error', 'Ocurrió un error en el servidor, intenta más tarde.'])
+                        return
+                    }
+                    if (response?.code !== 200) {
+                        setAlert(['error', response.message])
+                        return
+                    }
+
+                    setAlert(['success', response.message])
+                    setOpenDialog(false)
+                    setReloadAllBonusProducts(true)
+                })
+                .catch(err => {
+                    setAlert(['error', 'Ocurrió un error en el servidor, intenta más tarde.'])
+                })
+        }
+
+        setOpenDialog(true)
+        setTitleDialog('Eliminando complemento...')
+        setContentDialog(
+            <div style={{display: 'flex'}}>
+                <div style={{marginRight: '4px'}}>¿Quieres eliminar el complemento</div>
+                <div className='title-capitalize'>
+                    <strong>{product.option} {product.title}</strong>?
+                </div>
+            </div>
+        )
+        setActionsDialog(
+            <>
+                <Button
+                    onClick={cancelDelete}
+                >
+                    Cancelar
+                </Button>   
+                <Button
+                    style={{color: 'red'}}
+                    onClick={confirmDelete}
+                >
+                    Eliminar
+                </Button>
+            </>
+        )
     }
 
     const onSort = () => {}
@@ -84,6 +149,13 @@ const ListBonusProducts = ({ allBonusProducts, setReloadAllBonusProducts }) => {
             <List className='list-bonus-products'>
                 <DragSortableList items={itemsBonusProducts} onSort={onSort} type='vertical' />
             </List>
+            <DialogMui
+                openDialog={openDialog}
+                setOpenDialog={setOpenDialog}
+                titleDialog={titleDialog}
+                contentDialog={contentDialog}
+                actionsDialog={actionsDialog}
+            />
         </>
     )
 }
