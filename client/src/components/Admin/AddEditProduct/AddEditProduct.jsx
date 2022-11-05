@@ -11,37 +11,44 @@ import {
 import ModalMui from '../../ModalMui'
 import { getAccessTokenApi } from '../../../api/auth'
 import { addMainProductApi, addMainProductImageApi, updateMainProductApi } from '../../../api/mainProduct'
+import { showBonusProductApi } from '../../../api/bonusProduct'
 import { useDropzone } from 'react-dropzone'
 import NoImage from '../../../assets/img/png/NoImage.png'
 
 import '../../../css/AddEditForm.css'
 
-const allBonusProducts = [
-    {
-        title: 'Sal',
-        description: 'Sal',
-        image: false,
-        price: 0,
-        visible: true,
-        stock: true
-    },
-    {
-        title: 'Mayonesa',
-        description: 'Mayonesa',
-        image: false,
-        price: 0,
-        visible: true,
-        stock: true
-    }
-]
+// const allBonusProducts = [
+//     {
+//         title: 'Sal',
+//         description: 'Sal',
+//         image: false,
+//         price: 0,
+//         visible: true,
+//         stock: true
+//     },
+//     {
+//         title: 'Mayonesa',
+//         description: 'Mayonesa',
+//         image: false,
+//         price: 0,
+//         visible: true,
+//         stock: true
+//     }
+// ]
 
 const AddEditProduct = () => {
     const [openModal, setOpenModal] = useState(true)
     const [mainProductData, setMainProductData] = useState({})
+    const [allBonusProducts, setAllBonusProducts] = useState([])
+    const [preloadBonusProducts, setPreloadBonusProducts] = useState([])
     const [alert, setAlert] = useState([])
     const [image, setImage] = useState(null)
     const navigate = useNavigate()
     const location = useLocation()
+
+    useEffect(() => {
+        showBonusProductApi().then(response => setAllBonusProducts(response.bonusProducts))
+    }, [])
 
     useEffect(() => {
         setMainProductData({
@@ -66,8 +73,24 @@ const AddEditProduct = () => {
                     setImage(null)
                 else setImage(objData.imageUrl)
             }
+
+            if (objData?.bonusProducts.length === 0) {
+                return 
+            }
+
+            const arrayPreloadBonusProducts = []
+
+            objData.bonusProducts.forEach(item => {
+                allBonusProducts && allBonusProducts.forEach(itemWithData => {
+                    if (itemWithData._id === item) {
+                        arrayPreloadBonusProducts.push(`${item}-${itemWithData.option}-${itemWithData.title}`)
+                    }
+                })
+            })
+
+            setPreloadBonusProducts(arrayPreloadBonusProducts)
         }
-    }, [location])
+    }, [location, allBonusProducts])
 
     useEffect(() => {
         if (openModal === null) {
@@ -224,6 +247,8 @@ const AddEditProduct = () => {
                     setOpenModal={setOpenModal}
                     mainProductData={mainProductData}
                     setMainProductData={setMainProductData}
+                    allBonusProducts={allBonusProducts}
+                    preloadBonusProducts={preloadBonusProducts}
                     addProduct={addProduct}
                     editProduct={editProduct}
                     alert={alert}
@@ -236,7 +261,7 @@ const AddEditProduct = () => {
     )
 }
 
-const FormProduct = ({ setOpenModal, setMainProductData, addProduct, editProduct, alert, setAlert, image, setImage, mainProductData}) => {
+const FormProduct = ({ setOpenModal, setMainProductData, allBonusProducts, preloadBonusProducts, addProduct, editProduct, alert, setAlert, image, setImage, mainProductData}) => {
     const [bonusProductsSelect, setBonusProductsSelect] = useState([])
     const [checkObjectCategoryData, setCheckObjectCategoryData] = useState(false)
 
@@ -247,7 +272,42 @@ const FormProduct = ({ setOpenModal, setMainProductData, addProduct, editProduct
         } 
 
         setCheckObjectCategoryData(true)
-    }, [mainProductData])
+    }, [])
+
+    useEffect(() => {
+
+        if (preloadBonusProducts.length !== 0) {
+            setBonusProductsSelect(preloadBonusProducts)
+        }
+
+        console.log('preloadBonusProducts', preloadBonusProducts)
+    }, [preloadBonusProducts])
+
+    useEffect(() => {
+        const bonusProductArray = []
+
+        if (bonusProductsSelect.length === 0) {
+            return
+        }
+
+        bonusProductsSelect.forEach(bonusProduct => {
+            bonusProductArray.push(getValueOfBonusProductSelect(bonusProduct)[0])
+        })
+
+        setMainProductData({ ...mainProductData, bonusProducts: bonusProductArray })
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [bonusProductsSelect])
+
+    const getValueOfBonusProductSelect = (key) => {
+        const keys = key.split('-')
+        const result = []
+
+        result.push(keys[0])
+        result.push(`${keys[1]} ${keys[2]}`)
+
+        return result
+    }
 
     const handleChange = (event) => {
         const {
@@ -306,7 +366,7 @@ const FormProduct = ({ setOpenModal, setMainProductData, addProduct, editProduct
                     <br />
                     <Grid item xs={12} sm={12} md={5.8} lg={5.8} >
                         <FormControl>
-                            <InputLabel id='label-bonus'>Complementos (opcional)</InputLabel>
+                            <InputLabel id='label-bonus'>Opciones para el cliente</InputLabel>
                             <Select
                                 labelId='label-bonus'
                                 id='multiple-bonus'
@@ -317,17 +377,17 @@ const FormProduct = ({ setOpenModal, setMainProductData, addProduct, editProduct
                                 renderValue={(selected) => (
                                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                         {selected.map((value) => (
-                                            <Chip key={value} label={value} />
+                                            <Chip key={value} label={getValueOfBonusProductSelect(value)[1]} />
                                         ))}
                                     </Box>
                                 )}
                             >
-                                {allBonusProducts.map((bonusProduct) => (
+                                {allBonusProducts && allBonusProducts.map((item) => (
                                     <MenuItem
-                                        key={bonusProduct.title}
-                                        value={bonusProduct.title}
+                                        key={`${item._id}-${item.option}-${item.title}`}
+                                        value={`${item._id}-${item.option}-${item.title}`}
                                     >
-                                        {bonusProduct.title}
+                                        {`${item.option} ${item.title}`}
                                     </MenuItem>
                                 ))}
                             </Select>

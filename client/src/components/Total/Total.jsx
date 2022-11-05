@@ -5,22 +5,22 @@ import accounting from 'accounting'
 
 import './Total.css'
 
-const Total = () => {
+const Total = ({ total }) => {
     return (
-        <div className='total'>
+        <div className='total'>   
             <Typography variant='h5'>
-                Total items: 3
+                    
             </Typography>
             <Typography variant='h5'>
-                {accounting.formatMoney(50, '$')}
+                Total: {accounting.formatMoney(total, '$')}
             </Typography>
-            <Button
+            {/* <Button
                 className='btn-confirm'
                 variant='contained'
                 color='success'
             >
                 Confirmar
-            </Button>
+            </Button>*/}
         </div>
     )
 }

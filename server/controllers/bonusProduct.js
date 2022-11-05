@@ -18,39 +18,67 @@ const add = (req, res) => {
 
 	bonusProduct.title = bonusProduct.title.toLowerCase()
 
-	bonusProduct.save()
-		.then(bonusProduct => {
-			if (!bonusProduct) {
+	const saveBonusProduct = () => {
+		bonusProduct.save()
+			.then(bonusProduct => {
+				if (!bonusProduct) {
+					message(res, 500, 'Ocurrió un error en el servidor, prueba más tarde.')
+					return
+				}
+
+				message(res, 200, 'Complemento creado correctamente.')
+			})
+			.catch(err => {
 				message(res, 500, 'Ocurrió un error en el servidor, prueba más tarde.')
-				return
-			}
+			})
+	}
 
-			message(res, 200, 'Complemento creado correctamente.')
-		})
-		.catch(err => {
-			if (err?.code === 11000) {
-				message(res, 404, 'El nombre de ese complemento ya existe, prueba otro.', { err })
-				return
-			}
-
-			message(res, 500, 'Ocurrió un error en el servidor, prueba más tarde.')
-		})
-}
-
-const show = (req, res) => {
-
-	BonusProduct.find({}, (err, bonusProducts) => {
-		if (err) {
-			message(res, 500, 'Ocurrió un error en el servidor, intenta más tarde.')
-			return
-	}	
-		if (bonusProducts.length === 0 || !bonusProducts) {
-			message(res, 404, 'No se encontraron complementos.')
+	BonusProduct.find({ title: bonusProduct.title }, (err, bonusProductStored) => {
+		if (bonusProductStored?.length === 0 || !bonusProductStored) {
+			saveBonusProduct()
 			return
 		}
 
-		message(res, 200, '', { bonusProducts: bonusProducts })
+		const bonusProductOptionNew = bonusProduct.option
+		const bonusProductOption0 = bonusProductStored[0] && bonusProductStored[0].option
+		const bonusProductOption1 = bonusProductStored[1] && bonusProductStored[1].option
+
+		if ( 
+			bonusProductOptionNew === bonusProductOption0 || 
+			bonusProductOptionNew === bonusProductOption1
+		) {
+			message(res, 404, `El complemento << ${bonusProduct.option} ${bonusProduct.title} >> ya existe. Prueba otro.`)
+			return
+		}
+
+		saveBonusProduct()
 	})
+
+
+}
+
+const show = (req, res) => {
+    let data = req.body
+
+    if (data.bonusProductsId) {
+        data.forId = { _id: data.bonusProductsId }  
+    } else {
+        data.forId = {}
+    }
+
+	BonusProduct.find(data.forId).sort('order')
+		.then(bonusProducts => {
+			if (bonusProducts.length === 0 || !bonusProducts) {
+				message(res, 404, 'No se encontraron complementos.')
+				return
+			}
+
+			message(res, 200, '', { bonusProducts: bonusProducts })
+		})
+		.catch(err => {
+			message(res, 500, 'Ocurrió un error en el servidor, intenta más tarde.')
+			return
+		})
 }
 
 const update = (req, res) => {

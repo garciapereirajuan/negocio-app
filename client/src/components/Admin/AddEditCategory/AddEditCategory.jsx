@@ -141,6 +141,7 @@ const AddEditCategory = () => {
         const confirmDelete = () => {
             removeCategoryApi(token, category._id)
                 .then(response => {
+                    alert(response)
                     if (response?.code !== 200) {
                         setAlert(['error', response.message])
                         return

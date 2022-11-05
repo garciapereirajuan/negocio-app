@@ -1,72 +1,73 @@
-.product .css-1qvr50w-MuiTypography-root {
+
+.product-of-basket .css-1qvr50w-MuiTypography-root {
     font-size: 1rem !important;
     color: #fff;
 }
 
-.css-bhp9pd-MuiPaper-root-MuiCard-root {
+.product-of-basket.css-bhp9pd-MuiPaper-root-MuiCard-root {
     background-color: var(--primary-color) !important;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .7) !important;
 }
 
-.product .css-nrdprl-MuiTypography-root {
+.product-of-basket .css-nrdprl-MuiTypography-root {
     /* color: #fff !important; */
 }
 
-.product .css-r40f8v-MuiTypography-root {
+.product-of-basket .css-r40f8v-MuiTypography-root {
     color: #fff !important;
 }
 
-.product .css-ahj2mt-MuiTypography-root {
+.product-of-basket .css-ahj2mt-MuiTypography-root {
     color: #373737;
 }
 
-.product .css-i4bv87-MuiSvgIcon-root {
+.product-of-basket .css-i4bv87-MuiSvgIcon-root {
     fill: rgba(255, 255, 255, .6) !important;
 }
 
-.product .icon-shopping-cart:hover {
+.product-of-basket .icon-delete-cart:hover {
     /* box-shadow: 0 0px 10px rgba(255, 255, 255, .6); */
     transition: all ease .1s;
 }
 
-.product .icon-shopping-cart:active {
+.product-of-basket .icon-delete-cart:active {
     box-shadow: 0 0px 2px rgba(255, 255, 255, .6);
     transition: all ease .2s;
 }
 
-.product .icon-shopping-cart .css-i4bv87-MuiSvgIcon-root {
+.product-of-basket .icon-delete-cart .css-i4bv87-MuiSvgIcon-root {
     fill: #fff !important;
 }
 
-.product .css-46bh2p-MuiCardContent-root:last-child {
+.product-of-basket .css-46bh2p-MuiCardContent-root:last-child {
     /* background-color: var(--secondary-color); */
     background-color: var(--secondary-color);
 }
 
-.product .text-stock,
-.product .text-no-stock,
-.product .text-price {
+.product-of-basket .text-stock,
+.product-of-basket .text-no-stock,
+.product-of-basket .text-price {
     padding: 2px 6px;
     color: #fff;
     border-radius: 8px;
 }
 
-.product .text-stock {
+.product-of-basket .text-stock {
     background-color: rgba(36, 226, 36, .4);
 }
 
-.product .text-no-stock {
+.product-of-basket .text-no-stock {
     background-color: rgba(247, 0, 0, 0.552);
 }
 
-.product .text-price {
+.product-of-basket .text-price {
     background-color: var(--secondary-color-opacity);
     color: #fff;
     font-size: 18px;
     /* font-weight: bold; */
 }
 
-.product .MuiFormControl-root .MuiInputBase-root input {
+.product-of-basket .MuiFormControl-root .MuiInputBase-root input {
     width: 60px !important;
     height: 10px;
     background: #fff;

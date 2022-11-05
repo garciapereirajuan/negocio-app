@@ -10,14 +10,13 @@ import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import AddShoppingCart from '@mui/icons-material/AddShoppingCart';
+import DeleteIcon from '@mui/icons-material/Delete';
 import imgExample from '../../assets/img/jpg/papas-ketchup.jpg'
 import accounting from 'accounting'
 import NoImage from '../../assets/img/png/NoImage.png'
 import { showMainProductImageApi } from '../../api/mainProduct'
-import { v4 as uuidv4 } from 'uuid'
 
-import './Product.css'
+import './ProductOfBasket.css'
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -30,7 +29,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function Product({ product, bonusProducts, bonusProductsOk, setTotal, setBasket }) {
+export default function ProductOfBasket({ product, bonusProducts, bonusProductsOk, setTotal, setBasket, reloadBasket, reloadTotal, setReloadBasket, setReloadTotal }) {
     const { stock, title, price, rating, description } = product
     const [productData, setProductData] = useState({})
     const [bonusProductData, setBonusProductData] = useState({})
@@ -55,8 +54,7 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
 
     useEffect(() => {
         setProductData({
-            ...product,
-            quantity: 1,
+            ...product
         })
     }, [])
 
@@ -79,11 +77,7 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
     };  
 
     const addProduct = () => {
-        const data = {
-            ...productData, 
-            bonusProductsOk: bonusProductData,
-            id: uuidv4(),
-        }
+        const data = {...productData, bonusProductsOk: bonusProductData}
         let basketStorage = localStorage.getItem('basket')
 
         if (basketStorage) {
@@ -108,6 +102,92 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
         )
     }
 
+    const updateProduct = (data, bonusProductData) => {
+        if (reloadBasket || reloadTotal) {
+            return
+        }
+
+        if (bonusProductData) {
+            data.bonusProductsOk = bonusProductData
+        }
+
+        let basketStorage = localStorage.getItem('basket')
+        let totalStorage = localStorage.getItem('total')
+
+        basketStorage = JSON.parse(basketStorage)
+        totalStorage = Number.parseInt(totalStorage)
+
+        let index = null
+        let price = 0
+        let quantity = 0
+
+        basketStorage.forEach((item, i) => {
+            if (item.id === data.id) {
+                index = i
+                price = item.price
+                quantity = item.quantity
+            }
+        })
+
+        totalStorage = totalStorage - (price * quantity)
+
+        if (index || index === 0) {
+            basketStorage[index] = data
+            quantity = data.quantity
+            price = data.price
+
+            totalStorage = totalStorage + (price * quantity)
+
+            localStorage.setItem('basket', JSON.stringify(basketStorage))
+            localStorage.setItem('total', totalStorage)
+            setBasket(basketStorage)
+            setProductData(data)
+            setReloadTotal(true)
+            setReloadBasket(true)
+        }
+    }
+
+    const removeProduct = (productId) => {
+        if (reloadBasket || reloadTotal) {
+            return
+        }
+
+        let basketStorage = localStorage.getItem('basket')
+        let totalStorage = localStorage.getItem('total')
+
+        basketStorage = JSON.parse(basketStorage)
+        totalStorage = Number.parseInt(totalStorage)
+
+        let index = null
+        let price = 0
+        let quantity = 0
+
+        basketStorage.forEach((item, i) => {
+            if (item.id === productId) {
+                index = i
+                price = item.price
+                quantity = item.quantity
+            }
+        })
+
+        if (index || index === 0) {
+            basketStorage[index] = null
+        }
+
+        basketStorage = basketStorage.filter(Boolean)
+        totalStorage = totalStorage - (price * quantity)
+
+        localStorage.setItem('basket', JSON.stringify(basketStorage))
+        localStorage.setItem('total', totalStorage)
+        localStorage.setItem('basketLength', basketStorage.length)
+
+        navigate(`/shopping-cart?basket=${basketStorage.length}`)
+
+        setBasket(basketStorage)
+        setReloadTotal(true)
+        setReloadBasket(true)
+    }
+
     const configNumber = (n) => {
         if (n > 0 && n <= 150) {
             return Number.parseInt(n)
@@ -122,7 +202,7 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
 
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Card className='product'>
+            <Card className='product-of-basket'>
                 <CardHeader
                     // avatar={
                     //     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -138,11 +218,6 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
                     //     </Typography>
                     // }
                     title={title}
-                    subheader={
-                        stock
-                            ? <span className='text-stock'>Disponible</span>
-                            : <span className='text-no-stock'>No disponible</span>
-                    }
                 />
                 <CardMedia
                     component="img"
@@ -153,14 +228,6 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
                 <CardContent>
                     <Typography variant="body2" color="text.secondary">
                         {description}
-                        <p>{
-                            <span className='text-price'>{
-                                price > 0
-                                    ? accounting.formatMoney(price, '$')
-                                    : 'Gratis'
-                            }</span>
-
-                        }</p>
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
@@ -176,17 +243,19 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
                         <ShareIcon />
                     </IconButton> */}
                     <IconButton 
-                        arial-label="add to cart" 
-                        className='icon-shopping-cart'
-                        onClick={addProduct}
+                        arial-label="remove to cart" 
+                        className='icon-delete-cart'
+                        onClick={() => removeProduct(productData.id)}
                     >
-                        <AddShoppingCart />
+                        <DeleteIcon />
                     </IconButton>
                     <FormControl>
                         <TextField 
                             type='number' 
                             value={productData.quantity}
-                            onChange={(e) => setProductData({ ...productData, quantity: configNumber(e.target.value) })}
+                            onChange={(e) => {
+                                updateProduct({ ...productData, quantity: configNumber(e.target.value) })
+                            }}
                         />
                     </FormControl>
                     <ExpandMore
@@ -224,7 +293,10 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
                                                     </div>
                                                 }
                                                 checked={bonusProductData[`${item.option} ${item.title}`]}
-                                                onChange={e => setBonusProductData({ ...bonusProductData, [`${item.option} ${item.title}`]: e.target.checked })}
+                                                onChange={e => {
+                                                    setBonusProductData({ ...bonusProductData, [`${item.option} ${item.title}`]: e.target.checked })
+                                                    updateProduct(productData, { ...bonusProductData, [`${item.option} ${item.title}`]: e.target.checked })
+                                                }}
                                             />
                                             </>
                                         ))

@@ -35,8 +35,8 @@ const Login = () => {
                     Personal autorizado
                 </Typography>
                 <div className='login__parraf'>
-                    <p>Si querés realizar un pedido no necesitas iniciar sesión.</p>
                     <p className='login__parraf-decoration'>Esta sección es sólo para personal autorizado.</p>
+                    <p>Si querés realizar un pedido no necesitas iniciar sesión.</p>
                 </div>
 
                 <LoginForm

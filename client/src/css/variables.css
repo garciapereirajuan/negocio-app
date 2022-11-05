@@ -5,6 +5,7 @@
     --primary-color-light: #4a4e69;
 
      --secondary-color: #6a994e; 
+     --secondary-color-light: #a7c957;
     /*--secondary-color: #4a4e69;*/
     --secondary-color-opacity: rgba(163, 200, 237, 0.6);
 
@@ -14,6 +15,7 @@
     --background-categories: #264653;
     --background-green: #6a994e;
     --background-red: #bc4749;
+    --background-red-notification: #d32f2f;
     --background-orange: #d95d39;
 
     --btns-navbar: #6a994e;

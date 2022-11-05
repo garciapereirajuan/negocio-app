@@ -3,41 +3,75 @@ import { Typography } from '@mui/material'
 import Products from '../../components/Products'
 import { showMainProductApi } from '../../api/mainProduct'
 import { showCategoriesApi } from '../../api/categories'
+import { showBonusProductApi } from '../../api/bonusProduct'
+import Total from '../../components/Total'
 
 import './Home.css'
 
 const Home = () => {
-    const [allMainProducts, setAllMainProducts] = useState([])
     const [categoryWithMainProducts, setCategoryWithMainProducts] = useState([])
     const [auxCategoryWithMainProducts, setAuxCategoryWithMainProducts] = useState([])
     const [pureCategories, setPureCategories] = useState([])
-    const [reloadAllMainProducts, setReloadAllMainProducts] = useState(false)
+    const [allBonusProducts, setAllBonusProducts] = useState([])
+    const [total, setTotal] = useState(0)
+    const [basket, setBasket] = useState([])
+
+    useEffect(() => {
+        const totalStorage = localStorage.getItem('total')
+
+        if (totalStorage && total === 0) {
+            setTotal(totalStorage)
+            return
+        }
+
+        localStorage.setItem('total', Number.parseInt(total))
+    }, [total])
+
+    useEffect(() => {
+        let basketStorage = localStorage.getItem('basket')
+
+        if (basketStorage) {
+            basketStorage = JSON.parse(basketStorage)
+        }
+
+        if (basketStorage && basket.length === 0) {
+            setBasket(basketStorage)
+            return
+        }
+
+        localStorage.setItem('basket', JSON.stringify(basket))
+    }, [])
 
     useEffect(() => {
         showCategoriesApi().then(response => setPureCategories(response.categories))
+        showBonusProductApi().then(response => setAllBonusProducts(response.bonusProducts))
     }, [])
 
     return (
         <div className='home'>
+            {total > 0 && <Total total={total} />}
             {
-                pureCategories && pureCategories.map(item => (
-                    <ItemCategory category={item} />
+                pureCategories && pureCategories.map((item, index) => (
+                    <ItemCategory 
+                        category={item} 
+                        allBonusProducts={allBonusProducts} 
+                        setTotal={setTotal}
+                        setBasket={setBasket}
+                        total={total}
+                        index={index}
+                    />  
                 ))
             }
-        
         </div>
     )
 }
 
-const ItemCategory = ({ category }) => {
+const ItemCategory = ({ category, allBonusProducts, setTotal, setBasket, total, index }) => {
     const [allMainProducts, setAllMainProducts] = useState([])
 
     useEffect(() => {
-        const arrayMainProducts = []
-
-        showMainProductApi(category.mainProducts).then(response => setAllMainProducts(response.mainProducts))
-
-        console.log('allMainProducts', allMainProducts)
+        showMainProductApi(category.mainProducts)
+            .then(response => setAllMainProducts(response.mainProducts))
     }, [])
 
     if (!allMainProducts){
@@ -46,10 +80,18 @@ const ItemCategory = ({ category }) => {
 
     return (
         <>
-            <Typography variant='h4' className='category-title'>
+            <Typography 
+                variant='h4' 
+                className={`category-title ${(total > 0 && index === 0) && 'total-visible'}`}
+            >
                 {category.title}
             </Typography>
-            <Products allMainProducts={allMainProducts} />
+            <Products 
+                allMainProducts={allMainProducts} 
+                allBonusProducts={allBonusProducts}
+                setTotal={setTotal}
+                setBasket={setBasket}
+            />
         </>
     )
 }

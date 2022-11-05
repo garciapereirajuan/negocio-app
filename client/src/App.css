@@ -31,3 +31,9 @@ a {
 .title-capitalize:first-letter {
   text-transform: Uppercase;
 }
+
+@media (max-width: 600px) {
+    * {
+      font-size: .9em;
+    }
+}

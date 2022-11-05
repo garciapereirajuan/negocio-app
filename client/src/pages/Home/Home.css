@@ -7,6 +7,46 @@
 	box-shadow:  0 0 8px rgba(0,0,0,.6);
 }
 
+.home .css-5lbw0b-MuiTypography-root.total-visible {
+	margin: 33px 0 20px 0;
+}
+
 .home .category-title:first-child {
 	margin-top: 0;
+}
+
+@media (max-width: 600px) {
+	.home .category-title {
+		font-size: 30px;
+	}
+}
+
+@media (max-width: 360px) {
+	.home .category-title {
+		font-size: 25px;
+	}
+}
+
+.home .total {
+	position: fixed;
+	height: max-content;
+	padding: 6px 8px;
+	width: 180px;
+	background: #373737;
+	box-shadow: 0 0 12px rgba(255, 255, 255, .8);
+	z-index: 20;
+	top: 90px;
+	left: calc(50% - (200px / 2));
+	border-radius: 4px;
+	border:  1px solid var(--secondary-color-light);
+}
+
+.home .total h5 {
+	font-size: 22px;
+	color: var(--secondary-color-light);
+	font-weight: bold;
+}
+
+.home .total .btn-confirm {
+	font-size:  12px;
 }

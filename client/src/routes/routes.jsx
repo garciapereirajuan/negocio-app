@@ -6,6 +6,7 @@ import LayoutBasic from '../layouts/LayoutBasic'
 
 //Import pages
 import BasicHome from '../pages/Home'
+import BasicShoppingCart from '../pages/ShoppingCart'
 import AdminHome from '../pages/Admin'
 import AdminLogin from '../pages/Admin/Login'
 
@@ -65,6 +66,10 @@ export const routes = [
             {
                 path: '/products',
                 element: BasicHome,
+            },
+            {
+                path: '/shopping-cart',
+                element: BasicShoppingCart,
             },
             {
                 path: '/*',

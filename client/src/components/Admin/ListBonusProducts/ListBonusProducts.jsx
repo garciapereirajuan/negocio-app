@@ -141,7 +141,18 @@ const ListBonusProducts = ({ allBonusProducts, setReloadAllBonusProducts }) => {
         )
     }
 
-    const onSort = () => {}
+    const onSort = (sortedList) => {
+        const token = getAccessTokenApi()
+        console.log(sortedList)
+
+        sortedList.map(item => {
+            const productId = item.content.props.bonusProduct._id
+            const order = item.rank
+
+            updateBonusProductSpecialApi(token, productId, { order })
+                .then(response => console.log(response))
+        })
+    }
 
 	return(
         <>

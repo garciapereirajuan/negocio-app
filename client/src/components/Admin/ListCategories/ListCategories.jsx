@@ -12,7 +12,7 @@ const ListCategories = ({ allCategories }) => {
     useEffect(() => {
         const itemsArray = []
 
-        allCategories.forEach(category => {
+        allCategories && allCategories.forEach(category => {
             itemsArray.push({
                 content: (
                     <CategoryButton 

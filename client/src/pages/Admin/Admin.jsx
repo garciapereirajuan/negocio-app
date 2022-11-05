@@ -107,7 +107,7 @@ const Products = () => {
                     {
                         selectedMainProducts
                             ? <ListMainProducts 
-                                allMainProducts={allMainProducts} 
+                                allMainProducts={allMainProducts}
                                 setReloadAllMainProducts={setReloadAllMainProducts} 
                             />
                             : <ListBonusProducts 

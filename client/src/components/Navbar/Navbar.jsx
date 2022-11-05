@@ -78,22 +78,35 @@ const btnGoToAdmin = (
 )
 
 export default function Navbar() {
-    const [title, setTitle] = useState('¡Pedí lo que quieras!')
+    const [title, setTitle] = useState('')
     const [btnInOut, setBtnInOut] = useState(btnIn)
-    const [contentCenter, setContentCenter] = useState('¡Pedí lo que quieras!')
+    const [contentCenter, setContentCenter] = useState('')
+    const [notification, setNotification] = useState(0)
     const location = useLocation()
     const { user, isLoading } = useAuth()
 
+    const widthScreen = window.innerWidth 
+
     useEffect(() => {
         if (location.pathname === '/products') {
-            setTitle('¡Pedí lo que quieras!')
+            setTitle('Organizá tu pedido')
+            return
         }
         if (location.pathname === '/admin/login') {
-            setTitle('¡Hola!')
+            setTitle('Ingresá como administrador')
+            return
+        }
+        if (location.pathname === '/shopping-cart') {
+            setTitle('Generá el mensaje con tu pedido')
+            return
         }
     }, [location])
 
     useEffect(() => {
+        if (widthScreen <= 1000) {
+            return
+        }
+
         if (user && !isLoading) {
             setBtnInOut(btnOut)
             setContentCenter(
@@ -108,7 +121,7 @@ export default function Navbar() {
 
         setContentCenter(title)
         setBtnInOut(btnIn)
-    }, [user, isLoading, location])
+    }, [user, isLoading, location, title])
 
     useEffect(() => {
         if (location.pathname === '/admin/products') {
@@ -121,8 +134,16 @@ export default function Navbar() {
         }
     }, [location, user, isLoading])
 
+    useEffect(() => {
+        const basketLength = localStorage.getItem('basketLength')
 
+        if (basketLength) {
+            setNotification(Number.parseInt(basketLength))
+            return
+        }
+    }, [location])
 
+    const addToBasket = () => {}
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -140,18 +161,31 @@ export default function Navbar() {
                         </IconButton>
                     </Link>
                     {
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            {contentCenter}
-                        </Typography>
+                        widthScreen >= 1000
+                            ? (
+                                <>
+                                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                                        {contentCenter}
+                                    </Typography>
+                                    {btnInOut}  
+                                </>
+                            ) : (
+                                <>
+                                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                                    </Typography>
+                                </>
+                            )
                     }
-                    {btnInOut}
-                    {/* <Link to='/checkout-page' onClick={addToBasket}>
+                    <Link 
+                        to='/shopping-cart'
+                        onClick={addToBasket} //función vacía
+                    >
                         <IconButton color="inherit">
-                            <Badge badgeContent={2} color='error'>
+                            <Badge badgeContent={notification} color='error'>
                                 <ShoppingCart />
                             </Badge>
                         </IconButton>
-                    </Link> */}
+                    </Link> 
                 </Toolbar>
             </AppBar>
         </Box>

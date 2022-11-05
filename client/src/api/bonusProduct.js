@@ -1,9 +1,13 @@
 import { basePath, apiVersion } from './config'
 
-export const showBonusProductApi = () => {
+export const showBonusProductApi = (bonusProductsId) => {
     const url = `${basePath}/${apiVersion}/bonus-products`
+    const params = {
+        method: 'POST',
+        body: JSON.stringify({ bonusProductsId: bonusProductsId })
+    }
 
-    return fetch(url)
+    return fetch(url, params)
         .then(response => response.json())
         .then(result => result)
         .catch(err => err)
