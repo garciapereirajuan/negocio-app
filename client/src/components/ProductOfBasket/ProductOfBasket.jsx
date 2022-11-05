@@ -102,13 +102,14 @@ export default function ProductOfBasket({ product, bonusProducts, bonusProductsO
         )
     }
 
-    const updateProduct = (data, bonusProductData) => {
+    const updateProduct = (data, bonusProducts) => {
         if (reloadBasket || reloadTotal) {
             return
         }
 
-        if (bonusProductData) {
-            data.bonusProductsOk = bonusProductData
+        if (bonusProducts) {
+            data.bonusProductsOk = bonusProducts
+            setBonusProductData(bonusProducts)  
         }
 
         let basketStorage = localStorage.getItem('basket')
@@ -294,7 +295,6 @@ export default function ProductOfBasket({ product, bonusProducts, bonusProductsO
                                                 }
                                                 checked={bonusProductData[`${item.option} ${item.title}`]}
                                                 onChange={e => {
-                                                    setBonusProductData({ ...bonusProductData, [`${item.option} ${item.title}`]: e.target.checked })
                                                     updateProduct(productData, { ...bonusProductData, [`${item.option} ${item.title}`]: e.target.checked })
                                                 }}
                                             />

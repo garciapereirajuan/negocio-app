@@ -4,6 +4,7 @@ import { Typography, Button } from '@mui/material'
 import Products from '../../components/Products'
 import { showBonusProductApi } from '../../api/bonusProduct'
 import accounting from 'accounting'
+import { generateMessage } from '../../utils/generateMessage'
 
 import './ShoppingCart.css'
 
@@ -132,6 +133,11 @@ const ShoppingCart = () => {
 }
 
 const Total = ({ total }) => {
+	const confirm = () => {
+		const message = generateMessage()
+		console.log(message)
+	}
+
 	return (
 		<div className='shopping-cart__total'>
 			<Typography variant='h5'>
@@ -145,6 +151,7 @@ const Total = ({ total }) => {
                 className='btn-confirm'
                 variant='contained'
                 color='success'
+                onClick={confirm}
             >
                 Confirmar
             </Button>
