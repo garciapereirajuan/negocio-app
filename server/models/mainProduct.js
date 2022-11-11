@@ -12,6 +12,8 @@ const MainProductSchema = Schema({
     order: Number,
     visible: Boolean,
     stock: Boolean,
+    dozen: Boolean,
+    allowHalf: Boolean,
     bonusProducts: [{ type: Schema.Types.ObjectId, ref: 'BonusProduct' }],
     // category: { type: Schema.Types.ObjectId, red: 'Category' }
 })

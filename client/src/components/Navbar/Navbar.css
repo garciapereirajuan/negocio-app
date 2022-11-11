@@ -3,7 +3,12 @@
 }
 
 .btn-in-and-out {
-    width: 168px;
+    width: 40px;
+}
+
+.required-space-bar {
+    /*al costado de los botones*/
+    width: 80px;
 }
 
 .btn-product-and-bonus {

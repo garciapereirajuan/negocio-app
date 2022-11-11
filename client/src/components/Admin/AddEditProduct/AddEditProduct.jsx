@@ -5,7 +5,8 @@ import {
     Box, FormControl, TextField, Button,
     Typography, Alert, InputLabel, Select,
     OutlinedInput, Chip, MenuItem, FormControlLabel,
-    FormGroup, Checkbox, Avatar, Grid,
+    FormGroup, Checkbox, Avatar, Grid, RadioGroup, Radio,
+    FormLabel
 } from '@mui/material'
 
 import ModalMui from '../../ModalMui'
@@ -54,7 +55,8 @@ const AddEditProduct = () => {
         setMainProductData({
             visible: true,
             stock: true,
-            price: 0
+            price: 0,
+            dozen: false,
         })
 
         if (location.search) {
@@ -318,6 +320,16 @@ const FormProduct = ({ setOpenModal, setMainProductData, allBonusProducts, prelo
         );
     };
 
+    const typeOfData = (title, type) => {
+        const regExpType = new RegExp(type, 'i')
+
+        if (regExpType.test(title)) {
+            return true
+        }
+
+        return false
+    }
+
     return (
         <Box className='add-edit-form'>
             <Typography
@@ -349,7 +361,13 @@ const FormProduct = ({ setOpenModal, setMainProductData, allBonusProducts, prelo
                                 label='Nombre'
                                 placeholder='Milanesa a la napolitana'
                                 value={mainProductData.title}
-                                onChange={e => setMainProductData({ ...mainProductData, title: verifText(e.target.value) })}
+                                onChange={e => {
+                                    setMainProductData({
+                                        ...mainProductData, 
+                                        title: verifText(e.target.value),
+                                        dozen: typeOfData(e.target.value, 'empanad')
+                                    })
+                                }}
                             />
                         </FormControl>
                     </Grid>
@@ -419,6 +437,25 @@ const FormProduct = ({ setOpenModal, setMainProductData, allBonusProducts, prelo
                                     label="Hay stock"
                                     checked={mainProductData.stock}
                                     onChange={(e) => setMainProductData({ ...mainProductData, stock: e.target.checked })}
+                                />
+                            </FormGroup>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={5.8} lg={5.8} >
+                        <FormControl>
+                            <FormGroup>
+                                <FormControlLabel
+                                    title="Seleccioná esta opción si puede venderse por mitad (media pizza, media docena, etc)"
+                                    control={<Checkbox defaultChecked />}
+                                    label="Puede venderse por mitad (1/2)"
+                                    checked={mainProductData.allowHalf}
+                                    onChange={(e) => setMainProductData({ ...mainProductData, allowHalf: e.target.checked })}
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox />}
+                                    label="Se vende por docena"
+                                    checked={mainProductData.dozen}
+                                    onChange={(e) => setMainProductData({ ...mainProductData, dozen: e.target.checked })}
                                 />
                             </FormGroup>
                         </FormControl>

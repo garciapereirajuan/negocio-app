@@ -17,6 +17,22 @@
 	margin-top: 0;
 }
 
+.shopping-cart .css-1qvr50w-MuiTypography-root {
+    font-size: 1rem !important;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.shopping-cart .css-r40f8v-MuiTypography-root {
+    color: #fff !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .shopping-cart .shopping-cart__total {
 	width: max-content;
 	margin: 0 auto;
@@ -51,4 +67,17 @@
 
 .product-of-basket .icon-shopping-cart .css-i4bv87-MuiSvgIcon-root{
 	fill: red !important;
+}
+
+.form-address .MuiFormControl-root {
+	margin-top: 20px;
+	width: 100%;
+}
+
+.form-address .css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+	margin-top: 0 !important;
+}
+
+.form-address .MuiInputBase-root {
+	width: 100% !important;
 }

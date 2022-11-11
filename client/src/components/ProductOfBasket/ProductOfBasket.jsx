@@ -251,13 +251,23 @@ export default function ProductOfBasket({ product, bonusProducts, bonusProductsO
                         <DeleteIcon />
                     </IconButton>
                     <FormControl>
-                        <TextField 
-                            type='number' 
-                            value={productData.quantity}
-                            onChange={(e) => {
-                                updateProduct({ ...productData, quantity: configNumber(e.target.value) })
-                            }}
-                        />
+                        <div style={{display: 'flex', alignItems: "center"}}>
+                            <TextField 
+                                type='number' 
+                                value={productData.quantity}
+                                onChange={(e) => {
+                                    updateProduct({ ...productData, quantity: configNumber(e.target.value) })
+                                }}
+                            />
+                            {
+                                productData.dozen
+                                && (
+                                    <Typography color='white' style={{marginLeft: '6px'}}>
+                                        Docena{productData.quantity > 1 && 's'}
+                                    </Typography>
+                                )
+                            }
+                        </div>
                     </FormControl>
                     <ExpandMore
                         expand={expanded}

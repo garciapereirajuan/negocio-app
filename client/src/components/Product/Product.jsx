@@ -4,7 +4,8 @@ import { styled } from '@mui/material/styles';
 import { 
     Card, CardHeader, CardMedia, CardContent, CardActions, 
     Collapse, Avatar, IconButton, Typography, Grid, Checkbox, 
-    TextField, FormControl, FormGroup, FormControlLabel
+    TextField, FormControl, FormGroup, FormControlLabel, Alert,
+    Select, MenuItem
 } from '@mui/material'
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -36,6 +37,7 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
     const [bonusProductData, setBonusProductData] = useState({})
     const [expanded, setExpanded] = useState(false)
     const [imageUrl, setImageUrl] = useState(null)
+    const [alert, setAlert] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -56,7 +58,7 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
     useEffect(() => {
         setProductData({
             ...product,
-            quantity: 1,
+            quantity: 0.5,
         })
     }, [])
 
@@ -79,6 +81,17 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
     };  
 
     const addProduct = () => {
+        if (!stock) {
+            const seconds = 5000
+            setProductData(obj => ({ ...obj, alert: true }))
+            setAlert(['error', `${productData.title} no está disponible`, productData.title])
+            setTimeout(() => {
+                setProductData(obj => ({ ...obj, alert: false}))
+            }, seconds)
+
+            return
+        }
+
         const data = {
             ...productData, 
             bonusProductsOk: bonusProductData,
@@ -103,9 +116,19 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
         //y modifique el número del carrito gracias a volver
         //a renderizar el useEffect con location y cambiar el número
 
+        let totalOfProduct = (productData.price * productData.quantity)
         setTotal(total => (
-            Number.parseInt(total) + (productData.price * productData.quantity))
+            Number.parseInt(total) + totalOfProduct)
         )
+
+        data.quantity = 1
+        data.alert = true
+        data.bonusProductsOk = {}
+
+        setProductData({...data})
+        setBonusProductData({})
+        setAlert(['success', `Producto agregado: $${totalOfProduct} +`, data.title])
+        setTimeout(() => setProductData(obj => ({ ...obj, alert: false})), 5000)
     }
 
     const configNumber = (n) => {
@@ -117,7 +140,31 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
             return 150
         }
 
-        return 1
+        return 0.5
+    }
+
+    const getItemsDozen = () => {
+        const arrayItemsDozen = []
+
+        for (let i = .5; i < 4.5; i = i + .5) {
+            let num = Number.parseInt(i)
+            let decimal = i - Math.floor(i) ? '1/2' : ''
+
+            if (i === .5) {
+                num = '1/2'
+                decimal = ''
+            }
+
+            arrayItemsDozen.push(
+                <MenuItem>
+                    <div>
+                        {num}<sup>{decimal}</sup> Docena{num > 1 && 's'}
+                    </div>
+                </MenuItem>
+            )
+        }
+
+        return arrayItemsDozen
     }
 
     return (
@@ -152,7 +199,7 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
                 />
                 <CardContent>
                     <Typography variant="body2" color="text.secondary">
-                        {description}
+                        <span title={description}>{description}</span>
                         <p>{
                             <span className='text-price'>{
                                 price > 0
@@ -183,12 +230,31 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
                         <AddShoppingCart />
                     </IconButton>
                     <FormControl>
-                        <TextField 
-                            type='number' 
-                            value={productData.quantity}
-                            onChange={(e) => setProductData({ ...productData, quantity: configNumber(e.target.value) })}
-                        />
+                        <div style={{display: 'flex', alignItems: "center"}}>
+                            <TextField
+                                type='text'
+                                inputMode='numeric'
+                                pattern='\d*'
+                                value={"2"}
+                                onChange={(e) => setProductData({ ...productData, quantity: e.target.value })}
+                            />
+                            {
+                                productData.dozen
+                                && (
+                                    <Typography color='white' style={{marginLeft: '6px'}}>
+                                        Docena{productData.quantity > 1 && 's'}
+                                    </Typography>
+                                )
+                            }
+                        </div>
                     </FormControl>
+{/*                 <FormControl>
+                        <Select>
+                            {
+                                getItemsDozen().map(item => item)
+                            }
+                        </Select>
+                    </FormControl>*/}
                     <ExpandMore
                         expand={expanded}
                         onClick={handleExpandClick}
@@ -203,39 +269,50 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
                         <Typography>
                             {description}
                         </Typography>
-                        <div className='checkbox-collapse'>
-                            <form>
-                                <FormControl>
-                                    <FormGroup>
-                                    {
-                                        bonusProducts.map(item => (
-                                            <>
-                                            <FormControlLabel 
-                                                control={<Checkbox />}
-                                                label={
-                                                    <div style={{display: 'flex'}}>
-                                                        <div 
-                                                            className='title-capitalize' 
-                                                            style={{marginRight: '4px'}}
-                                                        >
-                                                            {item.option}
-                                                        </div>
-                                                        {item.title}
-                                                    </div>
-                                                }
-                                                checked={bonusProductData[`${item.option} ${item.title}`]}
-                                                onChange={e => setBonusProductData({ ...bonusProductData, [`${item.option} ${item.title}`]: e.target.checked })}
-                                            />
-                                            </>
-                                        ))
-                                    }
-                                    </FormGroup>
-                                </FormControl>        
-                            </form>
-                        </div>
+                        {
+                            (bonusProducts && bonusProducts.length !== 0)
+                            && (
+                                <div className='checkbox-collapse'>
+                                    <form>
+                                        <FormControl>
+                                            <FormGroup>
+                                            {
+                                                bonusProducts.map(item => (
+                                                    <>
+                                                    <FormControlLabel 
+                                                        control={<Checkbox />}
+                                                        label={
+                                                            <div style={{display: 'flex'}}>
+                                                                <div 
+                                                                    className='title-capitalize' 
+                                                                    style={{marginRight: '4px'}}
+                                                                >
+                                                                    {item.option}
+                                                                </div>
+                                                                {item.title}
+                                                            </div>
+                                                        }
+                                                        checked={bonusProductData[`${item.option} ${item.title}`]}
+                                                        onChange={e => setBonusProductData({ ...bonusProductData, [`${item.option} ${item.title}`]: e.target.checked })}
+                                                    />
+                                                    </>
+                                                ))
+                                            }
+                                            </FormGroup>
+                                        </FormControl>        
+                                    </form>
+                                </div>
+                            )
+                        }
                     </CardContent>
                 </Collapse>
             </Card>
+            {
+                (alert[2] === productData.title 
+                    && productData.alert) &&
+
+                <Alert severity={alert[0]}>{alert[1]}</Alert>
+            }
         </Grid>
     );
 }

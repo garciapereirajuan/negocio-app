@@ -5,23 +5,35 @@ import useAuth from '../../hooks/useAuth'
 import { logout } from '../../api/auth'
 
 import ShoppingCart from '@mui/icons-material/ShoppingCart';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout'
 import PepitosLogo from '../../assets/img/png/pepitos-logo.png';
 
 import './Navbar.css'
 
 const btnIn = (
     <Link to='/admin/login'>
-        <Button
+        <IconButton
             color="inherit"
             className='btn-in-and-out'
         >
-            Ingresar
+            <AccountCircle />
+        </IconButton>
+    </Link>
+)
+
+const prevView = (
+    <Link to='/products'>
+        <Button
+            variant='contained'
+        >
+            Ver sitio
         </Button>
     </Link>
 )
 
 const btnOut = (
-    <Button
+    <IconButton
         onClick={() => {
             logout()
             window.location.href = '/products'
@@ -29,8 +41,8 @@ const btnOut = (
         color="inherit"
         className='btn-in-and-out'
     >
-        Salir
-    </Button>
+        <LogoutIcon />
+    </IconButton>
 )
 
 const btnNewBonus = (
@@ -69,8 +81,9 @@ const btnNewCategory = (
 const btnGoToAdmin = (
     <Link to='/admin/products'>
         <Button
-            color='inherit'
-            className='btn-product-and-bonus'
+            // color='inherit'
+            // className='btn-product-and-bonus'
+            variant='contained'
         >
             Editar sitio
         </Button>
@@ -108,6 +121,10 @@ export default function Navbar() {
         }
 
         if (user && !isLoading) {
+            if (!/admin/.test(location.pathname)) {
+                return
+            }
+
             setBtnInOut(btnOut)
             setContentCenter(
                 <>
@@ -143,8 +160,6 @@ export default function Navbar() {
         }
     }, [location])
 
-    const addToBasket = () => {}
-
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="fixed">
@@ -161,12 +176,18 @@ export default function Navbar() {
                         </IconButton>
                     </Link>
                     {
+                        (/admin/.test(location.pathname) && user && !isLoading)
+                            && 
+                        <>{prevView}</>
+                    }
+                    {
                         widthScreen >= 1000
                             ? (
                                 <>
                                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                                         {contentCenter}
                                     </Typography>
+                                    <div className='required-space-bar' />
                                     {btnInOut}  
                                 </>
                             ) : (
@@ -178,14 +199,13 @@ export default function Navbar() {
                     }
                     <Link 
                         to='/shopping-cart'
-                        onClick={addToBasket} //función vacía
                     >
                         <IconButton color="inherit">
                             <Badge badgeContent={notification} color='error'>
                                 <ShoppingCart />
                             </Badge>
                         </IconButton>
-                    </Link> 
+                    </Link>
                 </Toolbar>
             </AppBar>
         </Box>
