@@ -1,2 +1,2 @@
-export const basePath = 'http://localhost:3838/api'
+export const basePath = 'https://roticeria-pepitos-server.vercel.app/api'
 export const apiVersion = 'v1'

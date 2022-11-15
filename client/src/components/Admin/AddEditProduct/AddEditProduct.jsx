@@ -57,6 +57,7 @@ const AddEditProduct = () => {
             stock: true,
             price: 0,
             dozen: false,
+            allowHalf: true,
         })
 
         if (location.search) {

@@ -28,9 +28,6 @@
     text-overflow: ellipsis;
 }
 
-.product .css-r40f8v-MuiTypography-root > p {
-}
-
 .product .css-ahj2mt-MuiTypography-root {
     color: #373737;
 }
@@ -85,12 +82,14 @@
     /* font-weight: bold; */
 }
 
-.product .MuiFormControl-root .MuiInputBase-root input {
-    width: 60px !important;
-    height: 10px;
-    background: #fff;
-    border-radius: 6px;
+.product .MuiFormControl-root .MuiSelect-select {
+    width: 50px !important;
+    /*height: 10px !important;*/
+    padding: 10px;
+    background: #fff !important;
+    border-radius: 6px !important;
     font-weight: bold;
+    color: #373737;
 }
 
 .checkbox-collapse {

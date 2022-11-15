@@ -32,6 +32,7 @@ export const generateMessage = () => {
 	data.forEach(item => {
 		let title = item.title
 		let quantity = item.quantity
+		let dozen = item.dozen
 		let bonusProductsOk = item.bonusProductsOk
 		let bonusProductsTrue = []
 
@@ -48,7 +49,13 @@ export const generateMessage = () => {
 			bonusProductsTrue = null
 		}
 
-		let messageStart = `*${quantity} x ${title}*`
+		if (dozen) {
+			dozen = quantity > 1 ? ' docenas' : ' docena'
+		}
+
+		quantity = quantity === 0.5 ? '1/2' : quantity
+
+		let messageStart = `*${quantity}${dozen && dozen} x ${title}*`
 		let messageOptions = bonusProductsTrue ? ` ${'\n'}Con las siguientes opciones: ${'\n'}${bonusProductsTrue}` : '\nSin ninguna opción.'
 
 		let message = `${messageStart}${messageOptions}\n${space}\n`

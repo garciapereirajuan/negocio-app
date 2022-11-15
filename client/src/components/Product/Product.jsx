@@ -12,6 +12,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddShoppingCart from '@mui/icons-material/AddShoppingCart';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import imgExample from '../../assets/img/jpg/papas-ketchup.jpg'
 import accounting from 'accounting'
 import NoImage from '../../assets/img/png/NoImage.png'
@@ -58,7 +59,7 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
     useEffect(() => {
         setProductData({
             ...product,
-            quantity: 0.5,
+            quantity: 1,
         })
     }, [])
 
@@ -143,28 +144,44 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
         return 0.5
     }
 
-    const getItemsDozen = () => {
-        const arrayItemsDozen = []
+    const getItemsQuantity = () => {
+        const arrayItemsQuantity = []
 
-        for (let i = .5; i < 4.5; i = i + .5) {
-            let num = Number.parseInt(i)
-            let decimal = i - Math.floor(i) ? '1/2' : ''
-
-            if (i === .5) {
-                num = '1/2'
-                decimal = ''
-            }
-
-            arrayItemsDozen.push(
-                <MenuItem>
-                    <div>
-                        {num}<sup>{decimal}</sup> Docena{num > 1 && 's'}
-                    </div>
-                </MenuItem>
-            )
+        if (productData.allowHalf) {
+            arrayItemsQuantity.push(0.5)
         }
 
-        return arrayItemsDozen
+        for (let i = 1; i <= 8; i++) {
+            arrayItemsQuantity.push(i)
+        }
+
+        // for (let i = .5; i < 4.5; i = i + .5) {
+        //     let num = Number.parseInt(i)
+        //     let decimal = i - Math.floor(i) ? '1/2' : ''
+
+        //     if (i === .5) {
+        //         num = '1/2'
+        //         decimal = ''
+        //     }
+
+        //     arrayItemsDozen.push(
+        //         <MenuItem>
+        //             <div>
+        //                 {num}<sup>{decimal}</sup> Docena{num > 1 && 's'}
+        //             </div>
+        //         </MenuItem>
+        //     )
+        // }
+
+        return arrayItemsQuantity
+    }
+
+    const getPrice = (price) => {
+        let currentPrice = 0
+
+        currentPrice = productData.quantity * price
+
+        return currentPrice
     }
 
     return (
@@ -200,14 +217,19 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
                 <CardContent>
                     <Typography variant="body2" color="text.secondary">
                         <span title={description}>{description}</span>
-                        <p>{
-                            <span className='text-price'>{
+                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px'}}>
+                        {productData.quantity === 0.5 ? '1/2' : productData.quantity}
+                        <DoubleArrowIcon fontSize='20px'/>
+                        {
+                            <span className='text-price'>
+                            {
                                 price > 0
-                                    ? accounting.formatMoney(price, '$')
+                                    ? accounting.formatMoney(getPrice(price), '$')
                                     : 'Gratis'
-                            }</span>
-
-                        }</p>
+                            }
+                            </span>
+                        }
+                        </div>
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
@@ -231,13 +253,27 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
                     </IconButton>
                     <FormControl>
                         <div style={{display: 'flex', alignItems: "center"}}>
-                            <TextField
+                            <Select
+                                value={Number.parseFloat(productData.quantity)}
+                                onChange={(e) => setProductData({ ...productData, quantity: e.target.value })}
+                            >
+                            {
+                                getItemsQuantity().map(item => {
+                                    if (item == 0.5) {
+                                        return <MenuItem value={item}>1/2</MenuItem>
+                                    }
+
+                                    return <MenuItem value={item}>{item}</MenuItem>
+                                })
+                            }
+                            </Select>
+                            {/* <TextField
                                 type='text'
                                 inputMode='numeric'
                                 pattern='\d*'
                                 value={"2"}
-                                onChange={(e) => setProductData({ ...productData, quantity: e.target.value })}
-                            />
+                                
+                            />*/}
                             {
                                 productData.dozen
                                 && (
@@ -248,13 +284,9 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
                             }
                         </div>
                     </FormControl>
-{/*                 <FormControl>
-                        <Select>
-                            {
-                                getItemsDozen().map(item => item)
-                            }
-                        </Select>
-                    </FormControl>*/}
+                 <FormControl>
+                        
+                    </FormControl>
                     <ExpandMore
                         expand={expanded}
                         onClick={handleExpandClick}

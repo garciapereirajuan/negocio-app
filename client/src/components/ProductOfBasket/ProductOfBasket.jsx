@@ -4,12 +4,14 @@ import { styled } from '@mui/material/styles';
 import { 
     Card, CardHeader, CardMedia, CardContent, CardActions, 
     Collapse, Avatar, IconButton, Typography, Grid, Checkbox, 
-    TextField, FormControl, FormGroup, FormControlLabel
+    TextField, FormControl, FormGroup, FormControlLabel, Select,
+    MenuItem,
 } from '@mui/material'
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import DeleteIcon from '@mui/icons-material/Delete';
 import imgExample from '../../assets/img/jpg/papas-ketchup.jpg'
 import accounting from 'accounting'
@@ -201,6 +203,38 @@ export default function ProductOfBasket({ product, bonusProducts, bonusProductsO
         return 1
     }
 
+    const getItemsQuantity = () => {
+        const arrayItemsQuantity = []
+
+        if (productData.allowHalf) {
+            arrayItemsQuantity.push(0.5)
+        }
+
+        for (let i = 1; i <= 8; i++) {
+            arrayItemsQuantity.push(i)
+        }
+
+        // for (let i = .5; i < 4.5; i = i + .5) {
+        //     let num = Number.parseInt(i)
+        //     let decimal = i - Math.floor(i) ? '1/2' : ''
+
+        //     if (i === .5) {
+        //         num = '1/2'
+        //         decimal = ''
+        //     }
+
+        //     arrayItemsDozen.push(
+        //         <MenuItem>
+        //             <div>
+        //                 {num}<sup>{decimal}</sup> Docena{num > 1 && 's'}
+        //             </div>
+        //         </MenuItem>
+        //     )
+        // }
+
+        return arrayItemsQuantity
+    }
+
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>
             <Card className='product-of-basket'>
@@ -252,13 +286,20 @@ export default function ProductOfBasket({ product, bonusProducts, bonusProductsO
                     </IconButton>
                     <FormControl>
                         <div style={{display: 'flex', alignItems: "center"}}>
-                            <TextField 
-                                type='number' 
-                                value={productData.quantity}
-                                onChange={(e) => {
-                                    updateProduct({ ...productData, quantity: configNumber(e.target.value) })
-                                }}
-                            />
+                            <Select
+                                value={Number.parseFloat(productData.quantity)}
+                                onChange={(e) => updateProduct({ ...productData, quantity: e.target.value })}
+                            >
+                            {
+                                getItemsQuantity().map(item => {
+                                    if (item == 0.5) {
+                                        return <MenuItem value={item}>1/2</MenuItem>
+                                    }
+
+                                    return <MenuItem value={item}>{item}</MenuItem>
+                                })
+                            }
+                            </Select>
                             {
                                 productData.dozen
                                 && (

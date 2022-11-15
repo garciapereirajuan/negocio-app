@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 const app = require('./app')
-const { API_VERSION, IP_SERVER, PORT_DB, PORT_SERVER } = require('./config')
+const { API_VERSION, IP_SERVER, PORT_DB, PORT_SERVER, PASSWORD } = require('./config')
 
 mongoose.connect(
-    `mongodb://${IP_SERVER}:${PORT_DB}/ecommerce`,
+    `mongodb+srv://jgp95:${PASSWORD}@rotiseriapepitos.edibjp4.mongodb.net/?retryWrites=true&w=majority`,
     (err, res) => {
         if (err) {
             throw err
@@ -15,7 +15,7 @@ mongoose.connect(
                 console.log('########### API REST ##########')
                 console.log('###############################')
                 console.log(`http://${IP_SERVER}:${PORT_SERVER}/api/${API_VERSION}`)
-            })
+            })  
         }
     }
 )
