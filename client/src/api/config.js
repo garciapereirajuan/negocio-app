@@ -1,2 +1,2 @@
-export const basePath = 'https://roticeria-pepitos-server.vercel.app/api'
+export const basePath = 'https://rotiseria-pepitos-server.herokuapp.com/api'
 export const apiVersion = 'v1'

@@ -1,4 +1,4 @@
- {
+{
   "name": "ecommerce",
   "version": "0.0.1",
   "description": "Una app para vender productos más facilmente que permite enviar un whatsapp con todos los productos listos",
@@ -17,6 +17,7 @@
     "mongoose": "^6.6.5"
   },
   "devDependencies": {
+    "@vercel/node": "^2.6.3",
     "nodemon": "^2.0.20"
   },
   "scripts": {

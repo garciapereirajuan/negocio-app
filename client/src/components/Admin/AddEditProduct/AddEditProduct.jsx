@@ -151,6 +151,8 @@ const AddEditProduct = () => {
                     return
                 }
                 if (response?.code === 200) {
+                    console.log('Entra en la parte de la imagen', response)
+
                     addMainProductImageApi(token, response.mainProductId, image.file)
                         .then(response => {
                             if (response?.code !== 200) {
@@ -218,6 +220,9 @@ const AddEditProduct = () => {
                 if (response?.code === 200) {
                     addMainProductImageApi(token, mainProductId, image.file)
                         .then(response => {
+                            
+                            console.log('Entra en la parte de la imagen', image)
+                            
                             if (response?.code !== 200) {
                                 setAlert(['error', response.message])
                                 return

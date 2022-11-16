@@ -19,15 +19,19 @@ export const addMainProductApi = async(token, MainProductData) => {
 
 export const addMainProductImageApi = (token, mainProductId, image) => {
     const url = `${basePath}/${apiVersion}/main-product-image/${mainProductId}`
+
     const formData = new FormData()
     formData.append('image', image, image.name)
+
     const params = {
         method: 'PUT',
+        body: formData,
         headers: {
             Authorization: token
         },
-        body: formData
     }
+
+    console.log(url, params)
 
     return fetch(url, params)
         .then(response => response.json())
