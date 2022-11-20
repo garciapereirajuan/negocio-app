@@ -171,7 +171,7 @@ const FormBonusProduct = ({
 	            <Grid container className='add-edit-form__form__box'>
 	                <Grid container item xs={12} sm={12} md={5.8} lg={5.8} >
               			<Grid item xs={3} sm={2} md={4} lg={4}>
-	              			<FormControl>
+	              			<FormControl className='add-edit-form__bonus__select'>
 	              				<InputLabel>Opción</InputLabel>
 	              				<Select
 	                          label='Opción'

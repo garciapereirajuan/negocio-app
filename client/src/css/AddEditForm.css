@@ -1,4 +1,4 @@
-.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+.MuiInputLabel-shrink.Mui-focused {
     background: #fff;
     padding: 2px 8px;
 }
@@ -24,19 +24,12 @@
     margin: 8px;
 }
 
-
-/* 
-
-.add-edit-form .MuiInputBase-root {
-    width: 50% !important;
-} */
-
 .add-edit-form .MuiFormControl-root {
     width: 100% !important;
     margin-top: 6px !important;
 }
 
-.add-edit-form .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+.add-edit-form .add-edit-form__bonus__select .MuiInputBase-root {
     display: flex !important;
     flex-direction: row !important;
     justify-content:  center !important;

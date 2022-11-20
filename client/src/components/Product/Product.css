@@ -1,9 +1,9 @@
-.product .css-1qbkelo-MuiCardHeader-content  {
+.product .MuiCardHeader-content  {
     position: relative;
     width: 100%;
 }
 
-.product .css-1qvr50w-MuiTypography-root {
+.product .MuiCardHeader-title {
     font-size: 1rem !important;
     color: #fff;
     white-space: nowrap;
@@ -12,27 +12,20 @@
     width: 100%;
 }
 
-.css-bhp9pd-MuiPaper-root-MuiCard-root {
+.product.MuiPaper-elevation1 {
     background-color: var(--primary-color) !important;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .7) !important;
 }
 
-.product .css-nrdprl-MuiTypography-root {
-    /* color: #fff !important; */
-}
-
-.product .css-r40f8v-MuiTypography-root {
+.product .MuiTypography-body2 {
     color: #fff !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.product .css-ahj2mt-MuiTypography-root {
-    color: #373737;
-}
-
-.product .css-i4bv87-MuiSvgIcon-root {
+.product .MuiSvgIcon-root:nth-child(1), 
+.product .MuiSvgIcon-root:nth-child(2) {
     fill: rgba(255, 255, 255, .6) !important;
 }
 
@@ -46,16 +39,16 @@
     transition: all ease .2s;
 }
 
-.product .icon-shopping-cart .css-i4bv87-MuiSvgIcon-root {
+.product .icon-shopping-cart .MuiSvgIcon-root {
     fill: #fff !important;
 }
 
-.product .css-46bh2p-MuiCardContent-root:last-child {
+.product .MuiCardContent-root:last-child {
     /* background-color: var(--secondary-color); */
     background-color: var(--secondary-color);
 }
 
-.product .css-ahj2mt-MuiTypography-root {
+.product .MuiTypography-body1:nth-child(1) {
     color: #373737;
 }
 
@@ -98,11 +91,11 @@
     text-align: left;
 }
 
-.checkbox-collapse .css-1nrlq1o-MuiFormControl-root{
+.product .checkbox-collapse .MuiFormControl-root {
     width:  100%;
 }
 
-.checkbox-collapse .css-j204z7-MuiFormControlLabel-root {
+.product .checkbox-collapse .MuiFormControlLabel-labelPlacementEnd {
     margin: 0 auto;
     margin-bottom: 4px;
     border-radius: 4px;
@@ -110,7 +103,7 @@
     background-color: rgba(0,0,0,.2);  
 }
 
-.checkbox-collapse div{
+.product .checkbox-collapse div{
     font-weight: bold;
     color: rgba(255,255,255,.8);
 }

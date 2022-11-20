@@ -1,4 +1,4 @@
-.css-hyum1k-MuiToolbar-root {
+.MuiToolbar-gutters {
     background-color: var(--primary-color) !important;
 }
 
@@ -18,5 +18,4 @@
 
 .btn-product-and-bonus:hover {
     background: var(--btns-navbar-hover) !important;
-    /* color: #373737 !important */
 }

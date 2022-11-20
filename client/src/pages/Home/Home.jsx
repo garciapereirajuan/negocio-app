@@ -43,8 +43,18 @@ const Home = () => {
     }, [])
 
     useEffect(() => {
-        showCategoriesApi().then(response => setPureCategories(response.categories))
-        showBonusProductApi().then(response => setAllBonusProducts(response.bonusProducts))
+        // alert('Por favor espera...')
+        // setTimeout(() => alert('Sos la primer persona que ingresa en la mañana y necesito despavilarme :P. No tardaré más de 30 segundos. Aguarda...'), 5000)
+
+        showCategoriesApi().then(response => {
+            setPureCategories(response.categories)
+
+        })
+        showBonusProductApi().then(response => {
+            setAllBonusProducts(response.bonusProducts)
+        })
+        console.log(pureCategories)
+        console.log(allBonusProducts)
     }, [])
 
     return (

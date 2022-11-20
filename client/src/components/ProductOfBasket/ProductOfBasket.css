@@ -1,27 +1,31 @@
 
-.product-of-basket .css-1qvr50w-MuiTypography-root {
+.product-of-basket .MuiCardHeader-title {
     font-size: 1rem !important;
     color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
-.product-of-basket.css-bhp9pd-MuiPaper-root-MuiCard-root {
+.product-of-basket.MuiPaper-elevation1 {
     background-color: var(--primary-color) !important;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .7) !important;
 }
 
-.product-of-basket .css-nrdprl-MuiTypography-root {
-    /* color: #fff !important; */
-}
-
-.product-of-basket .css-r40f8v-MuiTypography-root {
+.product-of-basket .MuiTypography-body2 {
     color: #fff !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.product-of-basket .css-ahj2mt-MuiTypography-root {
+.product-of-basket .MuiTypography-body1:nth-child(1) {
     color: #373737;
 }
 
-.product-of-basket .css-i4bv87-MuiSvgIcon-root {
+.product-of-basket .MuiSvgIcon-root:nth-child(1), 
+.product-of-basket .MuiSvgIcon-root:nth-child(2) {
     fill: rgba(255, 255, 255, .6) !important;
 }
 
@@ -35,11 +39,11 @@
     transition: all ease .2s;
 }
 
-.product-of-basket .icon-delete-cart .css-i4bv87-MuiSvgIcon-root {
+.product-of-basket .icon-delete-cart .MuiSvgIcon-root {
     fill: #fff !important;
 }
 
-.product-of-basket .css-46bh2p-MuiCardContent-root:last-child {
+.product-of-basket .MuiCardContent-root:last-child {
     /* background-color: var(--secondary-color); */
     background-color: var(--secondary-color);
 }
@@ -85,17 +89,11 @@
     font-weight: bold;
 }
 
-.checkbox-collapse {
-    margin-top:  20px;
-    /*width: 100%;*/
-    text-align: left;
-}
-
-.checkbox-collapse .css-1nrlq1o-MuiFormControl-root{
+.product-of-basket .checkbox-collapse .MuiFormControl-root {
     width:  100%;
 }
 
-.checkbox-collapse .css-j204z7-MuiFormControlLabel-root {
+.product-of-basket .checkbox-collapse .MuiFormControlLabel-labelPlacementEnd {
     margin: 0 auto;
     margin-bottom: 4px;
     border-radius: 4px;
@@ -103,7 +101,7 @@
     background-color: rgba(0,0,0,.2);  
 }
 
-.checkbox-collapse div{
+.product-of-basket .checkbox-collapse div{
     font-weight: bold;
     color: rgba(255,255,255,.8);
 }

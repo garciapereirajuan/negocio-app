@@ -1,3 +1,11 @@
+.home {
+	margin: 0 10px;
+}
+
+.home .MuiGrid-container {
+	justify-content: center;
+}
+
 .home .category-title {
 	margin: 20px 0;
 	background-color: var(--secondary-color);
@@ -7,7 +15,7 @@
 	box-shadow:  0 0 8px rgba(0,0,0,.6);
 }
 
-.home .css-5lbw0b-MuiTypography-root.total-visible {
+.home .category-title.total-visible {
 	margin: 33px 0 20px 0;
 }
 
@@ -17,13 +25,17 @@
 
 @media (max-width: 600px) {
 	.home .category-title {
-		font-size: 30px;
+		font-size: 28px;
+	}
+
+	.home .category-title.total-visible {
+		margin: 38px 0 20px 0;
 	}
 }
 
 @media (max-width: 360px) {
 	.home .category-title {
-		font-size: 25px;
+		font-size: 28px;
 	}
 }
 

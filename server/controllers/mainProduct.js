@@ -96,6 +96,14 @@ const showImage = (req, res) => {
     res.status(200).sendFile(path.resolve(filePath))
 }
 
+const getAllImages = (req, res) => {
+
+    fs.readdir(path.resolve('./uploads/image'), (err, files) => {
+        message(res, 200, '', { files })
+        return
+    })
+}
+
 const show = (req, res) => {
     let data = req.body
 
@@ -191,5 +199,5 @@ const remove = (req, res) => {
 }
 
 module.exports = {
-    add, addImage, showImage, show, update, updateForCheckboxAndOrder, remove
+    add, addImage, showImage, getAllImages, show, update, updateForCheckboxAndOrder, remove
 }

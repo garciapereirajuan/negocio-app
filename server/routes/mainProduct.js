@@ -18,6 +18,7 @@ router.route('/main-product-checkbox-and-order/:id')
 router.route('/main-products')
     .post(MainProductController.show)
 
+router.get('/main-product-images-all', MainProductController.getAllImages)
 
 router.route('/main-product-image/:id')
     .put([md_auth.ensureAuth, md_upload_image], MainProductController.addImage)

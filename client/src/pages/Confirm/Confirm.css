@@ -1,0 +1,50 @@
+
+.form-confirm {
+	width: 480px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.form-confirm__grid {
+	width: 100% !important;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.form-confirm__grid .MuiFormControl-root {
+	width: 100%;
+}
+
+.form-confirm__grid__form-options {
+	margin-top: 10px;
+	padding: 4px;
+	background: rgba(0,0,0,.1);
+	border-radius: 4px;
+	box-shadow: 0 4px 8px rgba(0,0,0,.4);
+}
+
+.form-confirm__grid .MuiGrid-item,
+.form-confirm__grid .MuiFormLabel-root {
+	width: 100% !important;
+	margin-top: 10px;
+}
+
+.form-confirm__grid .btn-submit {
+	margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+	.form-confirm {
+		width: 90%;
+	}
+
+	.form-confirm label,
+	.form-confirm span {
+		font-size: 12px;
+	}
+
+	.form-confirm h6 {
+		font-size: 16px;
+	}
+}

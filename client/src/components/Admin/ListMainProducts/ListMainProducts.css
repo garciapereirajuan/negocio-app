@@ -27,11 +27,11 @@
     font-weight: bold;
 }
 
-.css-1rki8sg-MuiListItem-root {
+.MuiListItem-gutters {
     height: 100px;
 }
 
-.css-83ijpv-MuiTypography-root {
+.MuiListItemText-secondary {
     width: 360px;
     white-space: nowrap;
     text-overflow: ellipsis;

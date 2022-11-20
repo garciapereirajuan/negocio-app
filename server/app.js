@@ -10,9 +10,17 @@ const authRoutes = require('./routes/auth')
 const mainProductRoutes = require('./routes/mainProduct')
 const categoryRoutes = require('./routes/category')
 const bonusProductRoutes = require('./routes/bonusProduct')
+const cloudinary = require('cloudinary')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
+//Configure Cloudinary
+cloudinary.config({
+    cloud_name: 'hy0ituypt',
+    api_key: '435915454534485',
+    api_secret: 'YHJyhSgdjNkgOvqI_sg0teGP4NM',
+})
 
 //Configure Header HTTP
 app.use((req, res, next) => {

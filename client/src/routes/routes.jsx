@@ -7,6 +7,7 @@ import LayoutBasic from '../layouts/LayoutBasic'
 //Import pages
 import BasicHome from '../pages/Home'
 import BasicShoppingCart from '../pages/ShoppingCart'
+import BasicConfirm from '../pages/Confirm'
 import AdminHome from '../pages/Admin'
 import AdminLogin from '../pages/Admin/Login'
 
@@ -70,6 +71,10 @@ export const routes = [
             {
                 path: '/shopping-cart',
                 element: BasicShoppingCart,
+            },
+            {
+                path: '/confirm',
+                element: BasicConfirm,
             },
             {
                 path: '/*',

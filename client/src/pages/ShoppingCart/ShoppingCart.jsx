@@ -164,11 +164,11 @@ const ShoppingCart = () => {
             	y enviarlo por WhatsApp
             </Typography>
             <Total total={total} setOpenModal={setOpenModal}/>
-            <ModalMui
+{/*            <ModalMui
             	openModal={openModal}
             	setOpenModal={setOpenModal}
             	contentModal={<FormAddress />}
-			/>
+			/>*/}
 			<DialogMui 
 				openDialog={openDialog} 
 				setOpenDialog={setOpenDialog}
@@ -183,10 +183,6 @@ const ShoppingCart = () => {
 const FormAddress = () => {
 	const [formData, setFormData] = useState({})
 	const [movil, setMovil] = useState(false)
-
-	useEffect(() => {
-		console.log(formData)
-	}, [formData])
 
 	useEffect(() => {
 		if (!formData.address) {
@@ -351,6 +347,7 @@ const FormAddress = () => {
 }
 
 const Total = ({ total, setOpenModal }) => {
+	const navigate = useNavigate()
 
 	const confirm = () => {
 		setOpenModal(true)
@@ -369,7 +366,7 @@ const Total = ({ total, setOpenModal }) => {
                 className='btn-confirm'
                 variant='contained'
                 color='success'
-                onClick={confirm}
+                onClick={() => navigate('/confirm')}
             >
                 Confirmar
             </Button>
