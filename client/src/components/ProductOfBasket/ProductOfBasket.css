@@ -1,36 +1,34 @@
+.product-of-basket {
+    max-width: 330px;
+}
 
-.product-of-basket .MuiCardHeader-title {
-    font-size: 1rem !important;
-    color: #fff;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.product-of-basket .container-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
     width: 100%;
+    background-color: #373737;
 }
 
-.product-of-basket.MuiPaper-elevation1 {
-    background-color: var(--primary-color) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, .7) !important;
-}
-
-.product-of-basket .MuiTypography-body2 {
-    color: #fff !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.product-of-basket .container-image img {
+    margin: 0 auto;
+    position: relative;
+    border-radius: 4px;
+    border: 2px solid #373737;
+    box-shadow: 0 4px 8px var(--background-orange);
+    min-width: 60%;
+    color: var(--background-orange);
+    font-size: .9em;
+    width: auto;
+    height: 140px;
 }
 
 .product-of-basket .MuiTypography-body1:nth-child(1) {
     color: #373737;
 }
 
-.product-of-basket .MuiSvgIcon-root:nth-child(1), 
-.product-of-basket .MuiSvgIcon-root:nth-child(2) {
-    fill: rgba(255, 255, 255, .6) !important;
-}
-
 .product-of-basket .icon-delete-cart:hover {
-    /* box-shadow: 0 0px 10px rgba(255, 255, 255, .6); */
     transition: all ease .1s;
 }
 
@@ -43,42 +41,28 @@
     fill: #fff !important;
 }
 
-.product-of-basket .MuiCardContent-root:last-child {
-    /* background-color: var(--secondary-color); */
-    background-color: var(--secondary-color);
-}
-
 .product-of-basket .text-stock,
 .product-of-basket .text-no-stock,
-.product-of-basket .text-price {
+.product-of-basket .text-price,
+.product-of-basket .text-bonus-product-price {
     padding: 2px 6px;
     color: #fff;
     border-radius: 8px;
 }
 
-.product-of-basket .text-stock {
-    background-color: rgba(36, 226, 36, .4);
-}
-
-.product-of-basket .text-no-stock {
-    background-color: rgba(247, 0, 0, 0.552);
-}
-
-.product-of-basket .text-price {
-    background-color: var(--secondary-color-opacity);
-    color: #fff;
-    font-size: 18px;
-    /* font-weight: bold; */
-}
-
 .product-of-basket .MuiFormControl-root .MuiSelect-select {
     width: 50px !important;
-    /*height: 10px !important;*/
-    padding: 10px;
-    background: #fff !important;
+    padding: 4px;
+    background: #373737 !important;
     border-radius: 6px !important;
-    font-weight: bold;
-    color: #373737;
+    color: #d2d2d2; 
+    font-size: 12px;
+    box-shadow: 0 0 4px var(--background-orange);
+/*    font-weight: bold;*/
+}
+
+.product-of-basket .MuiFormControl-root svg path {
+    fill: var(--background-orange);
 }
 
 .product-of-basket .MuiFormControl-root .MuiInputBase-root input {
@@ -89,23 +73,6 @@
     font-weight: bold;
 }
 
-.product-of-basket .checkbox-collapse .MuiFormControl-root {
-    width:  100%;
+.product-of-basket .expand-more-element {
+    padding: 0;
 }
-
-.product-of-basket .checkbox-collapse .MuiFormControlLabel-labelPlacementEnd {
-    margin: 0 auto;
-    margin-bottom: 4px;
-    border-radius: 4px;
-    width: 100%;
-    background-color: rgba(0,0,0,.2);  
-}
-
-.product-of-basket .checkbox-collapse div{
-    font-weight: bold;
-    color: rgba(255,255,255,.8);
-}
-
-/*.checkbox-collapse .active {
-    background-color: var(--primary-color); 
-}*/

@@ -1,5 +1,6 @@
 .shopping-cart {
 	padding: 20px;
+	color: #e2e2e2;
 	border-radius: 8px;
 	box-shadow: 0 0 20px var(--background-orange);
 }
@@ -7,7 +8,7 @@
 .shopping-cart .category-title {
 	margin: 20px 0;
 	background-color: var(--background-orange);
-	color: var(--background-layout);
+	color: #373737;
 	font-weight: bold;
 	border-radius: 8px;
 	box-shadow:  0 0 8px rgba(0,0,0,.6);
@@ -23,9 +24,10 @@
 	padding: 20px;
 	margin-top: 20px;
 	margin-bottom: 20px;
-	background: rgba(0,0,0,.1);
+	background-color: var(--primary-color);
+	color: #e2e2e2;
 	border-radius: 8px;
-	box-shadow: 0 6px 10px rgba(0,0,0,.3);
+	box-shadow: 0 6px 8px rgba(37,37,37,.8);
 }
 
 .shopping-cart .last-typography {

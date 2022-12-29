@@ -1,0 +1,132 @@
+.welcome,
+.welcome .info {
+	box-sizing: border-box;
+}
+
+.welcome {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 30px 8px;
+	width: 100%;
+	min-height: 100vh;
+	margin-top: -85.13px;
+	background-color: var(--primary-color);
+}
+
+.welcome header > p {
+	color: grey;
+}
+
+.welcome h1 {
+	font-size: 40px;
+	font-weight: bold;
+	color: rgba(255, 255, 255, .9);
+	transform: rotate(-10deg);
+}
+
+.welcome h2 {
+	font-size: 28px;
+	font-weight: bold;
+	color: rgba(255, 255, 255, .7);
+}
+
+.welcome .title-logo {
+	padding: 20px;
+}
+
+.welcome .info {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 540px;
+	margin-top: 60px;
+	padding: 20px;
+	box-shadow: 0 4px 7px rgba(0,0,0,.4);
+	border-radius: 8px;
+	background-color: var(--background-orange);
+}
+
+.welcome .info h5 { font-weight: bold }
+
+.welcome .info p { color: var(--primary-color-dark); }
+
+.welcome .info {
+	color: #fff;
+}
+
+.welcome .info .list li h6 {
+	font-size: 20px;
+}
+
+.welcome .info .list {
+	margin-top: 20px;
+	width: 400px;
+	text-align: left;
+	color: #fff;
+	font-size: 20px;
+}
+
+.welcome .info .list li::marker {
+	color: var(--primary-color-dark);
+	font-weight: bold;
+}
+
+.welcome .info .btn-welcome {
+	margin-top: 20px;
+	background-color: var(--primary-color);
+	color: #fff;
+}
+
+@media (max-width: 600px) {
+	.welcome img {
+		width: 200px;
+	}
+	.welcome h1 {
+		font-size: 26px;
+	}
+	.welcome h2 {
+		font-size: 20px;
+	}
+
+	.welcome .info {
+		position: relative;
+		margin-top: 20px;
+		width: 90vw;
+	}
+
+	.welcome .info .list {
+		width: 90%;
+	}
+
+	.welcome .info h5 {
+		font-size: 20px;
+	}
+
+	.welcome .info p {
+		font-size: 14px;
+	}
+
+	.welcome .info .list li h6,
+	.welcome .info .list {
+		font-size: 14px;
+	}
+
+	.welcome .info .btn-welcome {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 380px) {
+	.welcome .info {
+		padding: 5px;
+	}
+}
+
+@media (max-width: 350px) {
+	.welcome .info {
+		width: 98vw;
+	}
+}

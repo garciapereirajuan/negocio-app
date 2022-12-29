@@ -2,8 +2,14 @@ const express = require('express')
 const router = express.Router()
 const multipart = require('connect-multiparty')
 const MainProductController = require('../controllers/mainProduct')
-const md_upload_image = multipart({ uploadDir: './uploads/image'})
 const md_auth = require('../middlewares/authenticated')
+
+// USAR ESTA LINEA CUANDO LAS IMAGENES SE GUARDEN EN EL SERVER
+// const md_upload_image = multipart({ uploadDir: './uploads/image'})
+
+// USAR ESTA LINEA CUANDO LAS IMAGENES SE SUBAN AL BUCKET CON AWS-SDK
+const md_upload_image = multipart({})
+
 
 router.route('/main-product')
     .post([md_auth.ensureAuth], MainProductController.add)

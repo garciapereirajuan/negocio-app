@@ -1,8 +1,17 @@
 .layout-admin {
     margin: 0;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    width: 100%;
+    padding: 20px 8px;
+    width: 100vw;
     min-height: calc(100vh - 85.13px);
     background: var(--background-layout);
+    background: rgba(37,37,37,.2);
+}
+
+.layout-admin.background-layout {
+    min-height: calc(100vh - 85.13px);
+    background: var(--background-layout);
+}
+
+.draggable {
+    margin: 2px;
 }

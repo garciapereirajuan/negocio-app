@@ -6,3 +6,39 @@
 .list-bonus-products .bg-color-without {
     background:  var(--background-orange);
 }
+
+.list-bonus-products .bonus-product-price {
+    background: #373737;
+    padding: 2px 8px;
+    border-radius: 8px;
+    margin-left: 8px;
+}
+
+.list-bonus-products .form-checkbox {
+    margin-left: 20px;
+    padding: 4px 10px;
+    background-color: var(--primary-color);
+/*    background-color: #373737;*/
+    color: #e2e2e2;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,.8);
+    transition: all ease .2s;
+}
+
+.list-bonus-products .form-checkbox:hover{
+    box-shadow: 0 2px 8px rgba(0,0,0,.8);
+    transition: all ease .2s;
+}
+
+.list-bonus-products .form-checkbox:active{
+    box-shadow: 0 1px 2px rgba(0,0,0,.8);
+    transition: all ease .2s;
+}
+
+.list-bonus-products .form-checkbox .Mui-disabled .MuiCheckbox-root {
+    color: grey !important;
+}
+
+.list-bonus-products .form-checkbox .Mui-disabled span {
+    color: grey !important;
+}

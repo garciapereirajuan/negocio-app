@@ -50,7 +50,7 @@ export const refreshAccessTokenApi = refreshToken => {
                 return { ok: false }
             }
 
-            const { accessToken, refreshToken } = result.tokens
+            const { accessToken, refreshToken } = result
             localStorage.setItem(ACCESS_TOKEN, accessToken)
             localStorage.setItem(REFRESH_TOKEN, refreshToken)
 

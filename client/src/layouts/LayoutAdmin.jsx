@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { Grid } from '@mui/material'
 import useAuth from '../hooks/useAuth'
 
@@ -8,6 +8,8 @@ import './LayoutAdmin.css'
 const LoadRoutes = ({ routes }) => {
     const { user, isLoading } = useAuth() 
     const navigate = useNavigate()
+    const location = useLocation()
+    const layout = useRef()
 
     useEffect(() => {
         if (!user && !isLoading) {
@@ -15,9 +17,15 @@ const LoadRoutes = ({ routes }) => {
         }
     }, [user, isLoading])
 
+    useEffect(() => {
+        if (location.pathname === '/admin/login') {
+            layout.current.classList.add('background-layout')
+        }
+    }, [])
+
     return (
-        <Grid container justifyContent='center' className='layout-admin'>
-            <Grid item xs={12} sm={12} md={11} lg={11} className='layout-admin__content'>
+        <Grid container xs={12} justifyContent='center' ref={layout} className='layout-admin'>
+            <Grid item xs={11} className='layout-admin__content'>
                 <Routes>
                     {
                         routes.map((route, index) => {

@@ -1,4 +1,4 @@
-import { basePath, apiVersion } from './config'
+import { basePath, apiVersion, pathMain } from './config'
 
 export const addMainProductApi = async(token, MainProductData) => {
     const url = `${basePath}/${apiVersion}/main-product`
@@ -31,20 +31,25 @@ export const addMainProductImageApi = (token, mainProductId, image) => {
         },
     }
 
-    console.log(url, params)
-
     return fetch(url, params)
         .then(response => response.json())
         .then(result => result)
         .catch(err => err)
 }
 
-export const showMainProductImageApi = (imageId) => {
-    const url = `${basePath}/${apiVersion}/main-product-image/${imageId}`
-    return fetch(url)
-        .then(response => response.url)
-        .catch(err => err)
-}
+// export const showMainProductImageApi = (imageId) => {
+//     const imageUrl = `${pathMain}/${imageId}`
+
+//     return new Promise((res, err) => { res(imageUrl) })
+
+    // EL CODIGO DE ABAJO ES PARA SETEAR EL IMAGEURL
+    // CUANDO LA IMAGEN SE ALMACENE EN EL MISMO SERVIDOR
+
+    // const url = `${basePath}/${apiVersion}/main-product-image/${imageId}`
+    // return fetch(url)
+    //     .then(response => response.url)
+    //     .catch(err => err)
+// }
 
 export const showMainProductApi = async (mainProductsId) => {
     const url = `${basePath}/${apiVersion}/main-products`
@@ -55,7 +60,7 @@ export const showMainProductApi = async (mainProductsId) => {
         },
         body: JSON.stringify({ mainProductsId: mainProductsId })
     }
-
+    
     return fetch(url, params)
         .then(response => response.json())
         .then(result => result)

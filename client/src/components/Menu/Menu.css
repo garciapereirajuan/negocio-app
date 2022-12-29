@@ -1,0 +1,18 @@
+.MuiMenu-paper {
+	background-color: var(--primary-color-dark) !important;
+}
+
+.MuiMenu-list li {
+	color: #fff;
+}
+
+.MuiMenu-list .menu-item-checkbox {
+/*	background: red;*/
+}
+
+.MuiMenu-list .menu-item{
+	min-height: 10px !important;
+	margin: 2px 8px;
+	background-color: var(--background-orange);
+	border-radius: 8px;
+}

@@ -120,8 +120,7 @@ const AddEditProduct = () => {
 
         const data = {
             ...mainProductData,
-            price: parseInt(mainProductData.price),
-            order: 1000,
+            price: parseInt(mainProductData.price)
         }
 
         if (!image || typeof (image) === 'string') {
@@ -146,13 +145,14 @@ const AddEditProduct = () => {
 
         addMainProductApi(token, data)
             .then(response => {
+                setAlert(['success', 'Subiendo imagen y guardando el producto, por favor espera...'])
+
                 if (response?.code !== 200) {
                     setAlert(['error', response.message])
                     return
                 }
-                if (response?.code === 200) {
-                    console.log('Entra en la parte de la imagen', response)
 
+                if (response?.code === 200) {
                     addMainProductImageApi(token, response.mainProductId, image.file)
                         .then(response => {
                             if (response?.code !== 200) {
@@ -213,16 +213,16 @@ const AddEditProduct = () => {
 
         updateMainProductApi(token, mainProductId, data)
             .then(response => {
+                setAlert(['success', 'Subiendo imagen y guardando el producto, por favor espera...'])
+                
                 if (response?.code !== 200) {
                     setAlert(['error', response.message])
                     return
                 }
+
                 if (response?.code === 200) {
                     addMainProductImageApi(token, mainProductId, image.file)
                         .then(response => {
-                            
-                            console.log('Entra en la parte de la imagen', image)
-                            
                             if (response?.code !== 200) {
                                 setAlert(['error', response.message])
                                 return
@@ -287,8 +287,7 @@ const FormProduct = ({ setOpenModal, setMainProductData, allBonusProducts, prelo
         if (preloadBonusProducts.length !== 0) {
             setBonusProductsSelect(preloadBonusProducts)
         }
-
-        console.log('preloadBonusProducts', preloadBonusProducts)
+        
     }, [preloadBonusProducts])
 
     useEffect(() => {

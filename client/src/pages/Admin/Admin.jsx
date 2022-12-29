@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { Helmet } from 'react-helmet'
 import { useLocation, useNavigate } from 'react-router-dom'
 import queryString from 'query-string'
 import { Switch, Grid, Typography } from '@mui/material'
@@ -8,6 +9,17 @@ import ListBonusProducts from '../../components/Admin/ListBonusProducts'
 import { showMainProductApi } from '../../api/mainProduct'
 import { showCategoriesApi } from '../../api/categories'
 import { showBonusProductApi } from '../../api/bonusProduct'
+
+const styleHeaders = {
+    marginLeft: "4px",
+    padding: "2px 8px",
+    borderRadius: "4px",
+    backgroundColor: "#d95d39",
+    color: "#373737",
+    boxShadow: "0px 1px 4px rgba(0, 0, 0, .4)",
+    fontWeight: "bold",
+    cursor: "pointer"
+}
 
 const Products = () => {
     const [allMainProducts, setAllMainProducts] = useState([])
@@ -86,38 +98,49 @@ const Products = () => {
     }, [selectedMainProducts])
 
     return (
-        <div>
-            <Grid container xs={12} justifyContent='space-between' className='list-products'>
-                <Grid item xs={1.8} justifyContent='center'>
-                    <Typography variant='h6' className='format-icon'>
-                        Categorías
-                    </Typography>
-                    <ListCategories allCategories={allCategories} />
-                </Grid>
-                <Grid item xs={10} justifyContent='center'>
-                    <Typography variant='h6' className='format-icon'>
-                        <span ref={spanProducts} >Productos</span>
-                        <Switch
-                            color='default'
-                            checked={!selectedMainProducts}
-                            onChange={(e) => navigate(`/admin/products?bonuspage=${e.target.checked}`)}
-                        />
-                        <span ref={spanBonus} >Complementos</span>
-                    </Typography>
-                    {
-                        selectedMainProducts
-                            ? <ListMainProducts 
-                                allMainProducts={allMainProducts}
-                                setReloadAllMainProducts={setReloadAllMainProducts} 
+        <>
+            <Helmet>
+                <title>Panel de control | Rotisería Pepitos</title>
+                <meta 
+                    name='description'
+                    content='Admin | Rotisería Pepitos'
+                    data-react-helmet='true'
+                />
+            </Helmet>
+            <div>
+                <Grid container xs={12} className='list-products'>
+                    <Grid item xs={2.8} justifyContent='space-between'>
+                        <Typography variant='h6' style={styleHeaders}>
+                            Categorías
+                        </Typography>
+                        <ListCategories allCategories={allCategories} />
+                    </Grid>
+                    <Grid item xs={0.2} />
+                    <Grid item xs={9} justifyContent='center'>
+                        <Typography variant='h6' style={styleHeaders}>
+                            <span ref={spanProducts} >Productos</span>
+                            <Switch
+                                color='default'
+                                checked={!selectedMainProducts}
+                                onChange={(e) => navigate(`/admin/products?bonuspage=${e.target.checked}`)}
                             />
-                            : <ListBonusProducts 
-                                allBonusProducts={allBonusProducts} 
-                                setReloadAllBonusProducts={setReloadAllBonusProducts} 
-                            />
-                    }
+                            <span ref={spanBonus} >Complementos</span>
+                        </Typography>
+                        {
+                            selectedMainProducts
+                                ? <ListMainProducts 
+                                    allMainProducts={allMainProducts}
+                                    setReloadAllMainProducts={setReloadAllMainProducts} 
+                                />
+                                : <ListBonusProducts 
+                                    allBonusProducts={allBonusProducts} 
+                                    setReloadAllBonusProducts={setReloadAllBonusProducts} 
+                                />
+                        }
+                    </Grid>
                 </Grid>
-            </Grid>
-        </div>
+            </div>
+        </>
     )
 }
 

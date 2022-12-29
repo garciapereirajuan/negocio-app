@@ -10,6 +10,7 @@ export const generateMessage = () => {
 	let messageFinish = ''
 	let space = '*--------------------------------*'
 	let greeting = ''
+	let infoMessage = ''
 
 	if (moment().hours() <= 12) {
 		greeting = 'Buenos días.'
@@ -22,12 +23,18 @@ export const generateMessage = () => {
 	}
 
 	if (dataAddress.name) {
-		greeting = `${greeting}\nEste pedido es a nombre de ${dataAddress.name}`
+		infoMessage = `*Este pedido es a nombre de ${dataAddress.name}*\n`
 	}
 
-	if (dataAddress.address) {
-		greeting = `${greeting}\n${dataAddress.addressText}`
+	if (dataAddress.addressText) {
+		infoMessage = `${infoMessage}${dataAddress.addressText}\n`
 	}
+
+	if (dataAddress.timeText) {
+		infoMessage = `${infoMessage}${dataAddress.timeText}\n`
+	}
+
+	infoMessage = `${infoMessage}Por favor.\n\nMuchas gracias.`
 
 	data.forEach(item => {
 		let title = item.title
@@ -39,7 +46,7 @@ export const generateMessage = () => {
 		for (const bonus in bonusProductsOk) {
 			if (bonusProductsOk[bonus]) {
 				bonusProductsTrue.push(bonus)
-			} 
+			}
 		}
 
 		if (bonusProductsTrue.length !== 0) {
@@ -55,7 +62,7 @@ export const generateMessage = () => {
 
 		quantity = quantity === 0.5 ? '1/2' : quantity
 
-		let messageStart = `*${quantity}${dozen && dozen} x ${title}*`
+		let messageStart = `*${quantity}${dozen ? dozen : ''} x ${title}*`
 		let messageOptions = bonusProductsTrue ? ` ${'\n'}Con las siguientes opciones: ${'\n'}${bonusProductsTrue}` : '\nSin ninguna opción.'
 
 		let message = `${messageStart}${messageOptions}\n${space}\n`
@@ -64,7 +71,7 @@ export const generateMessage = () => {
 	})
 
 	messageFinish = array.join('')
-	messageFinish = encodeURI(`${greeting}\n\nMi pedido es:\n${space}\n${messageFinish}`)
+	messageFinish = encodeURI(`${greeting}\n\nMi pedido es:\n${space}\n${messageFinish}\n${infoMessage}`)
 
 	return messageFinish
 }

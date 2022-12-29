@@ -10,6 +10,7 @@ exports.createAccessToken = user => {
         lastname: user.lastname,
         username: user.username,
         email: user.email,
+        type: user.type,
         createAccessToken: moment().unix(),
         exp: moment().add(3, 'hours').unix()
     }

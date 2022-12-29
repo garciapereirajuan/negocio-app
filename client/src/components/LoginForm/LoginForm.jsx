@@ -10,6 +10,10 @@ const LoginForm = ({ setOpenModal, setAlertPage }) => {
     const [userData, setUserData] = useState({})
     const navigate = useNavigate()
 
+    useEffect(() => {
+        setUserData({...userData, user: "Invitado", password: "invitado"})
+    }, [])
+
     const login = (e) => {
         e.preventDefault()
 
@@ -69,12 +73,14 @@ const LoginForm = ({ setOpenModal, setAlertPage }) => {
                 <FormControl>
                     <TextField
                         label='Nombre de usuario o correo electrónico'
+                        value={userData.user || "Invitado"}
                         onChange={(e) => setUserData({ ...userData, user: e.target.value })}
                     />
                 </FormControl>
                 <FormControl>
                     <TextField
                         label='Contraseña'
+                        value={userData.password || "invitado"}
                         type='password'
                         onChange={(e) => setUserData({ ...userData, password: e.target.value })}
                     />

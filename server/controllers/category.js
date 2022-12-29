@@ -1,7 +1,7 @@
 const Category = require('../models/category')
 const message = require('../utils/message')
 
-const add = (req, res) => {
+exports.add = (req, res) => {
     const data = req.body
 
     if (!data.title) {
@@ -30,7 +30,7 @@ const add = (req, res) => {
         })
 }
 
-const show = (req, res) => {
+exports.show = (req, res) => {
 
     Category.find({}).sort('order').exec((err, categories) => {
         if (err) {
@@ -47,7 +47,7 @@ const show = (req, res) => {
     })
 }
 
-const update = (req, res) => {
+exports.update = (req, res) => {
     const { id } = req.params
     const data = req.body
 
@@ -77,7 +77,7 @@ const update = (req, res) => {
     })
 }
 
-const updateOrder = (req, res) => {
+exports.updateOrder = (req, res) => {
     const { id } = req.params
     const data = req.body
     
@@ -101,7 +101,7 @@ const updateOrder = (req, res) => {
     })
 }
 
-const remove = (req, res) => {
+exports.remove = (req, res) => {
     const { id } = req.params
 
     Category.findByIdAndDelete(id, (err, category) => {
@@ -116,8 +116,4 @@ const remove = (req, res) => {
 
         message(res, 200, 'Categoría eliminada correctamente.')
     })
-}
-
-module.exports = {
-    add, show, update, updateOrder, remove
 }

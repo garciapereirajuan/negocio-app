@@ -1,5 +1,7 @@
 .MuiToolbar-gutters {
     background-color: var(--primary-color) !important;
+    height: 85.1333px !important;
+    box-shadow: 0 8px 12px rgba(0,0,0,.4);
 }
 
 .btn-in-and-out {
@@ -8,7 +10,7 @@
 
 .required-space-bar {
     /*al costado de los botones*/
-    width: 80px;
+    width: 30px;
 }
 
 .btn-product-and-bonus {
@@ -19,3 +21,30 @@
 .btn-product-and-bonus:hover {
     background: var(--btns-navbar-hover) !important;
 }
+
+/*.navbar .group-shadow-decoration {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    height: 85.1333px;
+    width: 100%;
+    background-color: var(--primary-color);
+    z-index: -1;
+}
+
+.navbar .group-shadow-decoration .shadow-decoration {
+    top: 0;
+    width: 100%;
+    min-width: 100px;
+    margin-right: 10px;
+    height: 85.1333px;
+    background-color: var(--primary-color);
+    box-shadow: 0 6px 10px rgba(0,0,0,.6);
+    border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+    .navbar .group-shadow-decoration .shadow-decoration {
+        min-width: 33.33%;
+    }
+}*/

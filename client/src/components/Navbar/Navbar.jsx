@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom'
 import { AppBar, Box, Toolbar, Typography, Button, IconButton, Badge } from '@mui/material'
+import Menu from '../Menu'
+import Total from '../Total'
+import DialogMui from '../DialogMui'
+import exportStyleButtonDialog from '../DialogMui/exportStyleButtonDialog'
 import useAuth from '../../hooks/useAuth'
 import { logout } from '../../api/auth'
+import queryString from 'query-string'
 
 import ShoppingCart from '@mui/icons-material/ShoppingCart';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout'
+import LogoutIcon from '@mui/icons-material/Logout';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import MenuIcon from '@mui/icons-material/Menu';
 import PepitosLogo from '../../assets/img/png/pepitos-logo.png';
 
 import './Navbar.css'
@@ -32,17 +39,15 @@ const prevView = (
     </Link>
 )
 
-const btnOut = (
-    <IconButton
-        onClick={() => {
-            logout()
-            window.location.href = '/products'
-        }}
-        color="inherit"
-        className='btn-in-and-out'
-    >
-        <LogoutIcon />
-    </IconButton>
+const btnArrowBack = (
+    <Link to='/products'>
+        <IconButton
+            color='inherit'
+            className='btn-back'
+        >
+            <ArrowBackIosIcon />
+        </IconButton>
+    </Link>
 )
 
 const btnNewBonus = (
@@ -90,19 +95,46 @@ const btnGoToAdmin = (
     </Link>
 )
 
+const IconLogo = () => (
+    <Link to='/welcome'>
+        <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+        >
+            <img src={PepitosLogo} width={140} alt='Logo de Rotisería Pepitos' />
+        </IconButton>
+    </Link>
+)
+
 export default function Navbar() {
+    const [openDialog, setOpenDialog] = useState(false)
+    const [titleDialog, setTitleDialog] = useState("")
+    const [contentDialog, setContentDialog] = useState(null)
+    const [actionsDialog, setActionsDialog] = useState(null)
     const [title, setTitle] = useState('')
+    const [total, setTotal] = useState(0)
     const [btnInOut, setBtnInOut] = useState(btnIn)
     const [contentCenter, setContentCenter] = useState('')
     const [notification, setNotification] = useState(0)
+    const [locationPath, setLocationPath] = useState('')
+
     const location = useLocation()
     const { user, isLoading } = useAuth()
 
     const widthScreen = window.innerWidth 
 
     useEffect(() => {
+        setLocationPath(location.pathname)
+
+        if (location.pathname === "/confirm") {
+            setTitle("")
+            return
+        }
         if (location.pathname === '/products') {
-            setTitle('Organizá tu pedido')
+            setTitle(total > 0 ? <Total total={total} /> : 'Organizá tu pedido')
             return
         }
         if (location.pathname === '/admin/login') {
@@ -113,7 +145,7 @@ export default function Navbar() {
             setTitle('Generá el mensaje con tu pedido')
             return
         }
-    }, [location])
+    }, [location, total])
 
     useEffect(() => {
         if (widthScreen <= 1000) {
@@ -121,7 +153,7 @@ export default function Navbar() {
         }
 
         if (user && !isLoading) {
-            if (!/admin/.test(location.pathname)) {
+            if (!/admin/.test(locationPath)) {
                 return
             }
 
@@ -142,9 +174,17 @@ export default function Navbar() {
 
     useEffect(() => {
         if (location.pathname === '/admin/products') {
+            setContentCenter(
+                <>
+                    {btnNewCategory}
+                    {btnNewProduct}
+                    {btnNewBonus}
+                </>
+            )
             return
         }
         if (user && !isLoading) {
+            setBtnInOut(btnOut)
             setContentCenter(
                 btnGoToAdmin
             )
@@ -160,23 +200,96 @@ export default function Navbar() {
         }
     }, [location])
 
+    useEffect(() => {
+        let query = queryString.parse(location.search)
+        
+        if (query) {
+            const totalStorage = localStorage.getItem('total')
+
+
+            if (!totalStorage || totalStorage === 0) {
+                return
+            }
+            
+            setTotal(totalStorage)
+        }
+
+    }, [location])
+
+    const logoutDialog = () => {
+        const { styleButtonDialogConfirm, styleButtonDialogCancel } = exportStyleButtonDialog
+
+        const cancel = () => {
+            setOpenDialog(false)
+        }
+        
+        const confirm = () => {
+            logout()
+            window.location.href = '/products'
+        }
+
+        setOpenDialog(true)
+        setTitleDialog('Cerrarando sesión...')
+        setContentDialog(
+            <div style={{display: 'flex'}}>
+                <div style={{marginRight: '4px'}}>
+                    ¿Quieres cerrar sesión?<br/>
+                    Para volver al panel de Administrador deberás ingresar de nuevo.
+                </div>
+            </div>
+        )
+        
+        setActionsDialog(
+            <>
+                <Button
+                    onClick={cancel}
+                    variant="contained"
+                    style={styleButtonDialogCancel}
+                >
+                    Cancelar
+                </Button>   
+                <Button
+                    style={styleButtonDialogConfirm}
+                    variant="contained"
+                    onClick={confirm}
+                >
+                    Cerrar sesión
+                </Button>
+            </>
+        )
+    }
+
+    const btnOut = (
+        <IconButton
+            onClick={logoutDialog}
+            color="inherit"
+            className='btn-in-and-out'
+        >
+            <LogoutIcon />
+        </IconButton>   
+    )
+
+    if (locationPath === '/welcome') {
+        return
+    }
+
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1 }} className='navbar'>
             <AppBar position="fixed">
                 <Toolbar>
-                    <Link to='/products'>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            sx={{ mr: 2 }}
-                        >
-                            <img src={PepitosLogo} width={140} alt='Logo de Rotisería Pepitos' />
-                        </IconButton>
-                    </Link>
                     {
-                        (/admin/.test(location.pathname) && user && !isLoading)
+                        widthScreen >= 1000 
+                            ? (
+                                <IconLogo />
+                            ) :
+                                total > 0 
+                                    ? <Total total={total} />
+                                    : <IconLogo />
+                            
+                    }
+                    
+                    {
+                        (/admin/.test(locationPath) && user && !isLoading)
                             && 
                         <>{prevView}</>
                     }
@@ -188,12 +301,18 @@ export default function Navbar() {
                                         {contentCenter}
                                     </Typography>
                                     <div className='required-space-bar' />
+                                    {
+                                        /shopping-cart|login|confirm/.test(locationPath) 
+                                        ? <>{btnArrowBack}</>
+                                        : <></>
+                                    }
                                     {btnInOut}  
                                 </>
                             ) : (
                                 <>
                                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                                     </Typography>
+                                    {/shopping-cart/.test(locationPath) && btnArrowBack}
                                 </>
                             )
                     }
@@ -206,8 +325,23 @@ export default function Navbar() {
                             </Badge>
                         </IconButton>
                     </Link>
+                    {locationPath === '/products' && <Menu />}
                 </Toolbar>
+{/*                <section className='group-shadow-decoration'>
+                    <div className='shadow-decoration' />
+                    <div className='shadow-decoration' />
+                    <div className='shadow-decoration' />
+                    <div className='shadow-decoration' />
+                    <div className='shadow-decoration' />
+                </section>*/}
             </AppBar>
+            <DialogMui 
+                openDialog={openDialog} 
+                setOpenDialog={setOpenDialog} 
+                titleDialog={titleDialog}
+                contentDialog={contentDialog}
+                actionsDialog={actionsDialog}
+            />
         </Box>
     );
 }

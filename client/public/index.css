@@ -1,0 +1,27 @@
+.browser-instagram {
+  display: none;
+  margin: 0;
+  padding: 8px;
+  width: 100vw;
+  min-height: 100vh;
+  color: var(--background-orange);
+  background-color: var(--primary-color);
+  font-size: 30px;
+  box-sizing: border-box;
+}
+
+.browser-instagram div {
+  margin: 40px auto;
+  width: 70%;
+  text-align: center;
+}
+
+.browser-instagram div h3 {
+  font-size: 35px;
+}
+
+@media (max-width: 600px) {
+  .browser-instagram div {
+    width: 100%;
+  }
+}

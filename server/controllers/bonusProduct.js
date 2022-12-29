@@ -1,7 +1,7 @@
 const BonusProduct = require('../models/bonusProduct')
 const message = require('../utils/message')
 
-const add = (req, res) => {
+exports.add = (req, res) => {
 	const data = req.body
 
 	if (!data?.title || !data) {
@@ -53,11 +53,9 @@ const add = (req, res) => {
 
 		saveBonusProduct()
 	})
-
-
 }
 
-const show = (req, res) => {
+exports.show = (req, res) => {
     let data = req.body
 
     if (data.bonusProductsId) {
@@ -81,7 +79,7 @@ const show = (req, res) => {
 		})
 }
 
-const update = (req, res) => {
+exports.update = (req, res) => {
 	const { id } = req.params
 	const data = req.body
 
@@ -108,7 +106,7 @@ const update = (req, res) => {
 	})
 }
 
-const updateForCheckboxAndOrder = (req, res) => {
+exports.updateForCheckboxAndOrder = (req, res) => {
 	const { id } = req.params
 	const data = req.body
 
@@ -123,7 +121,7 @@ const updateForCheckboxAndOrder = (req, res) => {
 	})
 }
 
-const remove = (req, res) => {
+exports.remove = (req, res) => {
 	const { id } = req.params
 
 	BonusProduct.findByIdAndDelete(id, (err, bonusProduct) => {
@@ -134,8 +132,4 @@ const remove = (req, res) => {
 
 		message(res, 200, 'Complemento eliminado correctamente.')
 	})
-}
-
-module.exports = {
-	add, show, update, updateForCheckboxAndOrder, remove
 }

@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt-nodejs')
 const message = require('../utils/message')
 const jwt = require('../services/jwt')
 
-const add = (req, res) => {
+exports.add = (req, res) => {
     const data = req.body
     
     if (!data.username || !data.email || !data.password) {
@@ -20,7 +20,7 @@ const add = (req, res) => {
         }
         if (hash) {
             user.password = hash
-            user.active = true //cambiar
+            user.active = false
             user.email = user.email.toLowerCase()
 
             user.save()
@@ -44,7 +44,7 @@ const add = (req, res) => {
     })
 }
 
-const login = (req, res) => {
+exports.login = (req, res) => {
     const data = req.body
 
     const email = data.email ? data.email.toLowerCase() : null
@@ -86,7 +86,7 @@ const login = (req, res) => {
                     return
                 }
                 if (!userStored.active) {
-                    message(res, 202, 'Este usuario debe ser activarse para poder ingresar.')
+                    message(res, 202, 'Este usuario debe ser autorizado para poder ingresar.')
                     return
                 }
                 if (userStored.active) {
@@ -105,7 +105,7 @@ const login = (req, res) => {
     })
 }
 
-const show = (req, res) => {
+exports.show = (req, res) => {
     const { active } = req.query
 
     User.find({ active }, (err, users) => {
@@ -123,7 +123,7 @@ const show = (req, res) => {
     })
 }
 
-const update = (req, res) => {
+exports.update = (req, res) => {
     const { id } = req.params
     const data = req.body
 
@@ -178,7 +178,7 @@ const update = (req, res) => {
     }
 }
 
-const remove = (req, res) => {
+exports.remove = (req, res) => {
     const { id } = req.params
 
     if (!id) {
@@ -204,8 +204,4 @@ const remove = (req, res) => {
 
         message(res, 200, 'Usuario eliminado correctamente.')
     })
-}
-
-module.exports = {
-    add, login, show, update, remove
 }

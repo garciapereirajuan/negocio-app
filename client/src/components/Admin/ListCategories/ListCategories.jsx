@@ -46,7 +46,7 @@ const ListCategories = ({ allCategories }) => {
     }
 
     return (
-        <List>
+        <List style={{userSelect: "none"}}>
             <DragSortableList items={itemsCategories} onSort={onSort} dropBackTransitionDuration={0.3} type="vertical" />
         </List> 
     )
@@ -55,6 +55,7 @@ const ListCategories = ({ allCategories }) => {
 const CategoryButton = ({ category, editCategory }) => {
     return (
         <Button 
+            style={{color: "#e2e2e2"}}
             onClick={() => editCategory(category)}
         >
             {category.title}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Box, Typography, FormControl, TextField, Button, Alert } from '@mui/material'
 import { addUserApi } from '../../api/user'
 

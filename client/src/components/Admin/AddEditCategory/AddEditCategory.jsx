@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import queryString from 'query-string'
 import { Box, Typography, Grid, FormControl, TextField, Button, Alert, InputLabel, Select, OutlinedInput, MenuItem, Chip } from '@mui/material'
 import DialogMui from '../../DialogMui'
+import exportStyleButtonDialog from "../../DialogMui/exportStyleButtonDialog"
 import { getAccessTokenApi } from '../../../api/auth'
 import { showMainProductApi } from '../../../api/mainProduct'
 import { addCategoryApi, updateCategoryApi, removeCategoryApi } from '../../../api/categories'
@@ -134,11 +135,14 @@ const AddEditCategory = () => {
     }
 
     const deleteCategory = (category) => {
+        const { styleButtonDialogConfirm, styleButtonDialogCancel } = exportStyleButtonDialog
+        alert(JSON.stringify(styleButtonDialogConfirm))
         const token = getAccessTokenApi()
 
         const cancelDelete = () => setOpenDialog(false)
 
         const confirmDelete = () => {
+
             removeCategoryApi(token, category._id)
                 .then(response => {
                     alert(response)
@@ -170,12 +174,15 @@ const AddEditCategory = () => {
         setActionsDialog(
             <>
                 <Button
+                    style={styleButtonDialogCancel}
+                    variant="contained"
                     onClick={cancelDelete}
                 >
                     Cancelar
                 </Button>
                 <Button
-                    style={{ color: 'red' }}
+                    style={styleButtonDialogConfirm}
+                    variant="contained"
                     onClick={confirmDelete}
                 >
                     Eliminar
@@ -183,8 +190,6 @@ const AddEditCategory = () => {
             </>
         )
     }
-
-    // console.log(categoryData)
 
     return (
         <>

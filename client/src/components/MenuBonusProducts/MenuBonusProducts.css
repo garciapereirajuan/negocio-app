@@ -1,0 +1,114 @@
+.menu-item-bonus-products .MuiSvgIcon-root {
+	fill: white;
+}
+
+.content-expand-more .MuiSvgIcon-root {
+	background: var(--background-orange);
+	width: 30px !important;
+	height: 30px !important;
+	border-radius: 50%;
+}
+
+.menu-item-button-close button {
+	margin: 4px;
+	color: #fff;
+}
+
+.menu-item-text-default {
+	margin: 8px;
+	color: #fff;
+}
+
+.MuiMenu-list .menu-item-bonus-products{
+	min-height: 10px !important;
+/*	margin: 2px 8px;*/
+	background-color: var(--background-orange);
+	border-radius: 8px;
+	padding-top: 0;
+	padding-bottom: 0;
+/*	padding-left: 0;*/
+/*	padding-right: 0;*/
+	box-shadow: 0 2px 6px rgba(0,0,0,.6);
+}
+
+.menu-item-bonus-products.MuiMenuItem-gutters {
+	padding: 0;
+	margin: 4px !important;
+	position: relative;
+}
+
+.menu-item-bonus-products.MuiMenuItem-gutters:hover {
+	background-color: #ca5433;
+}
+
+.menu-item-bonus-products.MuiMenuItem-gutters.checked {
+	background-color: #373737;
+}
+
+.menu-item-bonus-products .MuiFormControlLabel-labelPlacementEnd {
+	display: grid;
+	grid-template-columns: max-content max-content;
+	padding: 0px 8px;
+	position: relative;
+	width: 100% !important;
+}
+
+/*.menu-item-bonus-products .title-price-bonus-product {
+    display: grid;
+}*/
+
+.menu-item-bonus-products .title-bonus-product {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu-item-bonus-products .text-bonus-product-price {
+	border-radius: 8px;
+	padding: 2px 4px;
+/*	float: right;*/
+}
+
+.checkbox-collapse {
+/*    margin-top:  20px;*/
+/*    text-align: left;*/
+}
+
+.menu-item-bonus-products .MuiFormControl-root {
+/*    width:  100%;*/
+/*    padding: 20px;*/
+}
+
+.menu-item-bonus-products .MuiFormControlLabel-labelPlacementEnd {
+/*    position: relative;*/
+/*    margin-bottom: 4px;*/
+/*    border-radius: 4px;*/
+/*	margin-left: 0 !important;
+	margin-right: 0 !important;
+    width: 100%;*/
+/*    background-color: rgba(0,0,0,.2); */
+/*	background: var(--background-orange);*/
+}
+
+.menu-item-bonus-products .text-bonus-product-price {
+	margin-left: 4px;
+	font-weight: bold;
+}
+
+.menu-item-bonus-products .text-bonus-product-price.green {
+    color: var(--green-color);
+    background: #373737;
+}
+
+.menu-item-bonus-products .text-bonus-product-price.red {
+    color: var(--background-red);
+    background: #373737;
+}
+
+.menu-item-bonus-products .width-price {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+/*    font-weight: bold;*/
+    color: rgba(255,255,255,.8);
+}

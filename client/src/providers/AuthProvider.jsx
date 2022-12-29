@@ -1,7 +1,6 @@
 import { useState, useEffect, createContext } from 'react'
 import { getAccessTokenApi, getRefreshTokenApi, refreshAccessTokenApi, logout } from '../api/auth'
 import jwtDecode from 'jwt-decode'
-import { FlashOnRounded } from '@mui/icons-material'
 
 export const AuthContext = createContext()
 

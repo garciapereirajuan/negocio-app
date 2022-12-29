@@ -23,3 +23,10 @@ yarn-debug.log*
 yarn-error.log*
 
 .vercel
+.env
+
+bucket-publico-politica-de-privacidad.txt
+s3_listBuckets.js
+s3_listObjects.js
+s3_upload.js
+config_firebase.js

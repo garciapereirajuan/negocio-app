@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom'
-import { styled } from '@mui/material/styles';
 import { 
     Card, CardHeader, CardMedia, CardContent, CardActions, 
-    Collapse, Avatar, IconButton, Typography, Grid, Checkbox, 
-    TextField, FormControl, FormGroup, FormControlLabel, Alert,
-    Select, MenuItem
+    IconButton, Typography, Grid, Checkbox, 
+    FormControl, FormGroup, FormControlLabel, Alert,
+    Select, MenuItem, Collapse, Fade
 } from '@mui/material'
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+import LoadingButton from "@mui/lab/LoadingButton"
+import { v4 as uuidv4 } from 'uuid'
+import accounting from 'accounting'
+import { styled } from '@mui/material/styles';
+import MenuBonusProducts from '../MenuBonusProducts'
+import { showMainProductImageApi } from '../../api/mainProduct'
 import AddShoppingCart from '@mui/icons-material/AddShoppingCart';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-import imgExample from '../../assets/img/jpg/papas-ketchup.jpg'
-import accounting from 'accounting'
+import CloseIcon from '@mui/icons-material/Close';
 import NoImage from '../../assets/img/png/NoImage.png'
-import { showMainProductImageApi } from '../../api/mainProduct'
-import { v4 as uuidv4 } from 'uuid'
+import getImage from "../../utils/getImage"
 
 import './Product.css'
 
@@ -32,13 +32,22 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function Product({ product, bonusProducts, bonusProductsOk, setTotal, setBasket }) {
-    const { stock, title, price, rating, description } = product
+export default function Product({ product, bonusProducts, bonusProductsOk, setTotal, total, setBasket }) {
+    let { stock, title, price, rating, description, image } = product
+    const [priceProduct, setPriceProduct] = useState(0)
     const [productData, setProductData] = useState({})
     const [bonusProductData, setBonusProductData] = useState({})
     const [expanded, setExpanded] = useState(false)
-    const [imageUrl, setImageUrl] = useState(null)
+    const [labelImage, setLabelImage] = useState('')
+    const [evalBonusPrice, setEvalBonusPrice] = useState({})
+    const [classRotate, setClassRotate] = useState(false)
+    const [loadingButton, setLoadingButton] = useState(false)
     const [alert, setAlert] = useState([])
+
+    // NECESARIO PARA LA RUTA DE LA IMAGEN
+    // const [imageUrl, setImageUrl] = useState(null)
+
+    const containerTextPrice = useRef()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -63,41 +72,73 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
         })
     }, [])
 
-    useEffect(() => {
-        if (!product.image) {
-            setImageUrl(NoImage)
-            return
-        }
+    //NECESARIO PARA SABER LA RUTA DE LA IMAGEN
 
-        showMainProductImageApi(product.image)
-            .then(response => {
+    // useEffect(() => {
+    //     if (!product.image) {
+    //         setImageUrl(NoImage)
+    //         return
+    //     }
 
-                setImageUrl(response)
-            })
-            .catch(err => console.log('Error al cargar la imagen', err))
-    }, [product])
+    //     showMainProductImageApi(product.image)
+    //         .then(response => {
+    //             setImageUrl(response)
+    //         })
+    //         .catch(err => console.log('Error al cargar la imagen', err))
+
+    // }, [product])
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };  
 
+    useEffect(() => {
+        let currentPrice = 0
+        let evalBonusPriceArray = []
+        const quantity = productData.quantity
+        containerTextPrice.current.classList.add("animation")
+        setTimeout(() => containerTextPrice.current.classList.remove("animation"), 2000)
+
+        currentPrice = 0
+        
+        if (Object.keys(evalBonusPrice).length !== 0) {
+            
+            for (const item in evalBonusPrice) {
+
+                if (evalBonusPrice[item]) {
+                    evalBonusPriceArray.push(item)
+                }
+            }
+
+            evalBonusPriceArray = evalBonusPriceArray.join('')
+            currentPrice = eval(`${price}${evalBonusPriceArray}`)
+            currentPrice = quantity * currentPrice
+        } else {
+            currentPrice = quantity * price
+        }
+
+        setPriceProduct(currentPrice)
+    }, [productData.quantity, evalBonusPrice])
+
+    useEffect(() => {
+        if (alert.length !== 0 && loadingButton) {
+            setLoadingButton(false)
+        }
+    }, [alert])
+
     const addProduct = () => {
         if (!stock) {
-            const seconds = 5000
-            setProductData(obj => ({ ...obj, alert: true }))
             setAlert(['error', `${productData.title} no está disponible`, productData.title])
-            setTimeout(() => {
-                setProductData(obj => ({ ...obj, alert: false}))
-            }, seconds)
-
             return
         }
 
         const data = {
             ...productData, 
             bonusProductsOk: bonusProductData,
+            evalBonusPriceOk: evalBonusPrice,
             id: uuidv4(),
         }
+
         let basketStorage = localStorage.getItem('basket')
 
         if (basketStorage) {
@@ -112,24 +153,26 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
         localStorage.setItem('basket', JSON.stringify(basketStorage))
         localStorage.setItem('basketLength', basketStorage.length)
 
-        navigate(`/products?basket=${basketStorage.length}`)
+        let totalOfProduct = priceProduct
+        let totalOfBasket =  Number.parseInt(total) + totalOfProduct
+
+        localStorage.setItem('total', totalOfBasket)
+
+        setTotal(total => totalOfBasket)
+        navigate(`/products?basket=${basketStorage.length}&total=${totalOfBasket}`)
         //esto está sólo para que NavBar reconozca el cambio 
         //y modifique el número del carrito gracias a volver
         //a renderizar el useEffect con location y cambiar el número
-
-        let totalOfProduct = (productData.price * productData.quantity)
-        setTotal(total => (
-            Number.parseInt(total) + totalOfProduct)
-        )
 
         data.quantity = 1
         data.alert = true
         data.bonusProductsOk = {}
 
+        setAlert(['success', `+ $${totalOfProduct}`, data.title])
+
         setProductData({...data})
         setBonusProductData({})
-        setAlert(['success', `Producto agregado: $${totalOfProduct} +`, data.title])
-        setTimeout(() => setProductData(obj => ({ ...obj, alert: false})), 5000)
+        setEvalBonusPrice([])
     }
 
     const configNumber = (n) => {
@@ -154,197 +197,177 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
         for (let i = 1; i <= 8; i++) {
             arrayItemsQuantity.push(i)
         }
-
-        // for (let i = .5; i < 4.5; i = i + .5) {
-        //     let num = Number.parseInt(i)
-        //     let decimal = i - Math.floor(i) ? '1/2' : ''
-
-        //     if (i === .5) {
-        //         num = '1/2'
-        //         decimal = ''
-        //     }
-
-        //     arrayItemsDozen.push(
-        //         <MenuItem>
-        //             <div>
-        //                 {num}<sup>{decimal}</sup> Docena{num > 1 && 's'}
-        //             </div>
-        //         </MenuItem>
-        //     )
-        // }
-
         return arrayItemsQuantity
     }
 
-    const getPrice = (price) => {
+    const getPrice = () => {
         let currentPrice = 0
+        let evalBonusPriceArray = []
 
         currentPrice = productData.quantity * price
 
-        return currentPrice
+        if (Object.keys(evalBonusPrice).length !== 0) {
+            
+            for (const item in evalBonusPrice) {
+                if (evalBonusPrice[item]) {
+                    evalBonusPriceArray.push(item)
+                }
+            }
+
+            evalBonusPriceArray = evalBonusPriceArray.join('')
+
+            currentPrice = eval(`${currentPrice}${evalBonusPriceArray}`)
+        }
+
+        setPriceProduct(currentPrice)
+    }
+
+    let labelImageLet = ''
+
+    const ifParenthesis = (title) => {
+        if (/\([\s\S]+\)/g.test(title)) {
+            let onlyText = title.match(/\([\s\S]+\)/g)[0]
+            onlyText = onlyText.replace('(', '')
+            onlyText = onlyText.replace(')', '')
+            labelImageLet = onlyText
+            return title
+        }
+
+        labelImageLet = ''
+        return title
+    }
+
+    const handleClassRotateClick = () => {
+        if (classRotate) {
+            setClassRotate('')
+            return
+        }
+        setClassRotate('rotate')
     }
 
     return (
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Card className='product'>
-                <CardHeader
-                    // avatar={
-                    //     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                    //         R
-                    //     </Avatar>
-                    // }
-                    // action={
-                    //     <Typography
-                    //         variant='h5'
-                    //         color='textSecondary'
-                    //     >
-                    //         {accounting.formatMoney(price, '$')}
-                    //     </Typography>
-                    // }
-                    title={title}
-                    subheader={
-                        stock
-                            ? <span className='text-stock'>Disponible</span>
-                            : <span className='text-no-stock'>No disponible</span>
-                    }
-                />
-                <CardMedia
-                    component="img"
-                    height="194"
-                    image={imageUrl}
-                    alt="Paella dish"
-                />
-                <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                        <span title={description}>{description}</span>
-                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px'}}>
-                        {productData.quantity === 0.5 ? '1/2' : productData.quantity}
-                        <DoubleArrowIcon fontSize='20px'/>
-                        {
-                            <span className='text-price'>
-                            {
-                                price > 0
-                                    ? accounting.formatMoney(getPrice(price), '$')
-                                    : 'Gratis'
+        <>
+            <Fade in={image}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <Card className='product'>
+                        <CardHeader
+                            title={ifParenthesis(title)}
+                            subheader={
+                                stock
+                                    ? <span className='text-stock'>Disponible</span>
+                                    : <span className='text-no-stock'>No disponible</span>
                             }
-                            </span>
-                        }
+                        />
+                        <div className="container-image">
+                            <CardMedia
+                                component="img"
+                                height="194"
+                                image={getImage[image]}
+                                alt={"Cargando imagen: "+title}
+                            />
                         </div>
-                    </Typography>
-                </CardContent>
-                <CardActions disableSpacing>
-                    {/* {
-                    Array(rating)
-                    .fill()
-                    .map(() => (<p>&#11088;</p>))
-                } */}
-                    {/* <IconButton aria-label="add to favorites">
-                        <FavoriteIcon />
-                    </IconButton>
-                    <IconButton aria-label="share">
-                        <ShareIcon />
-                    </IconButton> */}
-                    <IconButton 
-                        arial-label="add to cart" 
-                        className='icon-shopping-cart'
-                        onClick={addProduct}
-                    >
-                        <AddShoppingCart />
-                    </IconButton>
-                    <FormControl>
-                        <div style={{display: 'flex', alignItems: "center"}}>
-                            <Select
-                                value={Number.parseFloat(productData.quantity)}
-                                onChange={(e) => setProductData({ ...productData, quantity: e.target.value })}
-                            >
-                            {
-                                getItemsQuantity().map(item => {
-                                    if (item == 0.5) {
-                                        return <MenuItem value={item}>1/2</MenuItem>
+                        {labelImageLet && <div className='label-image'>{labelImageLet}</div>}
+                        <CardContent>
+                            <Typography variant="body2" color="text.secondary">
+                                <span title={description}>{description}</span>
+                                <div className="container-text-price" ref={containerTextPrice}>
+                                    {productData.quantity === 0.5 ? '1/2' : productData.quantity}
+                                    <DoubleArrowIcon fontSize='20px'/>
+                                    {
+                                        <span className='text-price'>
+                                        {
+                                            price > 0
+                                                ? accounting.formatMoney(priceProduct, '$')
+                                                : 'Gratis'
+                                        }
+                                        </span>
                                     }
-
-                                    return <MenuItem value={item}>{item}</MenuItem>
-                                })
-                            }
-                            </Select>
-                            {/* <TextField
-                                type='text'
-                                inputMode='numeric'
-                                pattern='\d*'
-                                value={"2"}
-                                
-                            />*/}
-                            {
-                                productData.dozen
-                                && (
-                                    <Typography color='white' style={{marginLeft: '6px'}}>
-                                        Docena{productData.quantity > 1 && 's'}
-                                    </Typography>
-                                )
-                            }
-                        </div>
-                    </FormControl>
-                 <FormControl>
-                        
-                    </FormControl>
-                    <ExpandMore
-                        expand={expanded}
-                        onClick={handleExpandClick}
-                        aria-expanded={expanded}
-                        aria-label="show more"
-                    >
-                        <ExpandMoreIcon />
-                    </ExpandMore>
-                </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <CardContent>
-                        <Typography>
-                            {description}
-                        </Typography>
-                        {
-                            (bonusProducts && bonusProducts.length !== 0)
-                            && (
-                                <div className='checkbox-collapse'>
-                                    <form>
-                                        <FormControl>
-                                            <FormGroup>
-                                            {
-                                                bonusProducts.map(item => (
-                                                    <>
-                                                    <FormControlLabel 
-                                                        control={<Checkbox />}
-                                                        label={
-                                                            <div style={{display: 'flex'}}>
-                                                                <div 
-                                                                    className='title-capitalize' 
-                                                                    style={{marginRight: '4px'}}
-                                                                >
-                                                                    {item.option}
-                                                                </div>
-                                                                {item.title}
-                                                            </div>
-                                                        }
-                                                        checked={bonusProductData[`${item.option} ${item.title}`]}
-                                                        onChange={e => setBonusProductData({ ...bonusProductData, [`${item.option} ${item.title}`]: e.target.checked })}
-                                                    />
-                                                    </>
-                                                ))
-                                            }
-                                            </FormGroup>
-                                        </FormControl>        
-                                    </form>
                                 </div>
-                            )
-                        }
-                    </CardContent>
-                </Collapse>
-            </Card>
-            {
-                (alert[2] === productData.title 
-                    && productData.alert) &&
+                            </Typography>
+                        </CardContent>
+                        <CardActions disableSpacing>
+                            <LoadingButton 
+                                arial-label="add to cart" 
+                                className='icon-shopping-cart'
+                                loading={loadingButton}
+                                variant="outlined"
+                                onClick={() => {
+                                    setLoadingButton(true);
+                                    setTimeout(() => {
+                                        addProduct(); 
+                                        setExpanded(false);                                
+                                    }, 100)
+                                }}
+                            >
+                                <Fade in={!loadingButton}><AddShoppingCart /></Fade>
+                            </LoadingButton>
+                            <FormControl>
+                                <div style={{display: 'flex', alignItems: "center"}}>
+                                    <Select
+                                        value={Number.parseFloat(productData.quantity)}
+                                        onChange={(e) => setProductData({ ...productData, quantity: e.target.value })}
+                                    >
+                                    {
+                                        getItemsQuantity().map(item => {
+                                            if (item == 0.5) {
+                                                return <MenuItem value={item}>1/2</MenuItem>
+                                            }
 
-                <Alert severity={alert[0]}>{alert[1]}</Alert>
-            }
-        </Grid>
+                                            return <MenuItem value={item}>{item}</MenuItem>
+                                        })
+                                    }
+                                    </Select>
+                                    {
+                                        productData.dozen
+                                        && (
+                                            <Typography color='white' style={{marginLeft: '6px'}}>
+                                                Docena{productData.quantity > 1 && 's'}
+                                            </Typography>
+                                        )
+                                    }
+                                </div>
+                            </FormControl>
+                         <FormControl>
+                                
+                            </FormControl>
+                            <ExpandMore
+                                className='expand-more-element'
+                                aria-label="show more"
+                            >
+                                <div className='content-expand-more'>
+                                    <MenuBonusProducts
+                                        typeProduct={0}
+                                        bonusProducts={bonusProducts} 
+                                        bonusProductData={bonusProductData} 
+                                        setBonusProductData={setBonusProductData} 
+                                        setEvalBonusPrice={setEvalBonusPrice} 
+                                    />
+                                </div>
+                            </ExpandMore>
+                        </CardActions>
+                    </Card>
+                    <Collapse in={alert.length !== 0}>
+                        <Alert
+                          action={
+                            <IconButton
+                              aria-label="close"
+                              color="inherit"
+                              size="small"
+                              onClick={() => {
+                                setAlert([]);
+                              }}
+                            >
+                              <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                          }
+                          sx={{ mb: 2 }}
+                          severity={alert[0]}
+                        >
+                          {alert[1]}
+                        </Alert>
+                    </Collapse>
+                </Grid>
+            </Fade>
+        </>
     );
 }

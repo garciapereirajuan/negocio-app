@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Typography, Grid, Button, Link, FormControl, FormLabel, TextField, FormControlLabel, RadioGroup, Radio, Checkbox } from '@mui/material'
+import { Helmet } from 'react-helmet'
+import { Typography, Grid, Button, Link, FormControl, FormLabel, TextField, FormControlLabel, RadioGroup, Radio, Checkbox, Fade } from '@mui/material'
 import Products from '../../components/Products'
 import { showBonusProductApi } from '../../api/bonusProduct'
 import accounting from 'accounting'
 import { generateMessage } from '../../utils/generateMessage'
 import ModalMui from '../../components/ModalMui' 
 import DialogMui from '../../components/DialogMui'
+import exportStyleButtonDialog from "../../components/DialogMui/exportStyleButtonDialog"
 
 import './ShoppingCart.css'
 
@@ -23,6 +25,10 @@ const ShoppingCart = () => {
 	const [actionsDialog, setActionsDialog] = useState(null)
 
 	const navigate = useNavigate()
+
+	useEffect(() => {
+		window.scroll(0,0)
+	}, [])
 
 	useEffect(() => {
 		const totalStorage = localStorage.getItem('total')
@@ -64,26 +70,29 @@ const ShoppingCart = () => {
 
 	if (basket.length === 0) {
 		return (
-			<div className='shopping-cart'>
-				<Typography 
-	                variant='h4' 
-	                className={`category-title`}
-	            >
-	                Confirmá tu pedido
-	            </Typography>
-	            <Typography variant='h6'>
-	            	Tu carrito de compras está vacío.
-	            </Typography>
-            	<Button
-            		onClick={() => navigate('/products')}
-            	>
-            		Volver
-            	</Button>
-			</div>
+			<Fade in={true}>
+				<div className='shopping-cart'>
+					<Typography 
+		                variant='h4' 
+		                className={`category-title`}
+		            >
+		                Confirmá tu pedido
+		            </Typography>
+		            <Typography variant='h6'>
+		            	Tu carrito de compras está vacío.
+		            </Typography>
+	            	<Button
+	            		onClick={() => navigate('/products')}
+	            	>
+	            		Volver
+	            	</Button>
+				</div>
+			</Fade>
 		)
 	}
 
 	const clean = () => {
+		const { styleButtonDialogConfirm, styleButtonDialogCancel } = exportStyleButtonDialog
 
 		const remove = () => {
 			localStorage.removeItem('basket')
@@ -101,12 +110,15 @@ const ShoppingCart = () => {
 		setActionsDialog(
 			<>
 				<Button 
+					style={styleButtonDialogCancel}
+					variant="contained"
 					onClick={() => setOpenDialog(false)}
 					>
 					Cancelar
 				</Button>
 				<Button 
-					color='error'
+					style={styleButtonDialogConfirm}
+					variant="contained"
 					onClick={remove}
 				>
 					Eliminar
@@ -116,67 +128,75 @@ const ShoppingCart = () => {
 	}
 
 	return (
-		<div className='shopping-cart'>
-			<Typography 
-                variant='h4' 
-                className={`category-title`}
-            >
-                Confirmá tu pedido
-            </Typography>
-            <Typography>
-            	Presioná confirmar para generar el mensaje con tu pedido
-            </Typography>
-            <Typography>
-            	y enviarlo por WhatsApp
-            </Typography>
-            <Total total={total} setOpenModal={setOpenModal}/>
-            <Typography className='last-typography'>
-            <Button
-                className='btn-confirm'
-                variant='contained'
-                color='error'
-                onClick={clean}
-            >
-                Limpiar el carrito
-            </Button>
-            </Typography>
-			<Products 
-				allMainProducts={basket} 
-				allBonusProducts={bonusProducts} 
-				setTotal={() => {}} 
-				setBasket={() => {}} 
-				fromBasket={true} 
-				reloadBasket={reloadBasket}
-				reloadTotal={reloadTotal}
-				setReloadBasket={setReloadBasket}
-				setReloadTotal={setReloadTotal}
-			/>
-			<Typography 
-                variant='h4' 
-                className={`category-title`}
-            >
-                Confirmá tu pedido
-            </Typography>
-            <Typography>
-            	Presioná confirmar para generar el mensaje con tu pedido
-            </Typography>
-            <Typography>
-            	y enviarlo por WhatsApp
-            </Typography>
-            <Total total={total} setOpenModal={setOpenModal}/>
-{/*            <ModalMui
-            	openModal={openModal}
-            	setOpenModal={setOpenModal}
-            	contentModal={<FormAddress />}
-			/>*/}
-			<DialogMui 
-				openDialog={openDialog} 
-				setOpenDialog={setOpenDialog}
-				titleDialog={titleDialog}
-				contentDialog={contentDialog}
-				actionsDialog={actionsDialog}
-			/>
-		</div>
+		<>
+			<Helmet>
+				<title>Tu pedido | Rotisería Pepitos</title>
+				<meta 
+					name='description'
+					content='Shopping Cart | Rotisería Pepitos'
+					data-react-helmet='true'
+				/>
+			</Helmet>
+			<Fade in={total}>
+			<div className='shopping-cart'>
+				<Typography 
+	                variant='h4' 
+	                className={`category-title`}
+	            >
+	                Confirmá tu pedido
+	            </Typography>
+	            <Typography>
+	            	Presioná confirmar para generar el mensaje con tu pedido
+	            </Typography>
+	            <Typography>
+	            	y enviarlo por WhatsApp
+	            </Typography>
+	            <Total total={total} setOpenModal={setOpenModal}/>
+	            <Typography className='last-typography'>
+	            <Button
+	                className='btn-confirm'
+	                variant='contained'
+	                color='error'
+	                onClick={clean}
+	            >
+	                Limpiar el carrito
+	            </Button>
+	            </Typography>
+				<Products 
+					allMainProducts={basket} 
+					allBonusProducts={bonusProducts} 
+					setTotal={() => {}} 
+					total={total}
+					setBasket={() => {}} 
+					fromBasket={true} 
+					reloadBasket={reloadBasket}
+					reloadTotal={reloadTotal}
+					setReloadBasket={setReloadBasket}
+					setReloadTotal={setReloadTotal}
+				/>
+				<Typography 
+	                variant='h4' 
+	                className={`category-title`}
+	            >
+	                Confirmá tu pedido
+	            </Typography>
+	            <Typography>
+	            	Presioná confirmar para generar el mensaje con tu pedido
+	            </Typography>
+	            <Typography>
+	            	y enviarlo por WhatsApp
+	            </Typography>
+	            <Total total={total} setOpenModal={setOpenModal}/>
+				<DialogMui 
+					openDialog={openDialog} 
+					setOpenDialog={setOpenDialog}
+					titleDialog={titleDialog}
+					contentDialog={contentDialog}
+					actionsDialog={actionsDialog}
+				/>
+			</div>
+			</Fade>
+		</>
 	)
 }
 
@@ -299,7 +319,7 @@ const FormAddress = () => {
 					>
 						<FormControlLabel 
 							value='option-0' 
-							control={<Radio />} 
+							control={<Radio defaultChecked />} 
 							label='Ninguna opción'
 							onChange={e => setFormData({ ...formData, address: e.target.value })} 
 						/>

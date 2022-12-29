@@ -10,7 +10,7 @@ const willExpireToken = (token) => {
     return currentDate > exp
 }
 
-const refreshAccessToken = (req, res) => {
+exports.refreshAccessToken = (req, res) => {
     const { refreshToken } = req.body
 
     if (!refreshToken) {
@@ -38,13 +38,10 @@ const refreshAccessToken = (req, res) => {
             return
         }
 
-        message(res, 200, '', { tokens: {
-            accessToken: jwt.createAccessToken(userStored),
-            refreshToken: refreshToken
-        }
+        res.status(200).send({
+          accessToken: jwt.createAccessToken(userStored),
+          refreshToken: refreshToken,
         })
     })
 
 }
-
-module.exports = { refreshAccessToken }

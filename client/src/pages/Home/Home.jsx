@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { Typography } from '@mui/material'
+import { useState, useEffect } from 'react'
+import { Helmet } from 'react-helmet'
+import { useNavigate } from 'react-router-dom'
+import { Fade, Typography, Alert } from '@mui/material'
 import Products from '../../components/Products'
 import { showMainProductApi } from '../../api/mainProduct'
 import { showCategoriesApi } from '../../api/categories'
 import { showBonusProductApi } from '../../api/bonusProduct'
-import Total from '../../components/Total'
+
+import CircularProgress from '@mui/material/CircularProgress'
 
 import './Home.css'
+import '../../components/Shared/ProductAndProductOfBasket/styles.css'
 
 const Home = () => {
     const [categoryWithMainProducts, setCategoryWithMainProducts] = useState([])
@@ -15,6 +19,9 @@ const Home = () => {
     const [allBonusProducts, setAllBonusProducts] = useState([])
     const [total, setTotal] = useState(0)
     const [basket, setBasket] = useState([])
+    const [alert, setAlert] = useState([])
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         const totalStorage = localStorage.getItem('total')
@@ -42,37 +49,102 @@ const Home = () => {
         localStorage.setItem('basket', JSON.stringify(basket))
     }, [])
 
+    const updateCategoriesForMenu = (categoriesResponse) => {
+        let categoriesForMenu = []
+
+        categoriesResponse.forEach(item => {
+            categoriesForMenu.push({
+                id: item._id,
+                title: item.title
+            })
+        })
+
+        categoriesForMenu = JSON.stringify(categoriesForMenu)
+        localStorage.setItem('categoriesForMenu', categoriesForMenu)
+        navigate('/products?menu=true')
+    }
+
     useEffect(() => {
-        // alert('Por favor espera...')
-        // setTimeout(() => alert('Sos la primer persona que ingresa en la mañana y necesito despavilarme :P. No tardaré más de 30 segundos. Aguarda...'), 5000)
-
         showCategoriesApi().then(response => {
-            setPureCategories(response.categories)
+            if (response?.code === 200) {
+                if (response.categories.length === 0) {
+                    setAlert(['warning', 'Todavía no hay nada por aquí'])
+                    return
+                }
+                
+                setAlert([])
+                setPureCategories(response.categories)
+                updateCategoriesForMenu(response.categories)
 
+            }
+            else {
+                setAlert(['error', 'No es posible conectarme a Internet, revisa tu conexión o intenta más tarde.'])
+            }
         })
+        .catch(err =>                 
+            setAlert(['error', 'No es posible conectarme a Internet, revisa tu conexión o intenta más tarde.'])
+        )
         showBonusProductApi().then(response => {
-            setAllBonusProducts(response.bonusProducts)
+            if (response?.code === 200) {            
+                if (response.bonusProducts.length === 0) {
+                    setAlert(['warning', 'Todavía no hay nada por aquí'])
+                    return
+                }
+                
+                setAlert([])
+                setAllBonusProducts(response.bonusProducts)
+            }
+            else {
+                setAlert(['error', 'No es posible conectarme a Internet, revisa tu conexión o intenta más tarde.'])
+            }
         })
-        console.log(pureCategories)
-        console.log(allBonusProducts)
+        .catch(err => 
+            setAlert(['error', 'No es posible conectarme a Internet, revisa tu conexión o intenta más tarde.'])
+        )
+
     }, [])
 
+    if (alert.length !== 0) {
+        return (
+            <div className='home-alert-error'>
+                <Alert severity={alert[0]}>{alert[1]}</Alert>
+            </div>
+        )
+    }
+
     return (
-        <div className='home'>
-            {total > 0 && <Total total={total} />}
+        <>
+            <Helmet>
+                <title>Lo más rico | Rotisería Pepitos</title>
+                <meta 
+                    name='description'
+                    content='Products | Rotisería Pepitos'
+                    data-react-helmet='true'
+                />
+            </Helmet>
             {
-                pureCategories && pureCategories.map((item, index) => (
-                    <ItemCategory 
-                        category={item} 
-                        allBonusProducts={allBonusProducts} 
-                        setTotal={setTotal}
-                        setBasket={setBasket}
-                        total={total}
-                        index={index}
-                    />  
-                ))
+                pureCategories.length === 0
+                && (
+                    <CircularProgress />
+                )
             }
-        </div>
+            <div className='home' id='home'>
+                {
+                    pureCategories.length !== 0 &&
+                    pureCategories.map((item, index) => (
+                            <ItemCategory
+                                key={item.title}
+                                category={item} 
+                                allBonusProducts={allBonusProducts} 
+                                setTotal={setTotal}
+                                setBasket={setBasket}
+                                total={total}
+                                index={index}
+                            />  
+                        ))
+                }
+            </div>
+        </>
     )
 }
 
@@ -89,20 +161,30 @@ const ItemCategory = ({ category, allBonusProducts, setTotal, setBasket, total, 
     }
 
     return (
-        <>
-            <Typography 
-                variant='h4' 
-                className={`category-title ${(total > 0 && index === 0) && 'total-visible'}`}
-            >
-                {category.title}
-            </Typography>
-            <Products 
-                allMainProducts={allMainProducts} 
-                allBonusProducts={allBonusProducts}
-                setTotal={setTotal}
-                setBasket={setBasket}
-            />
-        </>
+        <section id={category._id} className={index == 0 && 'first-child'}>
+            <Fade in={category} > 
+                <Typography
+                    variant='h4' 
+                    className={`category-title ${(total > 0 && index === 0) && 'total-visible'}`}
+                >
+                    {category.title}
+                </Typography>
+            </Fade>
+            {
+                allMainProducts.length === 0
+                ? (
+                    <CircularProgress />
+                ) : (
+                    <Products
+                        allMainProducts={allMainProducts} 
+                        allBonusProducts={allBonusProducts}
+                        setTotal={setTotal}
+                        total={total}
+                        setBasket={setBasket}
+                    />
+                )
+            }
+        </section>
     )
 }
 

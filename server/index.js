@@ -2,8 +2,15 @@ const mongoose = require('mongoose')
 const app = require('./app')
 const { API_VERSION, IP_SERVER, PORT_DB, PORT_SERVER, PASSWORD } = require('./config')
 
+exports.config = {
+    api: {
+        bodyParser: false
+    }
+}
+
 mongoose.connect(
     `mongodb+srv://jgp95:${PASSWORD}@rotiseriapepitos.edibjp4.mongodb.net/?retryWrites=true&w=majority`,
+    { useNewUrlParser: false, useUnifiedTopology: true },
     (err, res) => {
         if (err) {
             throw err

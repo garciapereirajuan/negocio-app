@@ -1,0 +1,78 @@
+.MenuSliding {
+    padding: 1rem;
+    margin-top: 85.1333px;
+    position: relative;
+    background: #282828;
+/*	background: var(--primary-color);*/
+    color: rgba(255, 255, 255, .8);
+    height: calc(100vh - (85.1333px + 1rem));
+    font-family: Quicksand, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    overflow-y: scroll;
+}
+
+.MenuSliding h3 {
+	font-size: 38px;
+}
+
+.MenuSliding button {
+    background: none;
+    border: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    fill: rgba(255, 255, 255, .8);
+    transition: all ease .2s;
+}
+
+.MenuSliding button:hover {
+    fill: var(--background-green);
+}
+
+.MenuSliding a {
+    color: rgba(255, 255, 255, .8);
+    fill: rgba(255, 255, 255, .5);
+    font-size: 20px;
+    margin: 0 -1rem;
+    padding: 0.6rem 1rem;
+    text-decoration: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    transition: all ease .2s;
+    cursor: pointer;
+}
+
+.MenuSliding a:hover {
+    color: var(--background-green);
+    fill: var(--background-green);
+}
+
+.MenuSliding a:hover::before {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 5px;
+    background: var(--background-green);
+    left: 0;
+    top: 0;
+}
+
+.MenuSliding a svg {
+    margin-right: 1rem;
+}
+
+@media (max-width: 600px) {
+	.MenuSliding h3 {
+		font-size: 22px;
+	}
+
+	.MenuSliding a {
+		font-size: 16px;
+	}
+}

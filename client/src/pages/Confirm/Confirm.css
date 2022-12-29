@@ -1,4 +1,9 @@
 
+.container-form-confirm {
+	width: 100%;
+	min-height: 100vh;
+}
+
 .form-confirm {
 	width: 480px;
 	margin: 0 auto;
@@ -18,20 +23,71 @@
 
 .form-confirm__grid__form-options {
 	margin-top: 10px;
-	padding: 4px;
-	background: rgba(0,0,0,.1);
+	padding: 4px 10px;
 	border-radius: 4px;
+	background: var(--primary-color);
+	color: #e2e2e2;
 	box-shadow: 0 4px 8px rgba(0,0,0,.4);
+}
+
+.form-confirm__grid .MuiFormLabel-root {
+	color: var(--background-orange-dark);
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.form-confirm__grid .MuiFormLabel-root.Mui-focused {
+	color: white;
+}
+
+.form-confirm__grid .MuiRadio-root span svg {
+	fill: #e2e2e2;
+}
+
+.form-confirm__grid .MuiGrid-item {
+	margin-bottom: 20px;
 }
 
 .form-confirm__grid .MuiGrid-item,
 .form-confirm__grid .MuiFormLabel-root {
 	width: 100% !important;
-	margin-top: 10px;
+}
+
+.form-confirm__grid__form-options .MuiOutlinedInput-root {
+	color: #e2e2e2;
+}
+
+.form-confirm__grid__form-options .MuiOutlinedInput-notchedOutline {
+	border-color: #e2e2e2;
+}
+
+.form-confirm__grid__form-options .MuiOutlinedInput-notchedOutline,
+.form-confirm__grid__form-options .MuiOutlinedInput-root:hover {
+	border-color: #e2e2e2 !important;
 }
 
 .form-confirm__grid .btn-submit {
 	margin-top: 10px;
+}
+
+.form-confirm h6 {
+	color: #e2e2e2 !important;
+}
+
+.form-confirm  p {
+	color: #999;
+}
+
+.form-confirm .form-confirm__grid__out  .MuiOutlinedInput-root {
+	color: #e2e2e2;
+}
+
+.form-confirm .form-confirm__grid__out .MuiOutlinedInput-notchedOutline {
+	border-top-color: var(--background-orange) !important;
+	border-right-color: var(--background-orange) !important;
+	border-bottom-color: var(--background-orange) !important;
+	border-left-color: var(--background-orange) !important;
 }
 
 @media (max-width: 600px) {
@@ -41,7 +97,7 @@
 
 	.form-confirm label,
 	.form-confirm span {
-		font-size: 12px;
+		font-size: 14px;
 	}
 
 	.form-confirm h6 {

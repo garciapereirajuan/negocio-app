@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const BonusProductSchema = Schema({
     title: String,
-    description: String,
+    price: String,
     option: String,
     checked: Boolean,
     visible: Boolean,

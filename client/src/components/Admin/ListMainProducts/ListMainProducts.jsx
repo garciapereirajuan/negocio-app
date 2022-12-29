@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Grid, List, ListItem, IconButton, Button, Avatar, ListItemText, ListItemAvatar, Alert, FormControl, FormGroup, FormControlLabel, Checkbox } from '@mui/material'
+import { Grid, List, ListItem, IconButton, Button, Avatar, ListItemText, ListItemAvatar, Alert, FormControl, FormGroup, FormControlLabel, Checkbox, Collapse } from '@mui/material'
 import DragSortableList from 'react-drag-sortable'
 import { showMainProductImageApi, removeMainProductApi, updateMainProductSpecialApi } from '../../../api/mainProduct'
 import { getAccessTokenApi } from '../../../api/auth'
 import ModalMui from '../../ModalMui'
 import DialogMui from '../../DialogMui'
+import exportStyleButtonDialog from '../../DialogMui/exportStyleButtonDialog'
 import AddEditProduct from '../AddEditProduct'
+import getImage from "../../../utils/getImage.js"
 
 import NoImage from '../../../assets/img/png/NoImage.png'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
 
 import './ListMainProducts.css'
 
@@ -25,15 +28,15 @@ const ListMainProducts = ({ allMainProducts, setReloadAllMainProducts }) => {
     const [actionsDialog, setActionsDialog] = useState(null)
     const navigate = useNavigate()
 
-    useEffect(() => {
-        const messageAboutSymbol = localStorage.getItem('messageAboutSymbol')
+    // useEffect(() => {
+    //     const messageAboutSymbol = localStorage.getItem('messageAboutSymbol')
 
-        if (!messageAboutSymbol) {
-            setAlert(['warning', 'Antes de continuar quiero pedirte un favor. No uses aún el símbolo "&" en nada de lo que escribas porque puede ocurrir un error inesperado y todavía no está solucionado.'])
-        }
+    //     if (!messageAboutSymbol) {
+    //         setAlert(['warning', 'Por favor. Por el momento no uses el símbolo "&" en la información de ningún producto porque puede ocurrir un error inesperado.'])
+    //     }
 
-        return () => localStorage.setItem('messageAboutSymbol', true)
-    }, [])
+    //     return () => localStorage.setItem('messageAboutSymbol', true)
+    // }, [])
 
     useEffect(() => {
         const itemsArray = []
@@ -83,6 +86,7 @@ const ListMainProducts = ({ allMainProducts, setReloadAllMainProducts }) => {
     }
 
     const deleteProduct = (product) => {
+        const { styleButtonDialogConfirm, styleButtonDialogCancel } = exportStyleButtonDialog        
         const token = getAccessTokenApi()
 
         const cancelDelete = () => setOpenDialog(false)
@@ -118,12 +122,15 @@ const ListMainProducts = ({ allMainProducts, setReloadAllMainProducts }) => {
         setActionsDialog(
             <>
                 <Button
+                    style={styleButtonDialogCancel}
+                    variant="contained"
                     onClick={cancelDelete}
                 >
                     Cancelar
                 </Button>
                 <Button
-                    style={{ color: 'red' }}
+                    style={styleButtonDialogConfirm}
+                    variant="contained"
                     onClick={confirmDelete}
                 >
                     Eliminar
@@ -164,6 +171,7 @@ const ListMainProducts = ({ allMainProducts, setReloadAllMainProducts }) => {
                 .then(response => {
                     if (response?.code === 200) {
                         setReloadAllMainProducts(true)
+                        // navigate('/admin/products')
                     } else {
                         console.log('Ocurrió un error', response)
                     }
@@ -175,7 +183,26 @@ const ListMainProducts = ({ allMainProducts, setReloadAllMainProducts }) => {
 
     return (
         <>
-            {alert.length !== 0 && <Alert severity={alert[0]}>{alert[1]}</Alert>}
+            <Collapse in={alert.length !== 0}>
+                <Alert
+                    action={
+                        <IconButton
+                          aria-label="close"
+                          color="inherit"
+                          size="small"
+                          onClick={() => {
+                            setAlert([]);
+                          }}
+                        >
+                          <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }
+                        sx={{ mb: 2 }}
+                        severity={alert[0]}
+                    >
+                    {alert[1]}
+                </Alert>
+            </Collapse>
             <List>
                 <DragSortableList items={itemsMainProducts} onSort={onSort} dropBackTransitionDuration={0.3} type="vertical" />
             </List>
@@ -195,11 +222,11 @@ const ListMainProducts = ({ allMainProducts, setReloadAllMainProducts }) => {
                 actionsDialog={actionsDialog}
             />
         </>
-    )
+)
 }
 
 const Item = ({ product, editProduct, deleteProduct, updateForCheckbox }) => {
-    const [imageUrl, setImageUrl] = useState(null)
+const [imageUrl, setImageUrl] = useState(null)
 
     useEffect(() => {
         if (!product.image) {
@@ -234,16 +261,30 @@ const Item = ({ product, editProduct, deleteProduct, updateForCheckbox }) => {
                 </>
             }
         >
-            <ListItemAvatar>
+            <ListItemAvatar className='main-product-avatar'>
                 <Avatar
-                    src={imageUrl}
+                    src={getImage[product.image]}
                     sx={{ width: 70, height: 70, marginRight: 2 }}
+                    onClick={() => editProduct(product, imageUrl)}
                 >
                     {/* <FolderIcon /> */}
                 </Avatar>
             </ListItemAvatar>
             <ListItemText
-                primary={<div className='title-div'>{product.title}{product.price > 0 && <span className='format-icon'>${product.price}</span>}</div>}
+                primary={
+                    <div 
+                        className='title-div'
+                    >
+                        {product.title}
+                        {
+                            product.price > 0 && ( 
+                                <span className='format-icon'>
+                                    ${product.price}
+                                </span>
+                            )
+                        }
+                    </div>
+                }
                 secondary={product.description}
             />
             <div className='form-group-checkbox'>

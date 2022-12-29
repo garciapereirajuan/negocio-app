@@ -1,0 +1,34 @@
+.product .MuiCardHeader-title,
+.product-of-basket .MuiCardHeader-title {
+    font-size: 1rem !important;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.product.MuiPaper-elevation1,
+.product-of-basket.MuiPaper-elevation1 {
+    position: relative;
+    background-color: var(--primary-color) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .7) !important;
+}
+
+.product .MuiTypography-body2,
+.product-of-basket .MuiTypography-body2 {
+    color: #fff !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product .MuiCardContent-root:last-child,
+.product-of-basket .MuiCardContent-root:last-child {
+    background-color: var(--secondary-color);
+}
+
+.product .icon-menu .MuiSvgIcon-root,
+.product-of-basket .icon-menu .MuiSvgIcon-root {
+    fill: rgba(255, 255, 255, .6) !important;
+}

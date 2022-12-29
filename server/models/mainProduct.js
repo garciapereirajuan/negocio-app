@@ -9,13 +9,15 @@ const MainProductSchema = Schema({
     description: String,
     image: String,
     price: Number,
-    order: Number,
+    order: {
+        type: Number,
+        default: -1,
+    },
     visible: Boolean,
     stock: Boolean,
     dozen: Boolean,
     allowHalf: Boolean, 
-    bonusProducts: [{ type: Schema.Types.ObjectId, ref: 'BonusProduct' }],
-    // category: { type: Schema.Types.ObjectId, red: 'Category' }
+    bonusProducts: [{ type: Schema.Types.ObjectId, ref: 'BonusProduct' }]
 })
 
 module.exports = mongoose.model('MainProduct', MainProductSchema)

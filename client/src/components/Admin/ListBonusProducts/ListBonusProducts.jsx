@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { List, ListItem, IconButton, ListItemText, FormControlLabel, Checkbox, Button, Alert } from '@mui/material'
 import DragSortableList from 'react-drag-sortable'
+import { List, ListItem, IconButton, ListItemText, FormControlLabel, Checkbox, Button, Alert } from '@mui/material'
+import DialogMui from '../../DialogMui'
+import exportStyleButtonDialog from "../../DialogMui/exportStyleButtonDialog"
 import { getAccessTokenApi } from '../../../api/auth'
 import { updateBonusProductSpecialApi, removeBonusProductApi } from '../../../api/bonusProduct'
-import DialogMui from '../../DialogMui'
+import accounting from 'accounting'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -20,15 +22,15 @@ const ListBonusProducts = ({ allBonusProducts, setReloadAllBonusProducts }) => {
     const [alert, setAlert] = useState([]) 
     const navigate = useNavigate()
 
-    useEffect(() => {
-        const messageAboutBonusColor = localStorage.getItem('messageAboutBonusColor')
+    // useEffect(() => {
+    //     const messageAboutBonusColor = localStorage.getItem('messageAboutBonusColor')
 
-        if (!messageAboutBonusColor) {
-            setAlert(['warning', 'Los colores rojo y verde son para identificar fácilmente los complementos. Siendo de color verde los que tienen la palabra "con", y de color rojo los que tienen la palabra "sin".'])
-        }
+    //     if (!messageAboutBonusColor) {
+    //         setAlert(['warning', 'Los colores rojo y verde son para identificar fácilmente los complementos. Siendo de color verde los que tienen la palabra "con", y de color rojo los que tienen la palabra "sin".'])
+    //     }
 
-        return () => localStorage.setItem('messageAboutBonusColor', true)
-    }, [])
+    //     return () => localStorage.setItem('messageAboutBonusColor', true)
+    // }, [])
 
     useEffect(() => {
         const messageAboutBonusColor = localStorage.getItem('messageAboutBonusColor')
@@ -87,6 +89,7 @@ const ListBonusProducts = ({ allBonusProducts, setReloadAllBonusProducts }) => {
     }
 
     const deleteBonusProduct = (product) => {
+        const { styleButtonDialogConfirm, styleButtonDialogCancel } = exportStyleButtonDialog;
 
         const cancelDelete = () => {
             setOpenDialog(false)
@@ -127,12 +130,15 @@ const ListBonusProducts = ({ allBonusProducts, setReloadAllBonusProducts }) => {
         setActionsDialog(
             <>
                 <Button
+                    style={styleButtonDialogCancel}
+                    variant="contained"
                     onClick={cancelDelete}
                 >
                     Cancelar
                 </Button>   
                 <Button
-                    style={{color: 'red'}}
+                    style={styleButtonDialogConfirm}
+                    variant="contained"                    
                     onClick={confirmDelete}
                 >
                     Eliminar
@@ -143,7 +149,6 @@ const ListBonusProducts = ({ allBonusProducts, setReloadAllBonusProducts }) => {
 
     const onSort = (sortedList) => {
         const token = getAccessTokenApi()
-        console.log(sortedList)
 
         sortedList.map(item => {
             const productId = item.content.props.bonusProduct._id
@@ -207,6 +212,14 @@ const Item = ({ bonusProduct, editBonusProduct, updateForCheckbox, deleteBonusPr
                             className={`title-div title-capitalize format-icon ${colorClass}`}
                         >
                             {`${bonusProduct.option} ${bonusProduct.title}`}
+                            {
+                                bonusProduct.price && 
+                                <span className='bonus-product-price'>
+                                    {
+                                        accounting.formatMoney(bonusProduct.price,'$')
+                                    }
+                                </span>
+                            }
                         </div>
                     </div>
                 }   

@@ -1,26 +1,14 @@
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config()
+}
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 
-const { API_VERSION } = require('./config')
-
-//Load routings
-const userRoutes = require('./routes/user')
-const authRoutes = require('./routes/auth')
-const mainProductRoutes = require('./routes/mainProduct')
-const categoryRoutes = require('./routes/category')
-const bonusProductRoutes = require('./routes/bonusProduct')
-const cloudinary = require('cloudinary')
-
+//Body-parser
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-
-//Configure Cloudinary
-cloudinary.config({
-    cloud_name: 'hy0ituypt',
-    api_key: '435915454534485',
-    api_secret: 'YHJyhSgdjNkgOvqI_sg0teGP4NM',
-})
 
 //Configure Header HTTP
 app.use((req, res, next) => {
@@ -33,6 +21,16 @@ app.use((req, res, next) => {
   res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE')
   next()
 })
+
+//Config
+const { API_VERSION } = require('./config')
+
+//Load routings
+const userRoutes = require('./routes/user')
+const authRoutes = require('./routes/auth')
+const mainProductRoutes = require('./routes/mainProduct')
+const categoryRoutes = require('./routes/category')
+const bonusProductRoutes = require('./routes/bonusProduct')
 
 //Routes basic
 app.use(`/api/${API_VERSION}`, userRoutes)

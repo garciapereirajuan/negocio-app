@@ -1,6 +1,15 @@
 .App {
+  width: 100%;
+  min-height: calc(100vh - 85.1333px);
   text-align: center;
   padding-top: 85.13px;
+  background-color: #373737;
+}
+
+.MuiBackdrop-invisible {
+  opacity: .3 !important;
+  background-color: #000 !important;
+  transition: all ease .2 !important;
 }
 
 a {
@@ -15,6 +24,8 @@ a {
 
 .MuiAlert-root {
   margin-top: 20px;
+  background-color: rgba(37,37,37, .8) !important;
+  color: #e2e2e2 !important;
 }
 
 .format-icon {
@@ -36,4 +47,76 @@ a {
     * {
       font-size: 1em;
     }
+}
+
+.browser-instagram {
+  margin: 0;
+  padding: 8px;
+  width: 100%;
+  min-height: 100vh;
+  color: #d95d39;
+  background-color: #4a4e69;
+  font-size: 30px;
+  box-sizing: border-box;
+}
+
+.browser-instagram .browser-instagram__container {
+  margin: 40px auto;
+  width: 40%;
+  text-align: center;
+}
+
+.browser-instagram p {
+  font-size: 30px;
+}
+
+.browser-instagram .browser-instagram__options p {
+  font-size: 20px;
+}
+
+.browser-instagram .browser-instagram__options p span {
+  font-size: 20px;
+  font-style: italic;
+  color: var(--background-orange-light);
+}
+
+.browser-instagram .bold {
+  font-weight: bold;
+}
+
+.browser-instagram .parraph-type-secondary {
+  font-size: 16px;
+  color: #fff;
+}
+
+.browser-instagram .parraph-type-secondary.first-child {
+  font-size: 20px !important;
+}
+
+
+.browser-instagram .parraph-type-secondary span {
+  text-decoration: underline;
+  color: rgb(000,170,255);
+  cursor: pointer;
+}
+
+.browser-instagram div h3 {
+  font-size: 34px;
+}
+
+.browser-instagram img {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,.4);
+}
+
+@media (max-width: 720px) {
+  .browser-instagram .browser-instagram__container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 340px) {
+  .browser-instagram .parraph-type-secondary.first-child br { 
+    display: none 
+  }
 }

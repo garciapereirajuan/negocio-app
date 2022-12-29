@@ -13,6 +13,10 @@ const UserSchema = Schema({
         unique: true
     },
     password: String,
+    type: {
+        type: String,
+        default: "viewer"
+    },
     active: Boolean
 })
 

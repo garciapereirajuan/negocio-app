@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles, styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
+import { Box, Grid, Fade } from '@mui/material';
 import Product from '../Product'
 import ProductOfBasket from '../ProductOfBasket'
-import { products } from '../../utils/productsArray'
 
 import './Products.css'
 
-export default function Products({ allMainProducts, allBonusProducts, setTotal, setBasket, fromBasket, reloadBasket, reloadTotal, setReloadBasket, setReloadTotal }) {
+export default function Products({ allMainProducts, allBonusProducts, setTotal, total, setBasket, fromBasket, reloadBasket, reloadTotal, setReloadBasket, setReloadTotal }) {
     let array = []
 
     const getBonusProducts = (mainProduct) => {
@@ -21,11 +16,10 @@ export default function Products({ allMainProducts, allBonusProducts, setTotal, 
                 }
             })
         })
-        // mainProduct.bonusProducts = array
     }
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box xs={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
                 {
                     allMainProducts && allMainProducts.map(item => {
@@ -43,6 +37,7 @@ export default function Products({ allMainProducts, allBonusProducts, setTotal, 
                                     bonusProducts={array}
                                     bonusProductsOk={item.bonusProductsOk || undefined}
                                     setTotal={setTotal}
+                                    total={total}
                                     setBasket={setBasket}
                                 />
                             )
@@ -55,6 +50,7 @@ export default function Products({ allMainProducts, allBonusProducts, setTotal, 
                                 bonusProducts={array}
                                 bonusProductsOk={item.bonusProductsOk || undefined}
                                 setTotal={setTotal}
+                                total={total}
                                 setBasket={setBasket}
                                 reloadBasket={reloadBasket}
                                 reloadTotal={reloadTotal}

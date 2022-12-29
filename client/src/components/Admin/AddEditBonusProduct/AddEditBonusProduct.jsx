@@ -180,6 +180,9 @@ const FormBonusProduct = ({
 	                      >
 	                      	<MenuItem value='sin'>Sin</MenuItem>
 	                      	<MenuItem value='con'>Con</MenuItem>
+	                      	<MenuItem value='de'>De</MenuItem>
+	                      	<MenuItem value='cocción'>Cocción</MenuItem>
+	                      	<MenuItem value='consulta'>Consulta</MenuItem>
 	                      </Select>
 	          					</FormControl>
               			</Grid>
@@ -197,14 +200,10 @@ const FormBonusProduct = ({
 	                <Grid item xs={12} sm={12} md={5.8} lg={5.8} >
 	                    <FormControl>
 	                        <TextField
-	                            label='Descripción (opcional)'
-	                            placeholder={
-	                                bonusProductData.title
-	                                    ? `Alguna descripción sobre "${bonusProductData.title}"`
-	                                    : 'Alguna descripción'
-	                            }
-	                            value={bonusProductData.description}
-	                            onChange={e => setBonusProductData({ ...bonusProductData, description: e.target.value })}
+	                            label='Precio (opcional)'
+	                            placeholder={'400'}
+	                            value={bonusProductData.price}
+	                            onChange={e => setBonusProductData({ ...bonusProductData, price: e.target.value })}
 	                        />
 	                    </FormControl>
 	                </Grid>

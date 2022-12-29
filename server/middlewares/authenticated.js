@@ -9,11 +9,15 @@ exports.ensureAuth = (req, res, next) => {
     }
 
     const token = req.headers.authorization.replace(/["']+/g, '')
-    console.log(token)
 
     try {
         var payload = jwt.decodedToken(token)
-        console.log(payload)
+
+        if (payload.type !== "admin") {
+            message(res, 404, "Debes ser Administrador para hacer cambios en este sitio.");
+            return;
+        }
+
         if (payload.exp <= moment().unix()) {
             message(res, 404, 'El token ha expirado.')
             return
