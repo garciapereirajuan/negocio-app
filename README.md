@@ -5,6 +5,8 @@ Una aplicación que le permite al usuario crear productos para que su cliente lo
 
 ## Creada con ReactJS
 
+> npm install
+
 > npm run dev
 
 ## Licencia
