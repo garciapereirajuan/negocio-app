@@ -37,10 +37,10 @@ export const addMainProductImageApi = (token, mainProductId, image) => {
         .catch(err => err)
 }
 
-// export const showMainProductImageApi = (imageId) => {
-//     const imageUrl = `${pathMain}/${imageId}`
+export const showMainProductImageApi = (imageId) => {
+    // const imageUrl = `${pathMain}/${imageId}`
 
-//     return new Promise((res, err) => { res(imageUrl) })
+    return new Promise((res, err) => { res() })
 
     // EL CODIGO DE ABAJO ES PARA SETEAR EL IMAGEURL
     // CUANDO LA IMAGEN SE ALMACENE EN EL MISMO SERVIDOR
@@ -49,7 +49,7 @@ export const addMainProductImageApi = (token, mainProductId, image) => {
     // return fetch(url)
     //     .then(response => response.url)
     //     .catch(err => err)
-// }
+}
 
 export const showMainProductApi = async (mainProductsId) => {
     const url = `${basePath}/${apiVersion}/main-products`

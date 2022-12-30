@@ -71,10 +71,10 @@ const Confirm = () => {
 		return string.match(/\S+/g).join(" ");
 	}
 
-	const confirmSend = (save) => {
-		let message = generateMessage()
-		
+	const confirmSend = (save, formData) => {
 		localStorage.setItem('dataAddress', JSON.stringify(formData))
+		
+		let message = generateMessage()
 		
 		if (!save) {
 			localStorage.removeItem("basket")
@@ -169,14 +169,14 @@ const Confirm = () => {
 				<Button 
 					style={{...styleButtonDialogConfirm, margin: "2px 4px"}}
 					variant="contained"
-					onClick={() => confirmSend(false)}
+					onClick={() => confirmSend(false, formData)}
 				>
 					Enviar y eliminarlo
 				</Button>
 				<Button
 					style={{...styleButtonDialogConfirm, margin: "2px 4px"}}
 					variant="contained"
-					onClick={() => confirmSend(true)}
+					onClick={() => confirmSend(true, formData)}
 				>
 					Enviar y guardarlo
 				</Button>
