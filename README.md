@@ -1,6 +1,16 @@
-Te podés encontrar con código repetido, código sin uso, y código por refactorizar.
-En general mi código es más limpio, como se puede ver en otros repos.
-Esta aplicación la hice con poco tiempo.
+# IMPORTANTE
+
+Te podés encontrar con ***código repetido***, ***código sin uso***, y ***código por refactorizar***.
+
+En general mi código es ***más limpio***, como se puede ver en otros repos.
+
+Esta aplicación la hice con ***poco tiempo***.
+
+Originalmente las fotos de los productos se suben a un ***Bucket en AWS S3***.
+
+Pero se terminó la ***prueba gratis*** de Amazon y tuve que dejar las fotos estáticas.
+
+El código que hacer referencia a Amazon del lado del cliente está **comentado**.
 
 # negocio-app
 Una aplicación que le permite al usuario crear productos para que su cliente los agregue a un carrito y envíe su pedido por mensaje de WhatsApp.
