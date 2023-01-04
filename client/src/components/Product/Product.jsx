@@ -73,6 +73,7 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
     }, [])
 
     //NECESARIO PARA SABER LA RUTA DE LA IMAGEN
+        // no necesario actualmente
 
     // useEffect(() => {
     //     if (!product.image) {
@@ -259,9 +260,16 @@ export default function Product({ product, bonusProducts, bonusProductsOk, setTo
                             }
                         />
                         <div className="container-image">
+
+                            {/*
+                                Las rutas de las imágenes
+                                están en un archivo estático
+                                (esto no es así en producción real)
+                            */}
                             <CardMedia
                                 component="img"
                                 height="194"
+                                // image={imageUrl}
                                 image={getImage[image]}
                                 alt={"Cargando imagen: "+title}
                             />

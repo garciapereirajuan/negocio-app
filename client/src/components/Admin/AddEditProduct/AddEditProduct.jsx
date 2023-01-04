@@ -14,6 +14,7 @@ import { getAccessTokenApi } from '../../../api/auth'
 import { addMainProductApi, addMainProductImageApi, updateMainProductApi } from '../../../api/mainProduct'
 import { showBonusProductApi } from '../../../api/bonusProduct'
 import { useDropzone } from 'react-dropzone'
+import getImage from "../../../utils/getImage"
 import NoImage from '../../../assets/img/png/NoImage.png'
 
 import '../../../css/AddEditForm.css'
@@ -46,6 +47,22 @@ const AddEditProduct = () => {
     const [image, setImage] = useState(null)
     const navigate = useNavigate()
     const location = useLocation()
+
+    
+    /* ----------------------------------------
+
+        Las rutas de las imágenes
+        están en un archivo estático
+        (esto no es así en producción real)
+    */
+    
+    const [showImage, setShowImage] = useState(null)
+
+    useEffect(() => {
+        setShowImage(getImage[mainProductData.image])    
+    }, [mainProductData])
+
+    /*-----------------------------------------*/
 
     useEffect(() => {
         showBonusProductApi().then(response => setAllBonusProducts(response.bonusProducts))
@@ -263,13 +280,17 @@ const AddEditProduct = () => {
                     setAlert={setAlert}
                     image={image}
                     setImage={setImage}
+
+                    /* showImage solo reemplaza a image (leer arriba) */
+                    showImage={showImage}
+                    setShowImage={setShowImage}
                 />
             }
         />
     )
 }
 
-const FormProduct = ({ setOpenModal, setMainProductData, allBonusProducts, preloadBonusProducts, addProduct, editProduct, alert, setAlert, image, setImage, mainProductData}) => {
+const FormProduct = ({ setOpenModal, setMainProductData, allBonusProducts, preloadBonusProducts, addProduct, editProduct, alert, setAlert, image, setImage, mainProductData, showImage, setShowImage}) => {
     const [bonusProductsSelect, setBonusProductsSelect] = useState([])
     const [checkObjectCategoryData, setCheckObjectCategoryData] = useState(false)
 
@@ -352,7 +373,10 @@ const FormProduct = ({ setOpenModal, setMainProductData, allBonusProducts, prelo
                 {!checkObjectCategoryData ? 'Nuevo ' : 'Editar '}producto
             </Typography>
 
-            <UploadImage image={image} setImage={setImage} />
+            <UploadImage image={showImage} setImage={setShowImage} />
+
+            {/*<UploadImage image={image} setImage={setImage} />*/}
+
             {alert.length !== 0 && <Alert severity={alert[0]}>{alert[1]}</Alert>}
             <form
                 className='add-edit-form__form'
