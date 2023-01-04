@@ -10,7 +10,7 @@ Originalmente las fotos de los productos se suben a un ***Bucket en AWS S3***.
 
 Pero se terminó la ***prueba gratis*** de Amazon y tuve que dejar las fotos estáticas.
 
-El código que hacer referencia a Amazon del lado del cliente está ***comentado*** y ***reemplazado***.
+El código que hace referencia a Amazon del lado del cliente está ***comentado*** y ***reemplazado***.
 
 El código que está en el servidor **no** hizo falta reemplazarlo ya que simplemente ***no se ejecuta***.
 
